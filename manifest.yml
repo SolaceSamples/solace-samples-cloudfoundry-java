@@ -1,0 +1,5 @@
+---
+applications:
+- name: sample-cloud-app
+  memory: 512M
+  path: build/libs/sample-cloud-app.jar
