@@ -1,0 +1,16 @@
+# Site settings
+title: Java Samples showing how to use Solace Messaging for PCF
+email: mark.spielman@solacesystems.com
+description: > # this means to ignore newlines until "baseurl:"
+  Samples showing how to connect and exchange messages with Solace Messaging for Pivotal Cloud Foundry.
+baseurl: "/solace-samples-cloudfoundry-java" # the subpath of your site, e.g. /blog
+url: "solacesamples.github.io" # the base hostname & protocol for your site
+repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
+
+# Build settings
+markdown: kramdown
+
+collections:
+  docs:
+    output: true
+    permalink: /docs/:path/

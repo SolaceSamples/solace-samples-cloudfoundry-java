@@ -1,0 +1,37 @@
+<div class="unit one-fifth">
+  <aside style="padding-top: 30px; position: fixed;">
+
+    {% for section in site.data.docs %}
+    <h4 style="text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 0 10px 20px;
+    margin-left: -20px;
+    display: inline-block;
+    border-bottom: 1px solid"><a href="{{ site.baseurl }}/">{{ section.title }}</a></h4>
+
+    <ul style="list-style: none; margin-left: 0px;">
+      {% for item in section.docs %}
+        {% assign item_url = item | prepend:"/docs/" | append:"/" %}
+        {% assign p = site.docs | where:"url", item_url | first %}
+        <li class="{% if item_url == page.url %}current{% endif %}"><a href="{{ site.baseurl }}{{ p.url }}">{{ p.title }}</a></li>
+      {% endfor %}
+    </ul>
+
+    {% endfor %}
+
+    <h4 style="text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 0 0 10px 20px;
+    margin-left: -20px;
+    display: inline-block;
+    border-bottom: 1px solid">Quick Links</h4>
+
+    <ul style="list-style: none; margin-left: 0px;">
+      <li><a href="{{ site.repository }}" target="_blank">View on GitHub</a></li>
+    </ul>
+
+
+  </aside>
+</div>
