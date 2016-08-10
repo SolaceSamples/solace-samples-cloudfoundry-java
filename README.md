@@ -2,10 +2,13 @@
 
 The repository contains example applications that use the Solace Messaging service on Pivotal Cloud Foundry. The goal of these sample applications is to illustrate various ways of consuming the `VCAP_SERVICES` environment variable from a Solace Messaging Cloud Foundry service instance. You can get more details on the  Solace Messaging Service for Pivotal Cloud Foundry [here](TODO - Need link to PCF tile cloud foundry documentation).
 
-This repository contains the following sample applications:
-- Java main application
-- Java main application using spring cloud connectors
-- (Coming soon) Spring boot application using spring cloud connectors
+This repository contains a sample application modified in the following ways:
+
+* Java Application
+* Java Application using Spring Cloud Connectors
+* (Coming soon) Annotated Spring Boot application using Spring Cloud Connectors
+
+While not necessary for Java Application and straight Spring Cloud Connector applications, the samples in this repository still make use of of Spring Boot so they can easily expose a simple REST interface to provide interactive ways to subscribe, send and receive Solace messages. Spring Boot is not required. You can make use of the Spring Cloud Connectors in any Java Application. See the walk through tutorials for more details.
 
 All of these sample applications have full walk through tutorials that explain the code in detail. Tutorials for each sample are available here:
 
@@ -44,7 +47,7 @@ This application uses the Java library from http://www.JSON.org/ to parse the `V
 
 application name: `solace-sample-spring-cloud`
 
-This application makes use of the Spring Cloud Connectors project to automatically parse the `VCAP_SERVICES` environment variable. Applications do *not* have to be a spring boot application to make use of Spring Cloud Connectors. Simply specify the following dependencies in your build:
+This application makes use of the Spring Cloud Connectors project to automatically parse the `VCAP_SERVICES` environment variable. Applications do *not* have to be a Spring Boot application to make use of Spring Cloud Connectors. This example makes use of Spring Boot for convenience in enabling the simple REST API. In any Java Applications, simply specify the following dependencies in your build:
 
 	compile 'org.springframework.cloud:spring-cloud-spring-service-connector:1.2.3.RELEASE'
 	compile 'org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.2.3.RELEASE'
