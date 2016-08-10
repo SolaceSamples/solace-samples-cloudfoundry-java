@@ -1,5 +1,7 @@
 ---
 applications:
-- name: sample-cloud-app
+- name: solace-sample-java-app
   memory: 512M
-  path: build/libs/sample-cloud-app.jar
+  path: build/libs/solace-sample-java-app.jar
+  services:
+  - solace-messaging-sample-instance
