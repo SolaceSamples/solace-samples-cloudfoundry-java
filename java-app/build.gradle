@@ -1,6 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '1.3.5.RELEASE'
+		solaceJcsmpVersion = '7.2.1.148'
 	}
     repositories {
     	mavenCentral()
@@ -22,6 +23,9 @@ jar {
 
 repositories {
     mavenCentral()
+    maven {
+        url "http://apps-jenkins:9090/nexus/content/groups/stable"
+    }
     flatDir {
        dirs 'libs'
    }
@@ -37,8 +41,8 @@ dependencies {
     // Solace JCSMP Libs
     compile("commons-lang:commons-lang:2.6")
     compile("commons-logging:commons-logging:1.2")
-    compile("com.solacesystems:sol-common:+")
-    compile("com.solacesystems:sol-jcsmp:+")
+    compile("com.solacesystems:sol-common:${solaceJcsmpVersion}")
+    compile("com.solacesystems:sol-jcsmp:${solaceJcsmpVersion}")
 }
 
 task wrapper(type: Wrapper) {
