@@ -3,3 +3,4 @@
 .settings
 .springBeans
 .gradle
+java-app/build/
