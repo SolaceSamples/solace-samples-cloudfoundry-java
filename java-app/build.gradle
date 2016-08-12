@@ -1,0 +1,45 @@
+buildscript {
+	ext {
+		springBootVersion = '1.3.3.RELEASE'
+		solaceJcsmpVersion = '7.2.1.148'
+	}
+    repositories {
+    	mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'solace-sample-java-app'
+    version =  ''
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://apps-jenkins:9090/nexus/content/groups/stable"
+    }
+    flatDir {
+       dirs 'libs'
+   }
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.json:json:20151123")
+    
+    // Solace JCSMP Libs
+    compile("com.solacesystems:sol-jcsmp:${solaceJcsmpVersion}")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}
