@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: Parsing VCAP_SERVICES
+title: Spring Cloud
 ---
 
 TODO: Write tutorial here with markdown.
