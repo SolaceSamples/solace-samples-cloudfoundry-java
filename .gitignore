@@ -4,3 +4,7 @@ _site/
 .project
 .settings/
 .springBeans
+bin/
+images/.DS_Store
+java-app/bin
+spring-cloud/bin
