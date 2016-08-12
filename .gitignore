@@ -4,3 +4,8 @@
 .springBeans
 .gradle
 java-app/build/
+java-app/bin/
+_site
+bin/
+spring-cloud/bin/
+spring-cloud/build/
