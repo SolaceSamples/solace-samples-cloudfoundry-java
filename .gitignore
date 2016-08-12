@@ -3,6 +3,3 @@
 .settings
 .springBeans
 .gradle
-build
-target
-bin
