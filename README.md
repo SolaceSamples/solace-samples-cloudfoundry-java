@@ -20,7 +20,7 @@ What follows is a brief summary for people that want to dive straight into the c
 
 The sample applications specify a dependency on a Solace Messaging service instance named `solace-messaging-sample-instance`. To create the required Solace messaging service instance, do the following:
 
-	cf create-service solacemessaging vmr-shared solace-messaging-sample-instance
+	cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
 	
 
 ### Building
@@ -70,17 +70,23 @@ For more details and example usage, see the walk through tutorial here:
 
 ## Try out the Applications
 
-The sample applications have a simple REST interface that allows you to subscribe, send and receive Solace messages. You can try the applications out using command like the following:
+The sample applications have a simple REST interface that allows you to subscribe, send and receive Solace messages. You can try the applications out using command like the following.
+
+Determine the URL of the sample application and export it for use in the `curl` commands. Adjust the app name as appropriate to match the sample you're using:
+
+	export APP_NAME=solace-sample-java-app
+	export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
+	echo "The application URL is: ${APP_URL}"
 
 Subscribe to topic "test"
 
-	curl -sX POST -H "Authorization: Basic c29sYWNlZGVtbzpzb2xhY2VkZW1v" -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://${APP_URL}/subscription 
+	curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
 
 Send message with topic "test"
 
-	curl -sX POST -H "Authorization: Basic c29sYWNlZGVtbzpzb2xhY2VkZW1v" -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "TEST_MESSAGE"}' http://${APP_URL}/message 
+	curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "TEST_MESSAGE"}' http://$APP_URL/message 
 
 The message is received asynchronously, check for the last message.
 	
-	curl -sX GET -H "Authorization: Basic c29sYWNlZGVtbzpzb2xhY2VkZW1v"  http://${APP_URL}/message 
+	curl -X GET http://$APP_URL/message 
 
