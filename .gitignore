@@ -1,1 +1,6 @@
 _site/
+.classpath
+.gradle/
+.project
+.settings/
+.springBeans
