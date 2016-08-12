@@ -35,7 +35,7 @@ To deploy the individual applications to Cloud Foundry:
 1. cd to the project dir
 1. `$ cf push`
 
-## Java main application
+## Java Application
 
 application name: `solace-sample-java-app`
 
@@ -43,7 +43,7 @@ This application uses the Java library from http://www.JSON.org/ to parse the `V
 
 * [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/docs/java-app/)
 
-## Java main application using spring cloud connector
+## Java Application using Spring Cloud Connector
 
 application name: `solace-sample-spring-cloud`
 
