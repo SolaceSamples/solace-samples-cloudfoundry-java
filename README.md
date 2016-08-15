@@ -16,12 +16,11 @@ All of these sample applications have full walk through tutorials that explain t
 
 What follows is a brief summary for people that want to dive straight into the code.
 
-## Common Setup 
+## Common Setup
 
 The sample applications specify a dependency on a Solace Messaging service instance named `solace-messaging-sample-instance`. To create the required Solace messaging service instance, do the following:
 
 	cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
-	
 
 ### Building
 
@@ -32,6 +31,7 @@ Clone this repo, then build all examples with:
 ### Deploying
 
 To deploy the individual applications to Cloud Foundry:
+
 1. cd to the project dir
 1. `$ cf push`
 
@@ -84,9 +84,8 @@ Subscribe to topic "test"
 
 Send message with topic "test"
 
-	curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "TEST_MESSAGE"}' http://$APP_URL/message 
+	curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "TEST_MESSAGE"}' http://$APP_URL/message
 
 The message is received asynchronously, check for the last message.
-	
-	curl -X GET http://$APP_URL/message 
 
+	curl -X GET http://$APP_URL/message
