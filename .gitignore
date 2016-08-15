@@ -8,3 +8,4 @@ bin/
 images/.DS_Store
 java-app/bin
 spring-cloud/bin
+*.iml
