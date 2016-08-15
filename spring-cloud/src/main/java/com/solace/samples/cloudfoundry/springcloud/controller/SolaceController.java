@@ -55,15 +55,15 @@ public class SolaceController {
 
 	private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-	JCSMPSession session;
-	XMLMessageProducer producer;
-	TextMessage lastReceivedMessage;
+	private JCSMPSession session;
+	private XMLMessageProducer producer;
+	private TextMessage lastReceivedMessage;
 
 	// Stats
-	AtomicInteger numMessagesReceived = new AtomicInteger();
-	AtomicInteger numMessagesSent = new AtomicInteger();
+	private final AtomicInteger numMessagesReceived = new AtomicInteger();
+	private final AtomicInteger numMessagesSent = new AtomicInteger();
 
-	class SimplePublisherEventHandler implements JCSMPStreamingPublishEventHandler {
+	private class SimplePublisherEventHandler implements JCSMPStreamingPublishEventHandler {
 		@Override
 		public void responseReceived(String messageID) {
 			logger.info("Producer received response for msg: " + messageID);
@@ -74,9 +74,9 @@ public class SolaceController {
 			logger.error("Producer received error for msg: " + messageID + " - " + timestamp, e);
 		}
 
-	};
+	}
 
-	class SimpleMessageListener implements XMLMessageListener {
+	private class SimpleMessageListener implements XMLMessageListener {
 
 		@Override
 		public void onReceive(BytesXMLMessage receivedMessage) {
@@ -106,8 +106,8 @@ public class SolaceController {
 		CloudFactory cloudFactory = new CloudFactory();
 		Cloud cloud = cloudFactory.getCloud();
 		
-		SolaceMessagingInfo solaceMessagingServiceInfo = null;
-		solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud.getServiceInfo("solace-messaging-sample-instance");
+		SolaceMessagingInfo solaceMessagingServiceInfo =
+				(SolaceMessagingInfo) cloud.getServiceInfo("solace-messaging-sample-instance");
 		
 		if (solaceMessagingServiceInfo == null) {
 			logger.error("Did not find instance of 'solace-messaging' service");
