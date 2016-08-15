@@ -57,11 +57,24 @@ The `solace-labs-spring-cloud-connector` is a Spring Cloud Connectors extension 
 
 * https://github.com/SolaceLabs/sl-solace-messaging-service-info
 
-Application can access the SolaceMessagingInfo object as follows:
+The easiest way for applications to access the SolaceMessagingInfo object is by Service Id (ex: "MyService) as follows:
 
 	CloudFactory cloudFactory = new CloudFactory();
 	Cloud cloud = cloudFactory.getCloud();
-	SolaceMessagingInfo solacemessaging = (SolaceMessagingInfo) cloud.getServiceInfo("MyService");
+	SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud.getServiceInfo("MyService");
+	
+Alternatively applications could search through the environment and discover matching services as follows:
+
+	SolaceMessagingInfo solaceMessagingServiceInfo = null;
+	List<ServiceInfo> services = cloud.getServiceInfos();
+		
+	// Connect to the first Solace-Messaging service that is found in the services list.
+	for (ServiceInfo service : services) {
+		if (service instanceof SolaceMessagingInfo) {
+			solaceMessagingServiceInfo = (SolaceMessagingInfo)service;
+			break;
+		}
+	}
 
 For more details and example usage, see the walk through tutorial here:
 

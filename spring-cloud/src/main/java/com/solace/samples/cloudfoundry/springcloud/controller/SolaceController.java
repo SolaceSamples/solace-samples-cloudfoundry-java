@@ -105,15 +105,23 @@ public class SolaceController {
 
 		CloudFactory cloudFactory = new CloudFactory();
 		Cloud cloud = cloudFactory.getCloud();
-		SolaceMessagingInfo solacemessaging = (SolaceMessagingInfo) cloud.getServiceInfo("solace-messaging-sample-instance");
 		
-		logger.info("Solace client initializing and using SolaceMessagingInfo: " + solacemessaging);
+		SolaceMessagingInfo solaceMessagingServiceInfo = null;
+		solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud.getServiceInfo("solace-messaging-sample-instance");
+		
+		if (solaceMessagingServiceInfo == null) {
+			logger.error("Did not find instance of 'solace-messaging' service");
+			logger.info("************* Aborting Solace initialization!! ************");
+			return;
+		}
+		
+		logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceMessagingServiceInfo);
 
 		final JCSMPProperties properties = new JCSMPProperties();
-		properties.setProperty(JCSMPProperties.HOST, solacemessaging.getSmfUri());
-		properties.setProperty(JCSMPProperties.VPN_NAME, solacemessaging.getMsgVpnName());
-		properties.setProperty(JCSMPProperties.USERNAME, solacemessaging.getClientUsername());
-		properties.setProperty(JCSMPProperties.PASSWORD, solacemessaging.getClientPassword());
+		properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfUri());
+		properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
+		properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
+		properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
 		
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);
