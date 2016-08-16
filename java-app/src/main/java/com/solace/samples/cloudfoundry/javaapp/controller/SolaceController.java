@@ -19,10 +19,9 @@
 
 package com.solace.samples.cloudfoundry.javaapp.controller;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.annotation.PostConstruct;
-
+import com.solace.samples.cloudfoundry.javaapp.model.SimpleMessage;
+import com.solace.samples.cloudfoundry.javaapp.model.SimpleSubscription;
+import com.solacesystems.jcsmp.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
@@ -34,19 +33,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solace.samples.cloudfoundry.javaapp.model.SimpleMessage;
-import com.solace.samples.cloudfoundry.javaapp.model.SimpleSubscription;
-import com.solacesystems.jcsmp.BytesXMLMessage;
-import com.solacesystems.jcsmp.JCSMPException;
-import com.solacesystems.jcsmp.JCSMPFactory;
-import com.solacesystems.jcsmp.JCSMPProperties;
-import com.solacesystems.jcsmp.JCSMPSession;
-import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
-import com.solacesystems.jcsmp.TextMessage;
-import com.solacesystems.jcsmp.Topic;
-import com.solacesystems.jcsmp.XMLMessageConsumer;
-import com.solacesystems.jcsmp.XMLMessageListener;
-import com.solacesystems.jcsmp.XMLMessageProducer;
+import javax.annotation.PostConstruct;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class SolaceController {
@@ -106,7 +94,7 @@ public class SolaceController {
 
 		// Need to parse the Solace HOST from VCAP Services
 		if (vcapServices == null || vcapServices.equals("") || vcapServices.equals("{}")) {
-			logger.error("Did not find user provided service. Aborting connection.");
+			logger.error("The VCAP_SERVICES variable wasn't set in the environment. Aborting connection.");
 			return;
 		}
 
