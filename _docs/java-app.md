@@ -147,30 +147,32 @@ try {
 
 ## Creating the message consumer and producer
 
-To receive and send messages you will need to create a consumer and a producer by using the connected session :
+To receive and send messages you will need to create a consumer and a producer by using the connected session.
+The following code will create a simple message producer that is silent normally but will log any errors it receives:
 
 ```
-try {
-    final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageListener());
-    cons.start();
+private class SimplePublisherEventHandler implements JCSMPStreamingPublishEventHandler {
+    @Override
+    public void responseReceived(String messageID) {
+        logger.info("Producer received response for msg: " + messageID);
+    }
 
-    producer = session.getMessageProducer(new SimplePublisherEventHandler());
+    @Override
+    public void handleError(String messageID, JCSMPException e, long timestamp) {
+        logger.error("Producer received error for msg: " + messageID + " - " + timestamp, e);
+    }
+};
+producer = session.getMessageProducer(new SimplePublisherEventHandler());
 
-    logger.info("************* Solace initialized correctly!! ************");
-} catch (Exception e) {
-    logger.error("Error creating the consumer and producer.", e);
-}
 ```
 
-The listener that was passed to the consumer in the code above simply logs incoming messages, and retain the 
-last received message.  It also logs asynchronous exceptions :
+The following code will create a simple message consumer that will log any incoming messages and errors:
 
 ```
 private class SimpleMessageListener implements XMLMessageListener {
 
     @Override
     public void onReceive(BytesXMLMessage receivedMessage) {
-
         numMessagesReceived.incrementAndGet();
 
         if (receivedMessage instanceof TextMessage) {
@@ -185,24 +187,9 @@ private class SimpleMessageListener implements XMLMessageListener {
     public void onException(JCSMPException e) {
         logger.error("Consumer received exception: %s%n", e);
     }
-}
-```
-
-The handler that was passed to the producer simply logs any events produced by the publisher object :
-
-```
-private class SimplePublisherEventHandler implements JCSMPStreamingPublishEventHandler {
-    @Override
-    public void responseReceived(String messageID) {
-        logger.info("Producer received response for msg: " + messageID);
-    }
-
-    @Override
-    public void handleError(String messageID, JCSMPException e, long timestamp) {
-        logger.error("Producer received error for msg: " + messageID + " - " + timestamp, e);
-    }
-
-}
+};
+final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageListener());
+cons.start();
 ```
 
 ## Publishing, Subscribing and Receiving Messages
@@ -284,6 +271,58 @@ public ResponseEntity<SimpleMessage> getLastMessageReceived() {
 
 }
 ```
+
+The ``SimpleSubscription`` class models the JSON document expected by the ``/subscription`` endpoint:
+
+```
+public class SimpleSubscription {
+	private String subscription;
+
+	public SimpleSubscription() {
+		subscription = "";
+	}
+
+	public String getSubscription() {
+		return subscription;
+	}
+
+	public void setSubscription(String subscription) {
+		this.subscription = subscription;
+	}
+}
+```
+
+The ``SimpleMessage`` class models the JSON document expected by the ``/message`` endpoint:
+
+```
+public class SimpleMessage {
+	
+	private String topic;
+	private String body;
+	
+	public SimpleMessage() {
+		this.topic = "";
+		this.body = "";
+	}
+	
+	public String getTopic() {
+		return topic;
+	}
+	
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+
+	public String getBody() {
+		return body;
+	}
+	
+	public void setBody(String body) {
+		this.body = body;
+	}
+}
+```
+
 
 For further information on the subject of sending and receiving messages please consult the
 [Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/).
