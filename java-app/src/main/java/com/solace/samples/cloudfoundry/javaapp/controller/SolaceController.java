@@ -95,6 +95,7 @@ public class SolaceController {
 		// Need to parse the Solace HOST from VCAP Services
 		if (vcapServices == null || vcapServices.equals("") || vcapServices.equals("{}")) {
 			logger.error("The VCAP_SERVICES variable wasn't set in the environment. Aborting connection.");
+			logger.info("************* Aborting Solace initialization!! ************");
 			return;
 		}
 
@@ -104,31 +105,24 @@ public class SolaceController {
 
 		if (solMessagingArray == null) {
 			logger.error("Did not find Solace provided messaging service \"solace-messaging\"");
+			logger.info("************* Aborting Solace initialization!! ************");
 			return;
 		}
 
 		logger.info("Number of provided bindings: " + solMessagingArray.length());
 
-		// Get the last shared and last dedicated vmr credentials if available
-		JSONObject solaceDedicatedCredentials = null;
-		JSONObject solaceSharedCredentials = null;
-		for (int i = 0; i < solMessagingArray.length(); i++) {
-			JSONObject currentServiceBinding = solMessagingArray.getJSONObject(i);
-			logger.info(currentServiceBinding.toString(2));
-			String plan = currentServiceBinding.getString("plan");
-			if (plan.equals("vmr-shared")) {
-				solaceSharedCredentials = currentServiceBinding.getJSONObject("credentials");
-			} else if (plan.equals("vmr-dedicated")) {
-				solaceDedicatedCredentials = currentServiceBinding.getJSONObject("credentials");
+		// Get the first Solace credentials from the array
+		JSONObject solaceCredentials = null;
+		if (solMessagingArray.length() > 0) {
+			solaceCredentials = solMessagingArray.getJSONObject(0);
+			if (solaceCredentials != null) {
+				solaceCredentials = solaceCredentials.getJSONObject("credentials");
 			}
 		}
 
-		// Go for the dedicated vmr credentials if available first.
-		JSONObject solaceCredentials = (solaceDedicatedCredentials == null) ? solaceSharedCredentials
-				: solaceDedicatedCredentials;
-
 		if (solaceCredentials == null) {
 			logger.error("Did not find Solace messaging service credentials");
+			logger.info("************* Aborting Solace initialization!! ************");
 			return;
 		}
 
