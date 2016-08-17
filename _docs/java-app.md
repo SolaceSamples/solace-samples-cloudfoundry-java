@@ -11,6 +11,7 @@ connects to a Solace Messaging service instance.
 This tutorial assumes the following:
 
 * You are familiar with Solace [core concepts](http://dev.solacesystems.com/docs/core-concepts/).
+* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/). 
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF have been installed in your Pivotal Cloud Foundry environment.
  
@@ -120,9 +121,12 @@ if (solaceCredentials == null) {
 logger.info("Solace client initializing and using Credentials: " + solaceCredentials.toString(2));
 ```
 
-Once the credentials are extracted, then you can create connect the Solace Session in the conventional way as outlined 
-in the [Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/).
-The JCSMP properties must be set, from which a Session is created.  Then the session is connected :
+## Connecting to the Solace Messaging Service
+
+Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as
+outlined in the
+[Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/).
+The JCSMP properties must be set, from which a Session is created :
 
 ```
 final JCSMPProperties properties = new JCSMPProperties();
@@ -140,3 +144,146 @@ try {
     return;
 }
 ```
+
+## Creating the message consumer and producer
+
+To receive and send messages you will need to create a consumer and a producer by using the connected session :
+
+```
+try {
+    final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageListener());
+    cons.start();
+
+    producer = session.getMessageProducer(new SimplePublisherEventHandler());
+
+    logger.info("************* Solace initialized correctly!! ************");
+} catch (Exception e) {
+    logger.error("Error creating the consumer and producer.", e);
+}
+```
+
+The listener that was passed to the consumer in the code above simply logs incoming messages, and retain the 
+last received message.  It also logs asynchronous exceptions :
+
+```
+private class SimpleMessageListener implements XMLMessageListener {
+
+    @Override
+    public void onReceive(BytesXMLMessage receivedMessage) {
+
+        numMessagesReceived.incrementAndGet();
+
+        if (receivedMessage instanceof TextMessage) {
+            lastReceivedMessage = (TextMessage) receivedMessage;
+            logger.info("Received message : " + lastReceivedMessage.getText());
+        } else {
+            logger.error("Received message that was not a TextMessage: " + receivedMessage.dump());
+        }
+    }
+
+    @Override
+    public void onException(JCSMPException e) {
+        logger.error("Consumer received exception: %s%n", e);
+    }
+}
+```
+
+The handler that was passed to the producer simply logs any events produced by the publisher object :
+
+```
+private class SimplePublisherEventHandler implements JCSMPStreamingPublishEventHandler {
+    @Override
+    public void responseReceived(String messageID) {
+        logger.info("Producer received response for msg: " + messageID);
+    }
+
+    @Override
+    public void handleError(String messageID, JCSMPException e, long timestamp) {
+        logger.error("Producer received error for msg: " + messageID + " - " + timestamp, e);
+    }
+
+}
+```
+
+## Publishing, Subscribing and Receiving Messages
+
+The consumer created in the previous step will only receive messages matching topics that the session did subscribe to.
+It is thus necessary to create subscriptions in order to receive messages.  This will be done from the ``/subscription``
+REST endpoint's ``POST`` method which accepts a subscription parameter :
+
+```
+@RequestMapping(value = "/subscription", method = RequestMethod.POST)
+public ResponseEntity<String> addSubscription(@RequestBody SimpleSubscription subscription) {
+    String subscriptionTopic = subscription.getSubscription();
+    logger.info("Adding a subscription to topic: " + subscriptionTopic);
+
+    final Topic topic = JCSMPFactory.onlyInstance().createTopic(subscriptionTopic);
+    try {
+        boolean waitForConfirm = true;
+        session.addSubscription(topic, waitForConfirm);
+    } catch (JCSMPException e) {
+        logger.error("Adding a subscription failed.", e);
+        return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+    }
+    logger.info("Finished Adding a subscription to topic: " + subscriptionTopic);
+    return new ResponseEntity<>("{}", HttpStatus.OK);
+}
+```
+
+Sending messages will be done via another REST endpoint ``/message`` with the ``POST`` method.  The method accepts 
+the message to send as parameter.  The message also contains an attribute which specifies which topic it belongs to.
+Here is the implementation of this method :
+
+```
+@RequestMapping(value = "/message", method = RequestMethod.POST)
+public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
+
+    if (session == null || session.isClosed()) {
+        logger.error("Session was null or closed, Could not send message");
+        return new ResponseEntity<>("{'description': 'Somehow the session is not connected, please see logs'}",
+                HttpStatus.BAD_REQUEST);
+    }
+
+    logger.info("Sending message on topic: " + message.getTopic() + " with body: " + message.getBody());
+
+    final Topic topic = JCSMPFactory.onlyInstance().createTopic(message.getTopic());
+    TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
+    msg.setText(message.getBody());
+    try {
+        producer.send(msg, topic);
+        numMessagesSent.incrementAndGet();
+
+    } catch (JCSMPException e) {
+        logger.error("Sending message failed.", e);
+        return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+    }
+    return new ResponseEntity<>("{}", HttpStatus.OK);
+}
+```
+
+Receiving messages is done at the backend via the ``SimpleMessageListener`` listener described above.  To access the
+last message received by the backend, a ``GET`` method at the ``/message`` endpoint must be added :
+ 
+```
+@RequestMapping(value = "/message", method = RequestMethod.GET)
+public ResponseEntity<SimpleMessage> getLastMessageReceived() {
+
+    if (lastReceivedMessage != null) {
+        logger.info("Sending the lastReceivedMessage");
+
+        // Return the last received message if it exists.
+        SimpleMessage receivedMessage = new SimpleMessage();
+
+        receivedMessage.setTopic(lastReceivedMessage.getDestination().getName());
+        receivedMessage.setBody(lastReceivedMessage.getText());
+        return new ResponseEntity<>(receivedMessage, HttpStatus.OK);
+    } else {
+        logger.info("Sorry did not find a lastReceivedMessage");
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+}
+```
+
+For further information on the subject of sending and receiving messages please consult the
+[Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/).
