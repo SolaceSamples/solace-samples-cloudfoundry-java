@@ -11,3 +11,4 @@ bin/
 spring-cloud/bin/
 spring-cloud/build/
 *.iml
+libs/

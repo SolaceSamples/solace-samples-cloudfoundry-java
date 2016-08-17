@@ -2,8 +2,7 @@ buildscript {
 	ext {
 		springBootVersion = '1.3.3.RELEASE'
 		springCloudVersion = '1.2.3.RELEASE'
-		solaceJcsmpVersion = '7.+'
-		solaceCloudVersion = '0.1.0-SNAPSHOT'
+		solaceCloudVersion = '0.1.0'
 		
 	}
     repositories {
@@ -26,9 +25,6 @@ jar {
 
 repositories {
     mavenCentral()
-    flatDir {
-       dirs '../libs'
-   }
 }
 
 dependencies {
