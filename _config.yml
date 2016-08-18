@@ -7,6 +7,9 @@ baseurl: "/solace-samples-cloudfoundry-java" # the subpath of your site, e.g. /b
 url: "solacesamples.github.io" # the base hostname & protocol for your site
 repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
 
+# Google services
+google_analytics: UA-3921398-7
+
 # Build settings
 markdown: kramdown
 
