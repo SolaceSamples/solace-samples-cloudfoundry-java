@@ -7,5 +7,7 @@ _site/
 bin/
 images/.DS_Store
 java-app/bin
+java-app/build
 spring-cloud/bin
+spring-cloud/build
 *.iml
