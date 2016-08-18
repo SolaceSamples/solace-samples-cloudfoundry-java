@@ -11,7 +11,8 @@ connects to a Solace Messaging service instance.
 This tutorial assumes the following:
 
 * You are familiar with Solace [core concepts](http://dev.solacesystems.com/docs/core-concepts/).
-* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/). 
+* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/).
+* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/).
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF have been installed in your Pivotal Cloud Foundry environment.
 
@@ -19,8 +20,8 @@ This tutorial assumes the following:
 
 # Goals
 
-The goal of this tutorial is to demonstrate extracting the information from the Application Service Binding and connect
-to the Solace Messaging service instance.  This tutorial will show you:
+The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service
+Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
 1. How to extract the Solace Messaging service credentials from the Cloud Foundry environment.
 1. How to establish a connection to the Solace Messaging service.
