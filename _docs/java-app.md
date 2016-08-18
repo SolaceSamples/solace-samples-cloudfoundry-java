@@ -40,7 +40,14 @@ Follow these steps to unpack the Solace API:
 1. Unzip the Solace API file ``sol-jcsmp-<version>.zip``.
 1. Copy the jar files contained into the zip file's ``lib`` directory into the sample's ``libs`` directory.
 
-Example:
+# Building and deploying
+
+The source code for this tutorial is available from its 
+[github repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java).  Start by cloning the
+repository then download the Solace API for Java as outlined above.  Copy the libraries into the ``libs`` directory at
+the root of the samples.
+
+Here is an example:
 
 ```
 unzip sol-jcsmp-7.1.2.248.zip
@@ -49,6 +56,14 @@ cd solace-samples-cloudfoundry-java
 mkdir libs
 cp ../sol-jcsmp-7.1.2.248/lib/*jar libs
 ```
+
+At this point, the sample is ready to be built:
+
+```
+./gradlew build
+```
+
+
 
 # Code walk through
 
@@ -102,7 +117,7 @@ if (solMessagingArray == null) {
 
 logger.info("Number of provided bindings: " + solMessagingArray.length());
 
-// Get the first Solace credentials from the array
+// Get the Solace credentials from the first binding
 JSONObject solaceCredentials = null;
 if (solMessagingArray.length() > 0) {
     solaceCredentials = solMessagingArray.getJSONObject(0);
@@ -163,7 +178,6 @@ private class SimplePublisherEventHandler implements JCSMPStreamingPublishEventH
     }
 };
 producer = session.getMessageProducer(new SimplePublisherEventHandler());
-
 ```
 
 The following code will create a simple message consumer that will log any incoming messages and errors:
