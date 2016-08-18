@@ -247,7 +247,6 @@ The following code will create a simple message consumer that will log any incom
 
 ```
 private class SimpleMessageListener implements XMLMessageListener {
-
     @Override
     public void onReceive(BytesXMLMessage receivedMessage) {
         numMessagesReceived.incrementAndGet();
@@ -301,7 +300,6 @@ Here is the implementation of this method :
 ```
 @RequestMapping(value = "/message", method = RequestMethod.POST)
 public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
-
     if (session == null || session.isClosed()) {
         logger.error("Session was null or closed, Could not send message");
         return new ResponseEntity<>("{'description': 'Somehow the session is not connected, please see logs'}",
@@ -331,7 +329,6 @@ last message received by the backend, a ``GET`` method at the ``/message`` endpo
 ```
 @RequestMapping(value = "/message", method = RequestMethod.GET)
 public ResponseEntity<SimpleMessage> getLastMessageReceived() {
-
     if (lastReceivedMessage != null) {
         logger.info("Sending the lastReceivedMessage");
 
@@ -373,7 +370,6 @@ The ``SimpleMessage`` class models the JSON document expected by the ``/message`
 
 ```
 public class SimpleMessage {
-	
 	private String topic;
 	private String body;
 	
