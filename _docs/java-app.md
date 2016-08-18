@@ -3,8 +3,24 @@ layout: docs
 title: Java Application
 ---
 
+* [Overview](#overview)
+* [Assumptions](#assumptions)
+* [Goals](#goals)
+* [Obtaining the Solace API](#obtaining-the-solace-api)
+* [Building](#building)
+* [Cloud Foundry Setup](#cloud-foundry-setup)
+* [Deploying](#deploying)
+* [Trying out the application](#trying-out-the-application)
+* [Code walk through](#code-walk-through)
+
+---
+
+## Overview
+
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which
 connects to a Solace Messaging service instance.
+
+---
 
 ## Assumptions
 
@@ -37,20 +53,12 @@ required jars, API documentation, and examples. The instructions in this tutoria
 Java API library and unpacked it to a known location. If your environment differs then adjust the build instructions
 appropriately.
 
-### Unpacking the Solace API
-
-Follow these steps to unpack the Solace API:
-
-1. Create a directory called ``libs`` into the sample root directory.
-1. Unzip the Solace API file ``sol-jcsmp-<version>.zip``.
-1. Copy the jar files contained into the zip file's ``lib`` directory into the sample's ``libs`` directory.
-
 ---
 
 ## Building
 
 The source code for this tutorial is available from its 
-[github repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java).  Start by cloning the
+[GitHub repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java).  Start by cloning the
 repository then download the Solace API for Java as outlined above.  Copy the libraries into the ``libs`` directory at
 the root of the samples.
 
@@ -72,7 +80,7 @@ At this point, the sample is ready to be built:
 
 ---
 
-## Common Cloud Foundry Setup
+## Cloud Foundry Setup
 
 The sample application specifies a dependency on a service instance named ``solace-messaging-sample-instance`` in its
 manifiest (See ``java-app/manifest.yml``).  This must be an instance of the Solace Messaging Service which can be
@@ -398,7 +406,6 @@ public class SimpleMessage {
 	}
 }
 ```
-
 
 For further information on the subject of sending and receiving messages please consult the
 [Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/).
