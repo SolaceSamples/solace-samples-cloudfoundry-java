@@ -6,7 +6,7 @@ title: Java Application
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which
 connects to a Solace Messaging service instance.
 
-# Assumptions
+## Assumptions
 
 This tutorial assumes the following:
 
@@ -18,7 +18,7 @@ This tutorial assumes the following:
 
 ---
 
-# Goals
+## Goals
 
 The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service
 Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
@@ -29,7 +29,7 @@ Bindings and connect to the Solace Messaging service instance.  This tutorial wi
 
 ---
 
-# Obtaining the Solace API
+## Obtaining the Solace API
 
 This tutorial depends on you having the Java API downloaded and available. The Java API library can be 
 [downloaded here](http://dev.solacesystems.com/downloads/). The Java API is distributed as a zip file containing the
@@ -37,7 +37,7 @@ required jars, API documentation, and examples. The instructions in this tutoria
 Java API library and unpacked it to a known location. If your environment differs then adjust the build instructions
 appropriately.
 
-## Unpacking the Solace API
+### Unpacking the Solace API
 
 Follow these steps to unpack the Solace API:
 
@@ -47,7 +47,7 @@ Follow these steps to unpack the Solace API:
 
 ---
 
-# Building
+## Building
 
 The source code for this tutorial is available from its 
 [github repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java).  Start by cloning the
@@ -72,7 +72,7 @@ At this point, the sample is ready to be built:
 
 ---
 
-# Common Cloud Foundry Setup
+## Common Cloud Foundry Setup
 
 The sample application specifies a dependency on a service instance named ``solace-messaging-sample-instance`` in its
 manifiest (See ``java-app/manifest.yml``).  This must be an instance of the Solace Messaging Service which can be
@@ -84,7 +84,7 @@ cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
 
 ---
 
-# Deploying
+## Deploying
 
 To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
 
@@ -98,7 +98,7 @@ This will push the application and will give the application the name specified 
 
 ---
 
-# Trying out the application
+## Trying out the application
 
 The sample application has a simple REST interface that allows you to:
 
@@ -131,11 +131,11 @@ curl -X GET http://$APP_URL/message
 
 ---
 
-# Code walk through
+## Code walk through
 
 This section will explain what the code in the samples does.
 
-## Structure
+### Structure
 
 The sample application contains the following source files :
 
@@ -149,7 +149,7 @@ The sample application contains the following source files :
 This tutorial will only cover the source code in ``SolaceController.java`` as the other files contains no logic that
 pertains to establishing a connection to the Solace Messaging Service.
 
-## Obtaining the Solace credentials in the application
+### Obtaining the Solace credentials in the application
 
 The environment exposes the bound Service Instances in a JSON document stored in the ``VCAP_SERVICES`` environment
 variable.  The sample starts by extracting the JSON document from this environment variable, logging its content and
@@ -202,7 +202,7 @@ if (solaceCredentials == null) {
 logger.info("Solace client initializing and using Credentials: " + solaceCredentials.toString(2));
 ```
 
-## Connecting to the Solace Messaging Service
+### Connecting to the Solace Messaging Service
 
 Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as
 outlined in the
@@ -226,7 +226,7 @@ try {
 }
 ```
 
-## Creating the message consumer and producer
+### Creating the message consumer and producer
 
 To receive and send messages you will need to create a consumer and a producer by using the connected session.
 The following code will create a simple message producer that is silent normally but will log any errors it receives:
@@ -271,7 +271,7 @@ final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageList
 cons.start();
 ```
 
-## Publishing, Subscribing and Receiving Messages
+### Publishing, Subscribing and Receiving Messages
 
 The consumer created in the previous step will only receive messages matching topics that the session did subscribe to.
 It is thus necessary to create subscriptions in order to receive messages.  This will be done from the ``/subscription``
