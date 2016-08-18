@@ -76,6 +76,7 @@ At this point, the sample is ready to be built:
 The sample application specifies a dependency on a service instance named ``solace-messaging-sample-instance`` in its
 manifiest (See ``java-app/manifest.yml``).  This must be an instance of the Solace Messaging Service which can be
 created with this command:
+
 ```
 cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
 ```
@@ -85,6 +86,7 @@ cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
 # Deploying
 
 To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
+
 ```
 cd java-app
 cf push
