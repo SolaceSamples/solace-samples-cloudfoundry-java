@@ -40,7 +40,7 @@ Follow these steps to unpack the Solace API:
 1. Unzip the Solace API file ``sol-jcsmp-<version>.zip``.
 1. Copy the jar files contained into the zip file's ``lib`` directory into the sample's ``libs`` directory.
 
-# Building and deploying
+# Building
 
 The source code for this tutorial is available from its 
 [github repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java).  Start by cloning the
@@ -63,7 +63,56 @@ At this point, the sample is ready to be built:
 ./gradlew build
 ```
 
+# Common Cloud Foundry Setup
 
+The sample application specifies a dependency on a service instance named ``solace-messaging-sample-instance`` in its
+manifiest (See ``java-app/manifest.yml``).  This must be an instance of the Solace Messaging Service which can be
+created with this command:
+```
+cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
+```
+
+# Deploying
+
+To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
+```
+cd java-app
+cf push
+```
+
+This will push the application and will give the application the name specified by the manifest :
+``solace-sample-java-app``.
+
+# Trying out the application
+
+The sample application has a simple REST interface that allows you to:
+
+* Subscribe
+* Send a message
+* Receive a message
+
+In order to interact with the application you need to determine the application's URL.  These shell commands can be used
+to quickly find out the URL:
+
+```
+export APP_NAME=solace-sample-java-app
+export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
+echo "The application URL is: ${APP_URL}"
+```
+
+To demonstrate the application we will make the application send a message to itself.  Then we will read the message
+back to confirm the successful delivery of the message :
+
+```
+# Subscribes the application to the topic "test"
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+
+# Send message with topic "test" and this content: "TEST_MESSAGE"
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "TEST_MESSAGE"}' http://$APP_URL/message
+
+# The message should have been asynchronously received by the application.  Check that the message was indeed received:
+curl -X GET http://$APP_URL/message
+```
 
 # Code walk through
 
