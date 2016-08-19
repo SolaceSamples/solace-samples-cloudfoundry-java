@@ -15,14 +15,10 @@ icon: java-logo.jpg
 * [Trying out the application](#trying-out-the-application)
 * [Code walk through](#code-walk-through)
 
----
-
 ## Overview
 
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which
 connects to a Solace Messaging service instance.
-
----
 
 ## Assumptions
 
@@ -34,8 +30,6 @@ This tutorial assumes the following:
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF have been installed in your Pivotal Cloud Foundry environment.
 
----
-
 ## Goals
 
 The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service
@@ -45,8 +39,6 @@ Bindings and connect to the Solace Messaging service instance.  This tutorial wi
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
 
----
-
 ## Obtaining the Solace API
 
 This tutorial depends on you having the Java API downloaded and available. The Java API library can be 
@@ -54,8 +46,6 @@ This tutorial depends on you having the Java API downloaded and available. The J
 required jars, API documentation, and examples. The instructions in this tutorial assume you have downloaded the
 Java API library and unpacked it to a known location. If your environment differs then adjust the build instructions
 appropriately.
-
----
 
 ## Building
 
@@ -80,8 +70,6 @@ At this point, the sample is ready to be built:
 ./gradlew build
 ```
 
----
-
 ## Cloud Foundry Setup
 
 The sample application specifies a dependency on a service instance named ``solace-messaging-sample-instance`` in its
@@ -91,8 +79,6 @@ created with this command:
 ```
 cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
 ```
-
----
 
 ## Deploying
 
@@ -105,8 +91,6 @@ cf push
 
 This will push the application and will give the application the name specified by the manifest :
 ``solace-sample-java-app``.
-
----
 
 ## Trying out the application
 
@@ -138,8 +122,6 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
 ```
-
----
 
 ## Code walk through
 
