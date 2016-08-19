@@ -2,43 +2,34 @@
 layout: default
 ---
 <section>
-  <div class="grid">
-    <div class="unit whole">
-      <h1>Solace Samples showing Solace Messaging for Pivotal Cloud Foundry</h1>
+  {% include intro.html %}
 
-      <p>Website TODO. Should add an architecture picture.</p>
-    </div>
-  </div>
-
-<div class="grid">
-  <div class="unit half" style='padding:10px;'>
-    <div class="grid" style='border-width:1px; border-color:#d3d3d3; border-style:solid; padding:10px; background-color:#ffffff; border-radius:5px;'>
-      <div class='unit half '  style='font-size:14px; '  itemprop="text" >
-        <h3>Java App</h3>
-        <p>
-          A Simple Java Application showing how to directly consume the VCAP_SERVICES environment variable.
-        </p>
-        <div class="button"><a href="{{ site.baseurl }}/docs/java-app/" class="button-text">Start Tutorial</a></div>
-      </div>
-      <div class="unit half">
-        <img src="images/java-logo.jpg" alt="" width="193" height="145" style="display: block; margin: 0 auto;" />
-      </div>
-    </div>
-  </div>
-  <div class="unit half" style='padding:10px;'>
-    <div class="grid" style='border-width:1px; border-color:#d3d3d3; border-style:solid; padding:10px; background-color:#ffffff; border-radius:5px;'>
-      <div class='unit half '  style='font-size:14px; '  itemprop="text" >
-        <h3>Spring Cloud App</h3>
-        <p>
-          A Simple Spring Cloud Application showing how to consume the VCAP_SERVICES using Spring Cloud.
-        </p>
-        <div class="button"><a href="{{ site.baseurl }}/docs/spring-cloud/" class="button-text">Start Tutorial</a></div>
-      </div>
-      <div class="unit half" style="padding:20px;">
-        <img src="images/spring-cloud.jpg" alt="" style="display: block; margin: 0 auto;"  />
-      </div>
-    </div>
-  </div>
-</div>
-
+  {% for section in site.data.docs %}
+    <!-- For now assume no need for section titles -->
+    {% for item in section.docs %}
+      {% assign item_url = item | prepend:"/docs/" | append:"/" %}
+      {% assign p = site.docs | where:"url", item_url | first %}
+      {% assign loopindex = forloop.index | modulo: 2 %}
+      {% if loopindex == 1 or forloop.first %}
+        <div class="grid">
+      {% endif %}
+          <div class="unit half" style='padding:10px;'>
+            <div class="grid" style='border-width:1px; border-color:#d3d3d3; border-style:solid; padding:10px; background-color:#ffffff; border-radius:5px;'>
+              <h3 class="nolineheading">{{ p.title }}</h3>
+              <div class='unit half '  style='font-size:14px; '  itemprop="text" >
+                <p>
+                  {{ p.summary }}
+                </p>
+                <div class="button"><a href="{{ site.baseurl }}{{ p.url }}" class="button-text">Start Tutorial</a></div>
+              </div>
+              <div class="unit half">
+                <img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}" width="150" style="float:right"/>
+              </div>
+            </div>
+          </div>
+      {% if loopindex != 1 or forloop.last %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
 </section>
