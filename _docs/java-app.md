@@ -26,9 +26,9 @@ connects to a Solace Messaging service instance.
 
 This tutorial assumes the following:
 
-* You are familiar with Solace [core concepts](http://dev.solacesystems.com/docs/core-concepts/).
-* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/).
-* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/).
+* You are familiar with Solace [core concepts](http://dev.solacesystems.com/docs/core-concepts/){:target="_top"}.
+* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/){:target="_blank"}.
+* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF have been installed in your Pivotal Cloud Foundry environment.
 
@@ -48,7 +48,7 @@ Bindings and connect to the Solace Messaging service instance.  This tutorial wi
 ## Obtaining the Solace API
 
 This tutorial depends on you having the Java API downloaded and available. The Java API library can be 
-[downloaded here](http://dev.solacesystems.com/downloads/). The Java API is distributed as a zip file containing the
+[downloaded here](http://dev.solacesystems.com/downloads/){:target="_top"}. The Java API is distributed as a zip file containing the
 required jars, API documentation, and examples. The instructions in this tutorial assume you have downloaded the
 Java API library and unpacked it to a known location. If your environment differs then adjust the build instructions
 appropriately.
@@ -58,7 +58,7 @@ appropriately.
 ## Building
 
 The source code for this tutorial is available from its 
-[GitHub repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java).  Start by cloning the
+[GitHub repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java){:target="_blank"}.  Start by cloning the
 repository then download the Solace API for Java as outlined above.  Copy the libraries into the ``libs`` directory at
 the root of the samples.
 
@@ -175,7 +175,7 @@ if (vcapServices == null || vcapServices.equals("") || vcapServices.equals("{}")
 JSONObject vcapServicesJson = new JSONObject(vcapServices);
 ```
 
-Given the JSON object structure documented [here](https://solacedev.github.io/pcf/docs/vcap_services/), the application
+Given the JSON object structure documented [here](https://solacedev.github.io/pcf/docs/vcap_services/){:target="_blank"}, the application
 needs to extract the Messaging Service URI and the credentials of the Solace Messaging service instance.  The following
 code will iterate through the array of Service Instances bound to the application and search for an instance of 
 ``solace-messaging``.  If such an instance is found, the credentials JSON object is extracted :
@@ -214,7 +214,7 @@ logger.info("Solace client initializing and using Credentials: " + solaceCredent
 
 Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as
 outlined in the
-[Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/).
+[Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/){:target="_top"}.
 The JCSMP properties must be set, from which a Session is created :
 
 ```
@@ -408,4 +408,4 @@ public class SimpleMessage {
 ```
 
 For further information on the subject of sending and receiving messages please consult the
-[Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/).
+[Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/){:target="_top"}.
