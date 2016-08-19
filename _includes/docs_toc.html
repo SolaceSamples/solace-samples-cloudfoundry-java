@@ -16,10 +16,9 @@
 
     <h4 class="navheading">Quick Links</h4>
     <ul class="navlist">
-      <li class="navlink"><a href="{{ site.repository }}" target="_blank">View source on GitHub</a> <img src="https://solacesamples.github.io/template/images/github-icon.png"></li>
-      <li class="navlink"><a href="{{ site.repository }}/blob/gh-pages/{{ page.path }}" target="_blank">Improve this Page</a> <img src="https://solacesamples.github.io/template/images/pencil-icon.png"></li>
+      <li class="navlink"><a href="{{ site.repository }}" target="_blank">View source on GitHub</a> <img src="{{ "/images/common/github-icon.png" | prepend: site.baseurl }}"></li>
+      <li class="navlink"><a href="{{ site.repository }}/blob/gh-pages/{{ page.path }}" target="_blank">Improve this Page</a> <img src="{{ "/images/common/pencil-icon.png" | prepend: site.baseurl }}"></li>
     </ul>
-
 
   </aside>
 </div>
