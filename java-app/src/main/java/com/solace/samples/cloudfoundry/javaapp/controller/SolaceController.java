@@ -28,10 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -129,7 +126,7 @@ public class SolaceController {
 		logger.info("Solace client initializing and using Credentials: " + solaceCredentials.toString(2));
 
 		final JCSMPProperties properties = new JCSMPProperties();
-		properties.setProperty(JCSMPProperties.HOST, solaceCredentials.getString("smfUri"));
+		properties.setProperty(JCSMPProperties.HOST, solaceCredentials.getString("smfHost"));
 		properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
 		properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
@@ -137,16 +134,21 @@ public class SolaceController {
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);
 			session.connect();
+		} catch (Exception e) {
+			logger.error("Error connecting and setting up session.", e);
+			logger.info("************* Aborting Solace initialization!! ************");
+			return;
+		}
 
+		try {
 			final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageListener());
 			cons.start();
 
 			producer = session.getMessageProducer(new SimplePublisherEventHandler());
 
 			logger.info("************* Solace initialized correctly!! ************");
-
 		} catch (Exception e) {
-			logger.error("Error connecting and setting up session.", e);
+			logger.error("Error creating the consumer and producer.", e);
 		}
 	}
 
@@ -169,7 +171,7 @@ public class SolaceController {
 			numMessagesSent.incrementAndGet();
 
 		} catch (JCSMPException e) {
-			logger.error("Service Creation failed.", e);
+			logger.error("Sending message failed.", e);
 			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>("{}", HttpStatus.OK);
@@ -204,7 +206,7 @@ public class SolaceController {
 			boolean waitForConfirm = true;
 			session.addSubscription(topic, waitForConfirm);
 		} catch (JCSMPException e) {
-			logger.error("Service Creation failed.", e);
+			logger.error("Adding a subscription failed.", e);
 			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
 		}
 		logger.info("Finished Adding a subscription to topic: " + subscriptionTopic);
@@ -221,7 +223,7 @@ public class SolaceController {
 			boolean waitForConfirm = true;
 			session.removeSubscription(topic, waitForConfirm);
 		} catch (JCSMPException e) {
-			logger.error("Service Creation failed.", e);
+			logger.error("Deleting a subscription failed.", e);
 			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
 		}
 		logger.info("Finished Deleting a subscription to topic: " + subscriptionTopic);
