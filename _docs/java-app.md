@@ -161,7 +161,7 @@ pertains to establishing a connection to the Solace Messaging Service.
 
 The environment exposes the bound Service Instances in a JSON document stored in the ``VCAP_SERVICES`` environment
 variable.  The sample starts by extracting the JSON document from this environment variable, logging its content and
-confirming it contains useful information.  This is done in the init() method:
+confirming it contains useful information.  This is done in the ``init()`` method:
 
 ```
 String vcapServices = System.getenv("VCAP_SERVICES");
