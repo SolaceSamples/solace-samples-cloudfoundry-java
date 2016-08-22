@@ -6,14 +6,14 @@ icon: java-logo.jpg
 ---
 
 * [Overview](#overview)
-* [Assumptions](#assumptions)
 * [Goals](#goals)
+* [Assumptions](#assumptions)
 * [Obtaining the Solace API](#obtaining-the-solace-api)
+* [Code walk through](#code-walk-through)
 * [Building](#building)
 * [Cloud Foundry Setup](#cloud-foundry-setup)
 * [Deploying](#deploying)
 * [Trying out the application](#trying-out-the-application)
-* [Code walk through](#code-walk-through)
 
 ## Overview
 
@@ -49,82 +49,6 @@ required jars, API documentation, and examples. The instructions in this tutoria
 Java API library and unpacked it to a known location. If your environment differs then adjust the build instructions
 appropriately.
 
-## Building
-
-The source code for this tutorial is available from its 
-[GitHub repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java){:target="_blank"}.  Start by cloning the
-repository then download the Solace API for Java as outlined above.  Copy the libraries into the ``libs`` directory at
-the root of the samples.
-
-Here is an example:
-
-```
-unzip sol-jcsmp-7.1.2.248.zip
-git clone https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
-cd solace-samples-cloudfoundry-java
-mkdir libs
-cp ../sol-jcsmp-7.1.2.248/lib/*jar libs
-```
-
-At this point, the sample is ready to be built:
-
-```
-./gradlew build
-```
-
-## Cloud Foundry Setup
-
-The sample application specifies a dependency on a service instance named ``solace-messaging-sample-instance`` in its
-manifiest (See ``java-app/manifest.yml``).  This must be an instance of the Solace Messaging Service which can be
-created with this command:
-
-```
-cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
-```
-
-## Deploying
-
-To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
-
-```
-cd java-app
-cf push
-```
-
-This will push the application and will give the application the name specified by the manifest :
-``solace-sample-java-app``.
-
-## Trying out the application
-
-The sample application has a simple REST interface that allows you to:
-
-* Subscribe
-* Send a message
-* Receive a message
-
-In order to interact with the application you need to determine the application's URL.  These shell commands can be used
-to quickly find out the URL:
-
-```
-export APP_NAME=solace-sample-java-app
-export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
-echo "The application URL is: ${APP_URL}"
-```
-
-To demonstrate the application we will make the application send a message to itself.  Then we will read the message
-back to confirm the successful delivery of the message :
-
-```
-# Subscribes the application to the topic "test"
-curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
-
-# Send message with topic "test" and this content: "TEST_MESSAGE"
-curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "TEST_MESSAGE"}' http://$APP_URL/message
-
-# The message should have been asynchronously received by the application.  Check that the message was indeed received:
-curl -X GET http://$APP_URL/message
-```
-
 ## Code walk through
 
 This section will explain what the code in the samples does.
@@ -146,7 +70,33 @@ pertains to establishing a connection to the Solace Messaging Service.
 ### Obtaining the Solace credentials in the application
 
 The environment exposes the bound Service Instances in a JSON document stored in the ``VCAP_SERVICES`` environment
-variable.  The sample starts by extracting the JSON document from this environment variable, logging its content and
+variable.  Here is an example of a VCAP_SERVICES will all the fields of interest to us : 
+
+```
+{
+  "VCAP_SERVICES": {
+    "solace-messaging": [ {
+        "name": "solmessaging-shared-instance",
+        "label": "solace-messaging",
+        "plan": "VMR-shared",
+        "tags": [
+            (...)
+            ],
+        "credentials": {
+          "clientUsername": "v005.cu000001",
+          "clientPassword": "bb90fcb0-6c83-4a10-bafa-3ec225bbfc08",
+          "msgVpnName": "v005",
+            (...)
+          "smfHost": "tcp://192.168.132.14:7000",
+            (...)
+        }
+      }
+    }
+  ]
+}
+```
+
+The sample starts by extracting the JSON document from this environment variable, logging its content and
 confirming it contains useful information.  This is done in the ``init()`` method:
 
 ```
@@ -274,19 +224,7 @@ REST endpoint's ``POST`` method which accepts a subscription parameter :
 ```
 @RequestMapping(value = "/subscription", method = RequestMethod.POST)
 public ResponseEntity<String> addSubscription(@RequestBody SimpleSubscription subscription) {
-    String subscriptionTopic = subscription.getSubscription();
-    logger.info("Adding a subscription to topic: " + subscriptionTopic);
-
-    final Topic topic = JCSMPFactory.onlyInstance().createTopic(subscriptionTopic);
-    try {
-        boolean waitForConfirm = true;
-        session.addSubscription(topic, waitForConfirm);
-    } catch (JCSMPException e) {
-        logger.error("Adding a subscription failed.", e);
-        return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
-    }
-    logger.info("Finished Adding a subscription to topic: " + subscriptionTopic);
-    return new ResponseEntity<>("{}", HttpStatus.OK);
+    // ...
 }
 ```
 
@@ -297,26 +235,7 @@ Here is the implementation of this method :
 ```
 @RequestMapping(value = "/message", method = RequestMethod.POST)
 public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
-    if (session == null || session.isClosed()) {
-        logger.error("Session was null or closed, Could not send message");
-        return new ResponseEntity<>("{'description': 'Somehow the session is not connected, please see logs'}",
-                HttpStatus.BAD_REQUEST);
-    }
-
-    logger.info("Sending message on topic: " + message.getTopic() + " with body: " + message.getBody());
-
-    final Topic topic = JCSMPFactory.onlyInstance().createTopic(message.getTopic());
-    TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
-    msg.setText(message.getBody());
-    try {
-        producer.send(msg, topic);
-        numMessagesSent.incrementAndGet();
-
-    } catch (JCSMPException e) {
-        logger.error("Sending message failed.", e);
-        return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
-    }
-    return new ResponseEntity<>("{}", HttpStatus.OK);
+   // ...
 }
 ```
 
@@ -326,72 +245,89 @@ last message received by the backend, a ``GET`` method at the ``/message`` endpo
 ```
 @RequestMapping(value = "/message", method = RequestMethod.GET)
 public ResponseEntity<SimpleMessage> getLastMessageReceived() {
-    if (lastReceivedMessage != null) {
-        logger.info("Sending the lastReceivedMessage");
-
-        // Return the last received message if it exists.
-        SimpleMessage receivedMessage = new SimpleMessage();
-
-        receivedMessage.setTopic(lastReceivedMessage.getDestination().getName());
-        receivedMessage.setBody(lastReceivedMessage.getText());
-        return new ResponseEntity<>(receivedMessage, HttpStatus.OK);
-    } else {
-        logger.info("Sorry did not find a lastReceivedMessage");
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
+    // ...
 }
 ```
 
-The ``SimpleSubscription`` class models the JSON document expected by the ``/subscription`` endpoint:
-
-```
-public class SimpleSubscription {
-	private String subscription;
-
-	public SimpleSubscription() {
-		subscription = "";
-	}
-
-	public String getSubscription() {
-		return subscription;
-	}
-
-	public void setSubscription(String subscription) {
-		this.subscription = subscription;
-	}
-}
-```
-
-The ``SimpleMessage`` class models the JSON document expected by the ``/message`` endpoint:
-
-```
-public class SimpleMessage {
-	private String topic;
-	private String body;
-	
-	public SimpleMessage() {
-		this.topic = "";
-		this.body = "";
-	}
-	
-	public String getTopic() {
-		return topic;
-	}
-	
-	public void setTopic(String topic) {
-		this.topic = topic;
-	}
-
-	public String getBody() {
-		return body;
-	}
-	
-	public void setBody(String body) {
-		this.body = body;
-	}
-}
-```
+The subscription JSON document used by the ``/subscription`` endpoint is modeled by the ``SimpleSubscription`` class,
+whereas the ``/message`` endpoint JSON document is modeled by the ``SimpleMessage`` class.
 
 For further information on the subject of sending and receiving messages please consult the
 [Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/){:target="_top"}.
+
+## Building
+
+You can try what was done here by getting the sample source code for this tutorial from its
+[GitHub repository](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java){:target="_blank"}. 
+Start by cloning the repository then download the Solace API for Java from the
+[Solace's download page](http://dev.solacesystems.com/downloads/){:target="_top"}.  Copy the libraries into the
+``libs`` directory at the root of the samples.
+
+Here is an example:
+
+```
+unzip sol-jcsmp-7.1.2.248.zip
+git clone https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
+cd solace-samples-cloudfoundry-java
+mkdir libs
+cp ../sol-jcsmp-7.1.2.248/lib/*jar libs
+```
+
+At this point, the sample is ready to be built:
+
+```
+./gradlew build
+```
+
+## Cloud Foundry Setup
+
+The sample application specifies a dependency on a service instance named ``solace-messaging-sample-instance`` in its
+manifiest (See ``java-app/manifest.yml``).  This must be an instance of the Solace Messaging Service which can be
+created with this command:
+
+```
+cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
+```
+
+## Deploying
+
+To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
+
+```
+cd java-app
+cf push
+```
+
+This will push the application and will give the application the name specified by the manifest :
+``solace-sample-java-app``.
+
+## Trying out the application
+
+The sample application has a simple REST interface that allows you to:
+
+* Subscribe
+* Send a message
+* Receive a message
+
+In order to interact with the application you need to determine the application's URL.  These shell commands can be used
+to quickly find out the URL:
+
+```
+export APP_NAME=solace-sample-java-app
+export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
+echo "The application URL is: ${APP_URL}"
+```
+
+To demonstrate the application we will make the application send a message to itself.  Then we will read the message
+back to confirm the successful delivery of the message :
+
+```
+# Subscribes the application to the topic "test"
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+
+# Send message with topic "test" and this content: "TEST_MESSAGE"
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "TEST_MESSAGE"}' http://$APP_URL/message
+
+# The message should have been asynchronously received by the application.  Check that the message was indeed received:
+curl -X GET http://$APP_URL/message
+```
