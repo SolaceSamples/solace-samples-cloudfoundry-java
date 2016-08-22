@@ -109,7 +109,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Authors
 
-* **Mark Spielman** - *Initial work* - [Solace Systems](https://dev.solacesystems.com)
+* **[Mark Spielman](https://github.com/mdspielman)** - *Initial work* - [Solace Systems](https://dev.solacesystems.com)
 
 
 See also the list of [contributors](https://github.com/SolaceSamples/solace-samples-cloudfoundry-java/contributors) who participated in this project.
