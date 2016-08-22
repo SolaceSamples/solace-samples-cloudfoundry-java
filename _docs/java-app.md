@@ -20,15 +20,7 @@ icon: java-logo.jpg
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which
 connects to a Solace Messaging service instance.
 
-## Assumptions
-
-This tutorial assumes the following:
-
-* You are familiar with Solace [core concepts](http://dev.solacesystems.com/docs/core-concepts/){:target="_top"}.
-* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/){:target="_blank"}.
-* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
-* You have access to a running Pivotal Cloud Foundry environment.
-* Solace Messaging for PCF have been installed in your Pivotal Cloud Foundry environment.
+![overview]({{ site.baseurl }}/images/architecture_overview.png){: .center-image}
 
 ## Goals
 
@@ -38,6 +30,16 @@ Bindings and connect to the Solace Messaging service instance.  This tutorial wi
 1. How to extract the Solace Messaging service credentials from the Cloud Foundry environment.
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
+
+## Assumptions
+
+This tutorial assumes the following:
+
+* You are familiar with Solace [core concepts](http://dev.solacesystems.com/docs/core-concepts/){:target="_top"}.
+* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/){:target="_blank"}.
+* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
+* You have access to a running Pivotal Cloud Foundry environment.
+* Solace Messaging for PCF have been installed in your Pivotal Cloud Foundry environment.
 
 ## Obtaining the Solace API
 
