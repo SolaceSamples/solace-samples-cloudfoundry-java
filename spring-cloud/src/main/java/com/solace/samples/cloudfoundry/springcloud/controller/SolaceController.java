@@ -118,7 +118,7 @@ public class SolaceController {
 		logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceMessagingServiceInfo);
 
 		final JCSMPProperties properties = new JCSMPProperties();
-		properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfUri());
+		properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfHost());
 		properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
 		properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
