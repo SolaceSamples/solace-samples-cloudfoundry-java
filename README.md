@@ -1,6 +1,6 @@
 # solace-samples-cloudfoundry-java
 
-The repository contains example applications that use the Solace Messaging service on Pivotal Cloud Foundry. The goal of these sample applications is to illustrate various ways of consuming the `VCAP_SERVICES` environment variable from a Solace Messaging Cloud Foundry service instance. You can get more details on the  Solace Messaging Service for Pivotal Cloud Foundry [here](TODO - Need link to PCF tile cloud foundry documentation).
+The repository contains example applications that use the Solace Messaging service on Pivotal Cloud Foundry. The goal of these sample applications is to illustrate various ways of consuming the `VCAP_SERVICES` environment variable from a Solace Messaging Cloud Foundry service instance. You can get more details on the Solace Messaging Service for Pivotal Cloud Foundry [here](http://docs.pivotal.io/solace-messaging/).
 
 This repository contains a sample application modified in the following ways:
 
