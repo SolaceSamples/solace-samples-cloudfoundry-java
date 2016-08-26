@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.solace.labs.spring.cloud.core.SolaceMessagingInfo;
+import com.solace.samples.cloudfoundry.javaapp.controller.SolaceController.SimpleMessageListener;
+import com.solace.samples.cloudfoundry.javaapp.controller.SolaceController.SimplePublisherEventHandler;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
 import com.solacesystems.jcsmp.BytesXMLMessage;
@@ -126,16 +128,21 @@ public class SolaceController {
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);
 			session.connect();
+		} catch (Exception e) {
+			logger.error("Error connecting and setting up session.", e);
+			logger.info("************* Aborting Solace initialization!! ************");
+			return;
+		}
 
+		try {
 			final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageListener());
 			cons.start();
 
 			producer = session.getMessageProducer(new SimplePublisherEventHandler());
 
 			logger.info("************* Solace initialized correctly!! ************");
-
 		} catch (Exception e) {
-			logger.error("Error connecting and setting up session.", e);
+			logger.error("Error creating the consumer and producer.", e);
 		}
 	}
 
