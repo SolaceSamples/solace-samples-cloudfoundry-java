@@ -12,3 +12,5 @@ spring-cloud/bin/
 spring-cloud/build/
 *.iml
 libs/
+.DS_Store
+docs/_site
