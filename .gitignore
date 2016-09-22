@@ -3,7 +3,6 @@
 .settings
 .springBeans
 .gradle
-images/
 java-app/build/
 java-app/bin/
 _site
