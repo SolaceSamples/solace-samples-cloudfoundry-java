@@ -1,10 +1,12 @@
 # Site settings
-title: Solace Samples Template
-baseurl: "/solace-samples-template" # the subpath of your site, e.g. /solace-samples-java
-repository: https://github.com/SolaceSamples/solace-samples-template
+title: Java Samples showing how to use Solace Messaging with Pivotal Cloud Foundry
+baseurl: "/solace-samples-cloudfoundry-java" # the subpath of your site, e.g. /solace-samples-java
+repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
 
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
+# Solace JCSMP Verion
+jcsmp_version: 7.2.2.37
 
 #----------------------------------------------------
 # Generally don't modify items below this point

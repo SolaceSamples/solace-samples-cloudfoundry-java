@@ -1,3 +1,4 @@
-- title: Tutorials
+- title: CloudFoundy Java Tutorials
   tutorials:
-  - tutorial-1
+  - java-app
+  - spring-cloud
