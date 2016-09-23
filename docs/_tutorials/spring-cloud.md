@@ -19,7 +19,7 @@ icon: spring-cloud.png
 
 This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
 
-This tutorial is similar to the [Java App]({{ site.baseurl }}/docs/java-app) tutorial. Like the Java App tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application.  In contrast to the Java App, this application uses the Spring Cloud Connectors library to simplify the parsing of the `VCAP_SERVICES` environment variable. 
+This tutorial is similar to the [Java App]({{ site.baseurl }}/java-app) tutorial. Like the Java App tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application.  In contrast to the Java App, this application uses the Spring Cloud Connectors library to simplify the parsing of the `VCAP_SERVICES` environment variable. 
 
 ![overview]({{ site.baseurl }}/images/spring-cloud-app-architecture.png){: .center-image}
 
@@ -151,7 +151,7 @@ try {
 }
 ```
 
-With the Solace session connected. The remainder of this tutorial is exactly the same as the [Java App]({{ site.baseurl }}/docs/java-app) tutorial. The details are repeated here for convenience.
+With the Solace session connected. The remainder of this tutorial is exactly the same as the [Java App]({{ site.baseurl }}/java-app) tutorial. The details are repeated here for convenience.
 
 ### Creating the Message Consumer and Producer
 
