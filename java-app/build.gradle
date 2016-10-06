@@ -1,7 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '1.3.3.RELEASE'
-        solaceVersion = '7.2.2.37'
+        solaceJCSMPVersion = '+'
     }
     repositories {
     	mavenCentral()
@@ -23,8 +23,8 @@ jar {
 
 repositories {
     mavenCentral()
-    maven {
-        url "https://oss.sonatype.org/content/groups/staging"
+    flatDir {
+       dirs '../libs'
     }
 }
 
@@ -33,8 +33,11 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.json:json:20151123")
     
-    // Solace JCSMP Libs
-    compile("com.solacesystems:sol-jcsmp:${solaceVersion}")
+    // Solace Java API
+    compile("commons-lang:commons-lang:2.6")
+    compile("commons-logging:commons-logging:1.2")
+    compile("com.solacesystems:sol-common:${solaceJCSMPVersion}")
+    compile("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")
 }
 
 task wrapper(type: Wrapper) {

@@ -267,6 +267,13 @@ git clone {{ site.repository }}
 cd {{ site.baseurl | remove: '/'}} 
 ```
 
+Then aquire the Solace Java API. Until the Solace Java API is available in Maven Central, you can [download the Java API here](http://dev.solacesystems.com/downloads/){:target="_top"}. Unpack the API and then copy the contents of the sol-jcsmp-VERSION/lib directory to a `libs` sub-directory in your `{{ site.baseurl | remove: '/'}}` project.
+
+For example in the following command line replace VERSION with the Solace Java API version you downloaded:
+
+1. `mkdir libs`
+1. `cp ../sol-jcsmp-VERSION/lib/sol*.jar libs`
+
 Then build the sample applications:
 
 ```
