@@ -90,7 +90,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 {
   "VCAP_SERVICES": {
     "solace-messaging": [ {
-        "name": "solmessaging-shared-instance",
+        "name": "solace-messaging-sample-instance",
         "label": "solace-messaging",
         "plan": "shared",
         "tags": [
