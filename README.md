@@ -20,7 +20,7 @@ What follows is a brief summary for people that want to dive straight into the c
 
 The sample applications specify a dependency on a Solace Messaging service instance named `solace-messaging-sample-instance`. To create the required Solace messaging service instance, do the following:
 
-	cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
+	cf create-service solace-messaging shared solace-messaging-sample-instance
 
 ### Building
 
