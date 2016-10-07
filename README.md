@@ -38,7 +38,7 @@ For example in the following command line replace VERSION with the Solace Java A
 
 To deploy the individual applications to Cloud Foundry:
 
-1. cd to the project dir
+1. cd to the project directory (`java-app` or `spring-cloud`)
 1. `$ cf push`
 
 ## Java Application
