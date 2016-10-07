@@ -47,7 +47,7 @@ application name: `solace-sample-java-app`
 
 This application uses the Java library from http://www.JSON.org/ to parse the `VCAP_SERVICES` environment variable to determine the connection details for Solace messaging. For more details and example usage, see the walk through tutorial here:
 
-* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/docs/java-app/)
+* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/java-app/)
 
 ## Java Application using Spring Cloud Connector
 
@@ -84,7 +84,7 @@ Alternatively applications could search through the environment and discover mat
 
 For more details and example usage, see the walk through tutorial here:
 
-* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/docs/spring-cloud/)
+* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/spring-cloud/)
 
 
 ## Try out the Applications
