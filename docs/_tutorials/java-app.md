@@ -90,9 +90,9 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 {
   "VCAP_SERVICES": {
     "solace-messaging": [ {
-        "name": "solmessaging-shared-instance",
+        "name": "solace-messaging-sample-instance",
         "label": "solace-messaging",
-        "plan": "VMR-shared",
+        "plan": "shared",
         "tags": [
             (...)
             ],
@@ -285,7 +285,7 @@ Then build the sample applications:
 The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `java-app/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
-cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
+cf create-service solace-messaging shared solace-messaging-sample-instance
 ```
 
 ## Deploying

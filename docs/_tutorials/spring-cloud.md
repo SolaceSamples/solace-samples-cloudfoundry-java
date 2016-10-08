@@ -90,9 +90,9 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 {
   "VCAP_SERVICES": {
     "solace-messaging": [ {
-        "name": "solmessaging-shared-instance",
+        "name": "solace-messaging-sample-instance",
         "label": "solace-messaging",
-        "plan": "VMR-shared",
+        "plan": "shared",
         "tags": [
             (...)
             ],
@@ -114,14 +114,14 @@ You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the So
 
 This sample use the [Spring Cloud Connectors](http://cloud.spring.io/spring-cloud-connectors/){:target="_blank"} project to retrieve the `VCAP_SERVICES` information in the form of a `ServiceInfo` object. For Solace Messaging in Cloud Foundry, there is a Spring Cloud Connectors extension in GitHub called [sl-spring-cloud-connectors](https://github.com/SolaceLabs/sl-spring-cloud-connectors). This library parses the `VCAP_SERVICES` environment variable and exposes the information by implementing the `ServiceInfo` interface in the `SolaceMessagingInfo` object.
 
-The `init()` method retrieves the Solace Messaging Service Instance details for the service named `solace-messaging-demo-instance` as follows:
+The `init()` method retrieves the Solace Messaging Service Instance details for the service named `solace-messaging-sample-instance` as follows:
 
 ```java
 CloudFactory cloudFactory = new CloudFactory();
 Cloud cloud = cloudFactory.getCloud();
 
 SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud
-        .getServiceInfo("solace-messaging-demo-instance");
+        .getServiceInfo("solace-messaging-sample-instance");
 
 if (solaceMessagingServiceInfo == null) {
     trace.error("Did not find instance of 'solace-messaging' service");
@@ -259,7 +259,7 @@ Then build the sample applications:
 The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `spring-cloud/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
-cf create-service solace-messaging vmr-shared solace-messaging-sample-instance
+cf create-service solace-messaging shared solace-messaging-sample-instance
 ```
 
 ## Deploying
