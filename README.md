@@ -6,9 +6,8 @@ This repository contains a sample application modified in the following ways:
 
 * Java Application
 * Java Application using Spring Cloud Connectors
-* (Coming soon) Annotated Spring Boot application using Spring Cloud Connectors
 
-While not necessary for Java Application and straight Spring Cloud Connector applications, the samples in this repository still make use of of Spring Boot so they can easily expose a simple REST interface to provide interactive ways to subscribe, send and receive Solace messages. Spring Boot is not required. You can make use of the Spring Cloud Connectors in any Java Application. See the walk through tutorials for more details.
+While not necessary for a Java Application or a straight Spring Cloud Connector applications, the samples in this repository still make use of of Spring Boot so they can easily expose a simple REST interface to provide interactive ways to subscribe, send and receive Solace messages. Spring Boot is not required. You can make use of the Spring Cloud Connectors in any Java Application. See the walk through tutorials for more details.
 
 All of these sample applications have full walk through tutorials that explain the code in detail. Tutorials for each sample are available here:
 
