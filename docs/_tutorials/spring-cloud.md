@@ -84,7 +84,7 @@ This tutorial will only cover the source code in `SolaceController.java` as the 
 
 ### Obtaining the Solace Credentials in the Application
 
-The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us : 
+The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us: 
 
 ```
 {
