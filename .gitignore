@@ -5,6 +5,7 @@
 .gradle
 java-app/build/
 java-app/bin/
+*.class
 _site
 bin/
 spring-cloud/bin/

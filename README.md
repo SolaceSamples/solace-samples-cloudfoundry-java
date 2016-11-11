@@ -1,4 +1,5 @@
-# solace-samples-cloudfoundry-java
+# Getting Started Examples
+## Solace Cloud Foundry Java
 
 The repository contains example applications that use the Solace Messaging service on Pivotal Cloud Foundry. The goal of these sample applications is to illustrate various ways of consuming the `VCAP_SERVICES` environment variable from a Solace Messaging Cloud Foundry service instance. You can get more details on the Solace Messaging Service for Pivotal Cloud Foundry [here](http://docs.pivotal.io/solace-messaging/).
 
@@ -23,7 +24,7 @@ The sample applications specify a dependency on a Solace Messaging service insta
 
 ### Building
 
-Clone this GitHub repository. Then aquire the Solace Java API. Until the Solace Java API is available in Maven Central, you can [download the Java API here](http://dev.solacesystems.com/downloads/). Unpack the API and then copy the contents of the sol-jcsmp-VERSION/lib directory to a `libs` sub-directory in your `solace-samples-cloudfoundry-java` project.
+Clone this GitHub repository. Then aquire the Solace Java API. Until the Solace Java API is available in Maven Central, you can [download the Java API here](http://dev.solace.com/downloads/). Unpack the API and then copy the contents of the sol-jcsmp-VERSION/lib directory to a `libs` sub-directory in your `solace-samples-cloudfoundry-java` project.
 
 For example in the following command line replace VERSION with the Solace Java API version you downloaded:
 
@@ -124,7 +125,8 @@ This project is licensed under the Apache License, Version 2.0. - See the [LICEN
 
 For more information try these resources:
 
-- The Solace Developer Portal website at: [http://dev.solacesystems.com](http://dev.solacesystems.com/)
-- Get a better understanding of [Solace technology.](http://dev.solacesystems.com/tech/)
-- Check out the [Solace blog](http://dev.solacesystems.com/blog/) for other interesting discussions around Solace technology
-- Ask the [Solace community.](http://dev.solacesystems.com/community/)
+
+- The Solace Developer Portal website at: http://dev.solace.com
+- Get a better understanding of [Solace technology](http://dev.solace.com/tech/).
+- Check out the [Solace blog](http://dev.solace.com/blog/) for other interesting discussions around Solace technology
+- Ask the [Solace community.](http://dev.solace.com/community/)
