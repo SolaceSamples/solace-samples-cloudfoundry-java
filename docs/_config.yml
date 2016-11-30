@@ -8,6 +8,12 @@ repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
 # Solace JCSMP Verion
 jcsmp_version: 7.2.2.37
 
+# Links
+docs-core-concepts: http://docs.solace.com/Features/Core-Concepts.htm
+links-downloads: http://dev.solace.com/downloads/
+links-pubsub-tutorial: http://dev.solace.com/get-started/java-tutorials/publish-subscribe_java/
+links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
+
 #----------------------------------------------------
 # Generally don't modify items below this point
 url: "solacesamples.github.io" # the base hostname & protocol for your site

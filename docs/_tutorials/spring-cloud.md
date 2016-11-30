@@ -35,7 +35,7 @@ The goal of this tutorial is to demonstrate extracting the information from the 
 
 This tutorial assumes the following:
 
-* You are familiar with Solace [core concepts](http://dev.solacesystems.com/docs/core-concepts/){:target="_top"}.
+* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
 * You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/){:target="_blank"}.
 * You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
@@ -63,7 +63,7 @@ compile("com.solacesystems:sol-jcsmp:{{ site.jcsmp_version }}")
 
 ### Get the API: Using the Solace Developer Portal
 
-The Java API library can be [downloaded here](http://dev.solacesystems.com/downloads/){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
+The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
 
 ## Code Walk Through
 
@@ -110,7 +110,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 }
 ```
 
-You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the Solace Messaging for PCF documentation [here](https://solacedev.github.io/pcf/docs/vcap_services/){:target="_blank"}.
+You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-vcap }}){:target="_blank"}.
 
 This sample use the [Spring Cloud Connectors](http://cloud.spring.io/spring-cloud-connectors/){:target="_blank"} project to retrieve the `VCAP_SERVICES` information in the form of a `ServiceInfo` object. For Solace Messaging in Cloud Foundry, there is a Spring Cloud Connectors extension in GitHub called [sl-spring-cloud-connectors](https://github.com/SolaceLabs/sl-spring-cloud-connectors). This library parses the `VCAP_SERVICES` environment variable and exposes the information by implementing the `ServiceInfo` interface in the `SolaceMessagingInfo` object.
 
@@ -132,7 +132,7 @@ if (solaceMessagingServiceInfo == null) {
 
 ### Connecting to the Solace Messaging Service
 
-Once you have the `SolaceMessagingInfo`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/){:target="_top"}. You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
+Once you have the `SolaceMessagingInfo`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}){:target="_top"}. You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
 
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
@@ -228,7 +228,7 @@ public ResponseEntity<SimpleMessage> getLastMessageReceived() {
 
 The subscription JSON document used by the `/subscription` endpoint is modeled by the `SimpleSubscription` class, whereas the `/message` endpoint JSON document is modeled by the `SimpleMessage` class.
 
-For more details on sending and receiving messages, you can checkout the [JCSMP Publish/Subscribe tutorial](http://dev.solacesystems.com/get-started/java-tutorials/publish-subscribe_java/){:target="_top"}.
+For more details on sending and receiving messages, you can checkout the [JCSMP Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}){:target="_top"}.
 
 ## Building
 
@@ -241,7 +241,7 @@ git clone {{ site.repository }}
 cd {{ site.baseurl | remove: '/'}} 
 ```
 
-Then aquire the Solace Java API. Until the Solace Java API is available in Maven Central, you can [download the Java API here](http://dev.solacesystems.com/downloads/){:target="_top"}. Unpack the API and then copy the contents of the sol-jcsmp-VERSION/lib directory to a `libs` sub-directory in your `{{ site.baseurl | remove: '/'}}` project.
+Then aquire the Solace Java API. Until the Solace Java API is available in Maven Central, you can [download the Java API here]({{ site.links-downloads }}){:target="_top"}. Unpack the API and then copy the contents of the sol-jcsmp-VERSION/lib directory to a `libs` sub-directory in your `{{ site.baseurl | remove: '/'}}` project.
 
 For example in the following command line replace VERSION with the Solace Java API version you downloaded:
 
