@@ -1,4 +1,5 @@
 - title: CloudFoundy Java Tutorials
   tutorials:
   - java-app
+  - java-tls
   - spring-cloud
