@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/SolaceSamples/solace-samples-cloudfoundry-java.svg?branch=master)](https://travis-ci.org/SolaceSamples/solace-samples-cloudfoundry-java)
+
 # Getting Started Examples
 ## Solace Cloud Foundry Java
 
