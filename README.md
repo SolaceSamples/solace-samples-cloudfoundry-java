@@ -24,14 +24,9 @@ The sample applications specify a dependency on a Solace Messaging service insta
 
 ### Building
 
-Clone this GitHub repository. Then aquire the Solace Java API. Until the Solace Java API is available in Maven Central, you can [download the Java API here](http://dev.solace.com/downloads/). Unpack the API and then copy the contents of the sol-jcsmp-VERSION/lib directory to a `libs` sub-directory in your `solace-samples-cloudfoundry-java` project.
-
-For example in the following command line replace VERSION with the Solace Java API version you downloaded:
+Just clone and build. For example: 
 
 1. clone this GitHub repository
-1. `cd solace-samples-cloudfoundry-java`
-1. `mkdir libs`
-1. `cp ../sol-jcsmp-VERSION/lib/sol*.jar libs`
 1. `./gradlew build`
 
 ### Deploying
