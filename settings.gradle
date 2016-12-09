@@ -1,1 +1,1 @@
-include "java-app", "java-tls", "spring-cloud"
+include "java-app", "secure-app", "spring-cloud"
