@@ -15,7 +15,7 @@ icon: spring-cloud.jpg
 
 ## Overview
 
-This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. you can see the [solace messaging for pivotal cloud foundry documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
+This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. you can see the [Solace Messaging for Pivotal Cloud Foundry documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
 
 
 This tutorial is based on the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial, adding a demonstration on how to connect to the Solace Messaging service using TLS.
@@ -40,7 +40,7 @@ This section assumes that you have a certificate that has been purchased from a 
 
 ## Code Walk Through - Trusted Certificates
 
-when we initialize the connection to the service, we can specify whether to use TLS or not. to use TLS, we replaced this line
+when we initialize the connection to the service, we can specify whether to use TLS or not. to use TLS, we replaced this line from the Spring Cloud tutorial:
 
 ```java
 properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfHost());
@@ -61,7 +61,7 @@ properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, VALIDATE_CERTIF
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, VALIDATE_CERTIFICATE);
 ```
 
-That is all that is required when using a ca-issued certificate.
+That is all that is required when using a Certificate Authority issued certificate.
 
 ## Working with a Self-signed Certificate
 
@@ -77,7 +77,7 @@ private static final boolean VALIDATE_CERTIFICATE = false;
 ```
 Note that this is insecure and should never be done in production.
 
-If you do want the self-signed certificate to be validated, then it must be added to the client-side trust store. This is tricky because it is bundled along with the JRE together with the Cloud Foundry app. It must be added after the application is deployed but before it connects with the Solace Messaging service. Follow these steps:
+If you do want the self-signed certificate to be validated, then it must be added to the client-side trust store. This is tricky because the trust store is bundled along with the JRE together with the Cloud Foundry app. It must be added after the application is deployed but before it connects with the Solace Messaging service. Follow these steps:
 
 1. Copy the certificate (the *.pem file) to the directory secure-app/src/main/resources.
 1. Edit the file. Remove the private key section and just leave the lines starting with -----BEGIN CERTIFICATE----- and ending with ----- END CERTIFICATE-----.
