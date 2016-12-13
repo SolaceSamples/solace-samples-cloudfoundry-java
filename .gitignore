@@ -15,4 +15,4 @@ libs/
 .DS_Store
 docs/_site
 /.nb-gradle/
-/java-tls/build/
+/secure-app/build/
