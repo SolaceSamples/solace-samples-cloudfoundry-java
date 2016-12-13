@@ -258,25 +258,11 @@ For more details on sending and receiving messages, you can checkout the [JCSMP 
 
 ## Building
 
-The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. Start by cloning the repository.
-
-Here is an example:
+The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. To build, just clone and use gradle. Here is an example:
 
 ```
 git clone {{ site.repository }}
 cd {{ site.baseurl | remove: '/'}} 
-```
-
-Then aquire the Solace Java API. Until the Solace Java API is available in Maven Central, you can [download the Java API here]({{ site.links-downloads }}){:target="_top"}. Unpack the API and then copy the contents of the sol-jcsmp-VERSION/lib directory to a `libs` sub-directory in your `{{ site.baseurl | remove: '/'}}` project.
-
-For example in the following command line replace VERSION with the Solace Java API version you downloaded:
-
-1. `mkdir libs`
-1. `cp ../sol-jcsmp-VERSION/lib/sol*.jar libs`
-
-Then build the sample applications:
-
-```
 ./gradlew build
 ```
 
