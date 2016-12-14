@@ -16,17 +16,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package com.solace.samples.cloudfoundry.securesession.model;
 
-package com.solace.samples.cloudfoundry.springcloud;
+public class SimpleSubscription {
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+    private String subscription;
 
-@SpringBootApplication
-public class Application {
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+    public SimpleSubscription() {
+        subscription = "";
     }
 
+    public String getSubscription() {
+        return subscription;
+    }
+
+    public void setSubscription(String subscription) {
+        this.subscription = subscription;
+    }
 }

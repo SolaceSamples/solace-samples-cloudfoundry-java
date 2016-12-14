@@ -84,6 +84,15 @@ For more details and example usage, see the walk through tutorial here:
 * [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/spring-cloud/)
 
 
+## Secure Sessions
+
+application name: `solace-sample-secure-session`
+
+This application is based on the Spring Cloud Connector described above, but shows how to use
+Transport Level Security (TLS) between the Java application and the Messaging Service.
+
+* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/secure-session/)
+
 ## Try out the Applications
 
 The sample applications have a simple REST interface that allows you to subscribe, send and receive Solace messages. You can try the applications out using command like the following.

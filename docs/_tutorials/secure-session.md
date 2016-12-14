@@ -1,8 +1,8 @@
 ---
 layout: tutorials
-title: Secure Sessions
+title: Secure Session
 summary: A simple Spring Cloud application showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
-icon: spring-cloud.jpg
+icon: ssl_icon.gif
 ---
 
 * [Overview](#overview)
@@ -11,6 +11,10 @@ icon: spring-cloud.jpg
 * [Working with a trusted certificate](#working-with-a-trusted-certificate)
 * [Code walk through - trusted certificates](#code-walk-through---trusted-certificates)
 * [Working with a self-signed certificate](#working-with-a-self-signed-certificate)
+* [Building](#building)
+* [Cloud Foundry Setup](#cloud-foundry-setup)
+* [Deploying](#deploying)
+* [Trying Out the Application](#trying-out-the-application)
 
 
 ## Overview
@@ -58,7 +62,12 @@ This should always be done in production environments. We do this by setting the
 ```java
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
+properties.setProperty(JCSMPProperties.SSL_TRUST_STORE, "path-to-trust-store");
+properties.setProperty(JCSMPProperties.SSL_TRUST_STORE_PASSWORD, "changeit");
 ```
+In Cloud Foundry, the path to the trust store is
+`/home/vcap/app/.java-buildpack/open_jdk_jre/lib/security/cacerts`
+and the password is the default JRE keystore password, `changeit`.
 
 That is all that is required when using a Certificate Authority issued certificate.
 
@@ -71,6 +80,8 @@ or not. For testing purposes, you can choose to not validate the certificate sim
 setting the VALIDATE_CERTIFICATE constant to false:
 
 ```java
+private static final boolean VALIDATE_CERTIFICATE = false;
+// and set these further down...
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, false);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, false);
 ```
@@ -85,11 +96,13 @@ It is also possible to validate the self-signed certificate. This provides an en
 1. In the SolaceController class, enable certificate validation.
 
 ```java
-properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, false);
-properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, false);
+private static final boolean VALIDATE_CERTIFICATE = true;
+// and set these further down...
+properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
+properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
 ```
 
-When you set `INSTALL_CERTIFICATE` to `true`, it instructs the SolaceController to use the CertificateUtil class to install the certificate in the JRE's trusted store before trying to connect to the service. 
+When you set `INSTALL_CERTIFICATE` to `true`, it instructs the SolaceController class to install the certificate in the JRE's trusted store before trying to connect to the service. 
 
 The way it works is this. When you copy the certificate into the src/main/resources file, it gets packaged with the application. The application can then read the file from its local file system at runtime.
 
@@ -100,12 +113,64 @@ The JRE is provided at runtime by Cloud Foundry, and from the point of view of a
 /home/vcap/app/.java-buildpack/open_jdk_jre
 ```
 
-The CertificateUtil class reads the certificate and installs it in the trusted store when the application starts running, but before it tries to connect to the service.
+The SolaceController class reads the certificate and installs it in the trusted store when the application starts running, but before it tries to connect to the service.
 
 Note that we only need to do this when we want the client to validate a self-signed certificate. There should never be a need to do this kind of thing in a production system.
 
-### Next Steps
+## Building
 
-Once this has been done, the process of building, deploying and testing the application are the same as in the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tuturial.
+The full source code for this example is available in [GitHub]({{ site.repository }}){:target="_blank"}. To build, just clone and use gradle. Here is an example:
 
-TODO: Repeat I suggest repeating the steps for how to run
+```
+git clone {{ site.repository }}
+cd {{ site.baseurl | remove: '/'}} 
+./gradlew build
+```
+
+## Cloud Foundry Setup
+
+The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `spring-cloud/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
+
+```
+cf create-service solace-messaging shared solace-messaging-sample-instance
+```
+
+## Deploying
+
+To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
+
+```
+cd spring-cloud
+cf push
+```
+
+This will push the application and will give the application the name specified by the manifest: `solace-sample-spring-cloud`.
+
+## Trying Out The Application
+
+As described above, the sample application has a simple REST interface that allows you to:
+
+* Subscribe
+* Send a message
+* Receive a message
+
+In order to interact with the application you need to determine the application's URL.  These shell commands can be used to quickly find out the URL:
+
+```
+export APP_NAME=solace-sample-secure-session
+export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
+echo "The application URL is: ${APP_URL}"
+```
+
+To demonstrate the application we will make the application send a message to itself.  Then we will read the message back to confirm the successful delivery of the message :
+
+```
+# Subscribes the application to the topic "test"
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+
+# Send message with topic "test" and this content: "TEST_MESSAGE"
+curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "test", "body": "Test Message"}' http://$APP_URL/message
+
+# The message should have been asynchronously received by the application.  Check that the message was indeed received:
+curl -X GET http://$APP_URL/message
+```

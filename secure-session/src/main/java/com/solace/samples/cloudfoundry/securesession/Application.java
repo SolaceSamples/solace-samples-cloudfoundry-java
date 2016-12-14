@@ -17,20 +17,16 @@
  * under the License.
  */
 
-package com.solace.samples.cloudfoundry.springcloud.model;
+package com.solace.samples.cloudfoundry.securesession;
 
-public class SimpleSubscription {
-	private String subscription;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-	public SimpleSubscription() {
-		subscription = "";
-	}
+@SpringBootApplication
+public class Application {
 
-	public String getSubscription() {
-		return subscription;
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 
-	public void setSubscription(String subscription) {
-		this.subscription = subscription;
-	}
 }
