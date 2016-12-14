@@ -62,6 +62,13 @@ public class SolaceController {
 
     private static final Log logger = LogFactory.getLog(SolaceController.class);
 
+<<<<<<< HEAD
+=======
+    // This determines whether we validate the certificate. 
+    // In production systems this should be set to true.
+    private static final boolean VALIDATE_CERTIFICATE = false;
+
+>>>>>>> Improvements to the secure-session tutorial based on Mark Spielman's second review.
     // If true, we will install a certificate residing in the src/main/resources directory
     // so that we can validate self-signed certificates.
     private static final boolean INSTALL_CERTIFICATE = false;
@@ -158,7 +165,6 @@ public class SolaceController {
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
         properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
         properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
-
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
         properties.setProperty(JCSMPProperties.SSL_TRUST_STORE, TRUST_STORE);
@@ -204,8 +210,13 @@ public class SolaceController {
             numMessagesSent.incrementAndGet();
 
         } catch (JCSMPException e) {
+<<<<<<< HEAD
             logger.error("Message post failed.", e);
             return handleError(e);
+=======
+            logger.error("Service Creation failed.", e);
+            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+>>>>>>> Improvements to the secure-session tutorial based on Mark Spielman's second review.
         }
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
@@ -239,8 +250,13 @@ public class SolaceController {
             boolean waitForConfirm = true;
             session.addSubscription(topic, waitForConfirm);
         } catch (JCSMPException e) {
+<<<<<<< HEAD
             logger.error("Subscription delete failed.", e);
             return handleError(e);
+=======
+            logger.error("Service Creation failed.", e);
+            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+>>>>>>> Improvements to the secure-session tutorial based on Mark Spielman's second review.
         }
         logger.info("Finished Adding a subscription to topic: " + subscriptionTopic);
         return new ResponseEntity<>("{}", HttpStatus.OK);
@@ -256,8 +272,13 @@ public class SolaceController {
             boolean waitForConfirm = true;
             session.removeSubscription(topic, waitForConfirm);
         } catch (JCSMPException e) {
+<<<<<<< HEAD
             logger.error("Subscription delete failed.", e);
             return handleError(e);
+=======
+            logger.error("Service Creation failed.", e);
+            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+>>>>>>> Improvements to the secure-session tutorial based on Mark Spielman's second review.
         }
         logger.info("Finished Deleting a subscription to topic: " + subscriptionTopic);
         return new ResponseEntity<>("{}", HttpStatus.OK);
@@ -283,6 +304,7 @@ public class SolaceController {
     }
 
     /**
+<<<<<<< HEAD
      * This formats a string showing the exception class name and message,
      * as well as the class name and message of the underlying cause
      * if it exists.
@@ -318,6 +340,20 @@ public class SolaceController {
         File file = new File(CERTIFICATE_FILE_NAME);
         logger.info("Loading certificate from " + file.getAbsolutePath());
 
+=======
+     * This utility function installs a certificate into the JRE's 
+     * trusted store. Normally you would not do this, but this is provided
+     * to demonstrate how to use TLS, and have the client validate a
+     * self-signed server certificate.
+     * 
+     * @throws Exception 
+     */
+    public static void importCertificate() throws Exception {
+
+        File file = new File(CERTIFICATE_FILE_NAME);
+        logger.info("Loading certificate from " + file.getAbsolutePath());
+        
+>>>>>>> Improvements to the secure-session tutorial based on Mark Spielman's second review.
         // This loads the KeyStore from the default location 
         // (i.e. default for a Clound Foundry app) using the default password.
         FileInputStream is = new FileInputStream(TRUST_STORE);
@@ -326,17 +362,29 @@ public class SolaceController {
         keystore.load(is, password);
         is.close();
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Improvements to the secure-session tutorial based on Mark Spielman's second review.
         // Create an ByteArrayInputStream stream from the 
         FileInputStream fis = new FileInputStream(CERTIFICATE_FILE_NAME);
         DataInputStream dis = new DataInputStream(fis);
         byte[] bytes = new byte[dis.available()];
         dis.readFully(bytes);
         ByteArrayInputStream certstream = new ByteArrayInputStream(bytes);
+<<<<<<< HEAD
 
         // This takes that Byte Array and creates a certificate out of it.
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         Certificate certs = cf.generateCertificate(certstream);
 
+=======
+        
+        // This takes that Byte Array and creates a certificate out of it.
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");        
+        Certificate certs = cf.generateCertificate(certstream);
+        
+>>>>>>> Improvements to the secure-session tutorial based on Mark Spielman's second review.
         // Finally, store the new certificate in the keystore.
         keystore.setCertificateEntry(CERTIFICATE_ALIAS, certs);
 

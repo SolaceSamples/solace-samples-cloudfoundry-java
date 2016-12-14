@@ -1,7 +1,0 @@
----
-applications:
-- name: solace-sample-secure
-  memory: 512M
-  path: build/libs/solace-sample-spring-cloud.jar
-  services:
-  - solace-messaging-sample-instance

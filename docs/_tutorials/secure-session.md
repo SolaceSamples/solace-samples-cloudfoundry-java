@@ -1,9 +1,21 @@
 ---
 layout: tutorials
 title: Secure Session
-summary: A sample showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
+summary: A simple Spring Cloud application showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
 icon: ssl_icon.gif
 ---
+
+* [Overview](#overview)
+* [Goals](#goals)
+* [Assumptions](#assumptions)
+* [Working with a trusted certificate](#working-with-a-trusted-certificate)
+* [Code walk through - trusted certificates](#code-walk-through---trusted-certificates)
+* [Working with a self-signed certificate](#working-with-a-self-signed-certificate)
+* [Building](#building)
+* [Cloud Foundry Setup](#cloud-foundry-setup)
+* [Deploying](#deploying)
+* [Trying Out the Application](#trying-out-the-application)
+
 
 ## Overview
 
@@ -26,10 +38,7 @@ This tutorial assumes the following:
 
 ## Working with a Trusted Certificate
 
-In order to use Transport Level Security, your Solace Message Router needs to be configured for TLS with an installed servcer certificate. 
-The instructions for doing that are described in the Pivotal/Solace Messaging documentation - 
-see [Tile Installation and Configuration]({{ site.links-tls-server }}){:target="_blank"}, 
-look for the step named Configure Message Routers RSA certificate.
+In order to use Transport Level Security, your Solace Message Router needs to be configured for TLS with an installed servcer certificate. The instructions for doing that are described in the Solace documentation - see [Managing Server Certificates]({{ site.links-tls-server }}){:target="_blank"}.
 
 This section assumes that you have a Solace Messaging Service Instance properly configured for TLS access with a certificate that has been purchased from a certificate authority. Instructions for working with self-signed certificates are below.
 
@@ -61,8 +70,6 @@ In Cloud Foundry, the path to the trust store is
 and the password is the default JRE keystore password, `changeit`.
 
 That is all that is required when using a Certificate Authority issued certificate.
-The JRE's trusted store comes pre-configured with certificates that are sufficient
-to validated your CA-issued certificate.
 
 ## Working with a Self-signed Certificate
 
@@ -70,24 +77,26 @@ You can install your Solace Messaging service for PCF with a self-signed certifi
 
 With self-signed certificates you have two choices. Either you can have the client validate the self-signed certificate,
 or not. For testing purposes, you can choose to not validate the certificate simply by
-setting the following properties to false:
+setting the VALIDATE_CERTIFICATE constant to false:
 
 ```java
+private static final boolean VALIDATE_CERTIFICATE = false;
+// and set these further down...
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, false);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, false);
 ```
 
 Note that this is insecure and should never be done in production. This provides you with a TLS encrypted connection to the Solace Message Router but no validation of the identity so you're still exposed to a variety of attacks.
 
-It is also possible to validate the self-signed certificate. This provides an environment that is a little closer to production. To do this, you must provide a certificate to the client-side trust store. This is tricky because the trust store is bundled along with the JRE together with the Cloud Foundry app. It must be added after the application is deployed but before it connects with the Solace Messaging service. Follow these steps:
+It is also possible to validate the self-signed certificate. This provides an environment that is a little closer to a production. To do this, you must be a certificate to the client-side trust store. This is tricky because the trust store is bundled along with the JRE together with the Cloud Foundry app. It must be added after the application is deployed but before it connects with the Solace Messaging service. Follow these steps:
 
 1. Copy the certificate (the *.pem file) to the directory secure-app/src/main/resources.
 1. Edit the file. Remove the private key section and just leave the lines starting with -----BEGIN CERTIFICATE----- and ending with ----- END CERTIFICATE-----.
 1. In the CertificateUtil class, change the `CERTIFICATE_FILE_NAME` to match your certificate's file name.
-1. In the SolaceController class, enable certificate validation and tell the app to install it.
+1. In the SolaceController class, enable certificate validation.
 
 ```java
-private static final boolean INSTALL_CERTIFICATE = true;
+private static final boolean VALIDATE_CERTIFICATE = true;
 // and set these further down...
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
@@ -120,7 +129,7 @@ cd {{ site.baseurl | remove: '/'}}
 
 ## Cloud Foundry Setup
 
-The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `secure-session/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
+The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `spring-cloud/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
 cf create-service solace-messaging shared solace-messaging-sample-instance
@@ -131,11 +140,11 @@ cf create-service solace-messaging shared solace-messaging-sample-instance
 To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
 
 ```
-cd secure-session
+cd spring-cloud
 cf push
 ```
 
-This will push the application and will give the application the name specified by the manifest: `solace-sample-secure-session`.
+This will push the application and will give the application the name specified by the manifest: `solace-sample-spring-cloud`.
 
 ## Trying Out The Application
 
@@ -165,27 +174,3 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
 ```
-
-## Common Problems
-
-### JCSMPTransportException
-
-If you see:
-
-```
-JCSMPTransportException: Error communicating with the router, ConnectException: Connection Refused
-```
-
-this can happen if a TLS server certificate was not configured in the Solace Messaging for PCF tile in which case the Solace Message Router will reject incoming TLS connections.
-
-### CertificateException
-
-If you see:
-```
-CertificateException: Path does not chain with any of the trust anchors
-```
-
-it is because the application could not validate the certificate it received from the Solace Message Router. This can happen when you install a self-signed certificate on the Solace Message Router, but didn't package it with the app, or didn't set INSTALL_CERTIFICATE to true in the sample.
-
-
-
