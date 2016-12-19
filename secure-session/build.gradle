@@ -1,0 +1,50 @@
+buildscript {
+    ext {
+        springBootVersion = '1.3.3.RELEASE'
+        springCloudVersion = '1.2.3.RELEASE'
+        solaceJCSMPVersion = '10.+'
+        solaceCloudVersion = '0.1+'		
+    }
+    repositories {
+    	mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+    baseName = 'solace-sample-secure-session'
+    version =  ''
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    
+    // Spring Cloud Connectors
+    compile("org.springframework.cloud:spring-cloud-spring-service-connector:${springCloudVersion}")
+    compile("org.springframework.cloud:spring-cloud-cloudfoundry-connector:${springCloudVersion}")
+
+    // Alternatively using spring-boot-starter inclusion...
+    //compile("org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}")
+    
+    // Solace Messaging Spring Cloud Connector
+    compile("com.solace.labs.cloud.cloudfoundry:solace-labs-spring-cloud-connector:${solaceCloudVersion}")
+    
+    // Solace Java API
+    compile("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14'
+}
