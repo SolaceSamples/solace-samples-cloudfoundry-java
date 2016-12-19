@@ -9,6 +9,7 @@ This repository contains a sample application modified in the following ways:
 
 * Java Application
 * Java Application using Spring Cloud Connectors
+* Java Application using Spring Cloud Connectors and Transport Level Security
 
 While not necessary for a Java Application or a straight Spring Cloud Connector applications, the samples in this repository still make use of of Spring Boot so they can easily expose a simple REST interface to provide interactive ways to subscribe, send and receive Solace messages. Spring Boot is not required. You can make use of the Spring Cloud Connectors in any Java Application. See the walk through tutorials for more details.
 
@@ -84,7 +85,7 @@ For more details and example usage, see the walk through tutorial here:
 * [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/spring-cloud/)
 
 
-## Secure Sessions
+## Secure Session
 
 application name: `solace-sample-secure-session`
 

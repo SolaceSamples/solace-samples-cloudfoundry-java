@@ -62,10 +62,6 @@ public class SolaceController {
 
     private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-    // This determines whether we validate the certificate. 
-    // In production systems this should be set to true.
-    private static final boolean VALIDATE_CERTIFICATE = false;
-
     // If true, we will install a certificate residing in the src/main/resources directory
     // so that we can validate self-signed certificates.
     private static final boolean INSTALL_CERTIFICATE = false;
@@ -163,8 +159,8 @@ public class SolaceController {
         properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
         properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
 
-        properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, false);
-        properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, false);
+        properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
+        properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
         properties.setProperty(JCSMPProperties.SSL_TRUST_STORE, TRUST_STORE);
         properties.setProperty(JCSMPProperties.SSL_TRUST_STORE_PASSWORD, TRUST_STORE_PASSWORD);
 
@@ -208,8 +204,8 @@ public class SolaceController {
             numMessagesSent.incrementAndGet();
 
         } catch (JCSMPException e) {
-            logger.error("Service Creation failed.", e);
-            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+            logger.error("Message post failed.", e);
+            return handleError(e);
         }
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
@@ -243,8 +239,8 @@ public class SolaceController {
             boolean waitForConfirm = true;
             session.addSubscription(topic, waitForConfirm);
         } catch (JCSMPException e) {
-            logger.error("Service Creation failed.", e);
-            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+            logger.error("Subscription delete failed.", e);
+            return handleError(e);
         }
         logger.info("Finished Adding a subscription to topic: " + subscriptionTopic);
         return new ResponseEntity<>("{}", HttpStatus.OK);
@@ -260,8 +256,8 @@ public class SolaceController {
             boolean waitForConfirm = true;
             session.removeSubscription(topic, waitForConfirm);
         } catch (JCSMPException e) {
-            logger.error("Service Creation failed.", e);
-            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+            logger.error("Subscription delete failed.", e);
+            return handleError(e);
         }
         logger.info("Finished Deleting a subscription to topic: " + subscriptionTopic);
         return new ResponseEntity<>("{}", HttpStatus.OK);
@@ -287,18 +283,41 @@ public class SolaceController {
     }
 
     /**
-     * This utility function installs a certificate into the JRE's 
-     * trusted store. Normally you would not do this, but this is provided
-     * to demonstrate how to use TLS, and have the client validate a
-     * self-signed server certificate.
-     * 
-     * @throws Exception 
+     * This formats a string showing the exception class name and message,
+     * as well as the class name and message of the underlying cause
+     * if it exists.
+     * Then it returns that string in a ResponseEntity.
+     * @param exception
+     * @return ResponseEntity<String>
      */
-    public static void importCertificate() throws Exception {
+    private ResponseEntity<String> handleError(Exception exception) {
+        
+        Throwable cause = exception.getCause();
+        String causeString = "";
+
+        if (cause != null) {
+            causeString = "Cause: " + cause.getClass() + ": " + cause.getMessage();
+        }
+
+        String desc = String.format("{'description': ' %s: %s %s'}", 
+                exception.getClass().toString(), exception.getMessage(), causeString);
+        return new ResponseEntity<>(desc, HttpStatus.BAD_REQUEST);
+
+    }
+
+    /**
+     * This utility function installs a certificate into the JRE's trusted
+     * store. Normally you would not do this, but this is provided to
+     * demonstrate how to use TLS, and have the client validate a self-signed
+     * server certificate.
+     *
+     * @throws Exception
+     */
+    private static void importCertificate() throws Exception {
 
         File file = new File(CERTIFICATE_FILE_NAME);
         logger.info("Loading certificate from " + file.getAbsolutePath());
-        
+
         // This loads the KeyStore from the default location 
         // (i.e. default for a Clound Foundry app) using the default password.
         FileInputStream is = new FileInputStream(TRUST_STORE);
@@ -307,18 +326,17 @@ public class SolaceController {
         keystore.load(is, password);
         is.close();
 
-
         // Create an ByteArrayInputStream stream from the 
         FileInputStream fis = new FileInputStream(CERTIFICATE_FILE_NAME);
         DataInputStream dis = new DataInputStream(fis);
         byte[] bytes = new byte[dis.available()];
         dis.readFully(bytes);
         ByteArrayInputStream certstream = new ByteArrayInputStream(bytes);
-        
+
         // This takes that Byte Array and creates a certificate out of it.
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");        
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
         Certificate certs = cf.generateCertificate(certstream);
-        
+
         // Finally, store the new certificate in the keystore.
         keystore.setCertificateEntry(CERTIFICATE_ALIAS, certs);
 
