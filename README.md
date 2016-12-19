@@ -93,7 +93,7 @@ Transport Level Security (TLS) between the Java application and the Solace Messa
 
 * [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/secure-session/)
 
-## Secure Sessions
+## Secure Session
 
 application name: `solace-sample-secure-session`
 
