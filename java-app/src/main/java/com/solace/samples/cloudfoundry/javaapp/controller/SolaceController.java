@@ -26,7 +26,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,9 +37,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SolaceController {
 
 	private static final Log logger = LogFactory.getLog(SolaceController.class);
-	
-	@Value("${sample.app.ssl.enabled:false}")
-	protected boolean isSslEnabled;
 
 	private JCSMPSession session;
 	private XMLMessageProducer producer;
@@ -130,18 +126,10 @@ public class SolaceController {
 		logger.info("Solace client initializing and using Credentials: " + solaceCredentials.toString(2));
 
 		final JCSMPProperties properties = new JCSMPProperties();
-		String host = isSslEnabled ? solaceCredentials.getString("smfTlsHost") : solaceCredentials.getString("smfHost");
-		properties.setProperty(JCSMPProperties.HOST, host);
+		properties.setProperty(JCSMPProperties.HOST, solaceCredentials.getString("smfHost"));
 		properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
 		properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
-		
-		if (isSslEnabled) {
-			properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, false);
-			properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, false);
-		}
-		
-		logger.info("Host: " + host + " isSslEnabled: " + isSslEnabled);
 
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);
