@@ -84,10 +84,10 @@ It is also possible to validate the self-signed certificate. This provides an en
 1. Copy the certificate (the *.pem file) to the directory secure-app/src/main/resources.
 1. Edit the file. Remove the private key section and just leave the lines starting with -----BEGIN CERTIFICATE----- and ending with ----- END CERTIFICATE-----.
 1. In the CertificateUtil class, change the `CERTIFICATE_FILE_NAME` to match your certificate's file name.
-1. In the SolaceController class, enable certificate validation.
+1. In the SolaceController class, enable certificate validation and tell the app to install it.
 
 ```java
-private static final boolean VALIDATE_CERTIFICATE = true;
+private static final boolean INSTALL_CERTIFICATE = true;
 // and set these further down...
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
@@ -176,7 +176,7 @@ If you see:
 JCSMPTransportException: Error communicating with the router, ConnectException: Connection Refused
 ```
 
-This can happen if a TLS server certificate was not configured in the Solace Messaging for PCF tile in which case the Solace Message Router will reject incoming TLS connections.
+this can happen if a TLS server certificate was not configured in the Solace Messaging for PCF tile in which case the Solace Message Router will reject incoming TLS connections.
 
 ### CertificateException
 
