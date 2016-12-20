@@ -1,22 +1,9 @@
 ---
 layout: tutorials
 title: Secure Session
-summary: A simple Spring Cloud application showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
+summary: A sample showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
 icon: ssl_icon.gif
 ---
-
-* [Overview](#overview)
-* [Goals](#goals)
-* [Assumptions](#assumptions)
-* [Working with a trusted certificate](#working-with-a-trusted-certificate)
-* [Code walk through - trusted certificates](#code-walk-through---trusted-certificates)
-* [Working with a self-signed certificate](#working-with-a-self-signed-certificate)
-* [Building](#building)
-* [Cloud Foundry Setup](#cloud-foundry-setup)
-* [Deploying](#deploying)
-* [Trying Out the Application](#trying-out-the-application)
-* [Common Problems](#common-problems)
-
 
 ## Overview
 

@@ -5,16 +5,6 @@ summary: A Simple Spring Cloud Application showing how to consume the VCAP_SERVI
 icon: spring-cloud.png
 ---
 
-* [Overview](#overview)
-* [Goals](#goals)
-* [Assumptions](#assumptions)
-* [Obtaining the Solace API](#obtaining-the-solace-api)
-* [Code Walk Through](#code-walk-through)
-* [Building](#building)
-* [Cloud Foundry Setup](#cloud-foundry-setup)
-* [Deploying](#deploying)
-* [Trying Out the Application](#trying-out-the-application)
-
 ## Overview
 
 This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
