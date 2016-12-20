@@ -1,6 +1,7 @@
 ---
 layout: tutorials
 title: Secure Session
+<<<<<<< HEAD
 summary: A simple Spring Cloud application showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
 icon: ssl_icon.gif
 ---
@@ -18,6 +19,12 @@ icon: ssl_icon.gif
 * [Common Problems](#common-problems)
 
 
+=======
+summary: A sample showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
+icon: ssl_icon.gif
+---
+
+>>>>>>> 28c0f44326b242fa33e2242063419992f865ceb4
 ## Overview
 
 This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. you can see the [Solace Messaging for Pivotal Cloud Foundry documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
@@ -97,10 +104,17 @@ It is also possible to validate the self-signed certificate. This provides an en
 1. Copy the certificate (the *.pem file) to the directory secure-app/src/main/resources.
 1. Edit the file. Remove the private key section and just leave the lines starting with -----BEGIN CERTIFICATE----- and ending with ----- END CERTIFICATE-----.
 1. In the CertificateUtil class, change the `CERTIFICATE_FILE_NAME` to match your certificate's file name.
+<<<<<<< HEAD
 1. In the SolaceController class, enable certificate validation and tell the app to install it.
 
 ```java
 private static final boolean INSTALL_CERTIFICATE = true;
+=======
+1. In the SolaceController class, enable certificate validation.
+
+```java
+private static final boolean VALIDATE_CERTIFICATE = true;
+>>>>>>> 28c0f44326b242fa33e2242063419992f865ceb4
 // and set these further down...
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
@@ -181,20 +195,24 @@ curl -X GET http://$APP_URL/message
 
 ## Common Problems
 
+### JCSMPTransportException
+
 If you see:
 
 ```
 JCSMPTransportException: Error communicating with the router, ConnectException: Connection Refused
 ```
 
-it is probably because a TLS server certificate was not configured in the Tile, in which case the VMR will reject incoming TLS connections.
+this can happen if a TLS server certificate was not configured in the Solace Messaging for PCF tile in which case the Solace Message Router will reject incoming TLS connections.
+
+### CertificateException
 
 If you see:
 ```
 CertificateException: Path does not chain with any of the trust anchors
 ```
 
-it is because the application could not validate the certificate it received from the server. This can happen when you  install a self-signed certificate on the router, but didn't package it with the app, or didn't set INSTALL_CERTIFICATE to true.
+it is because the application could not validate the certificate it received from the Solace Message Router. This can happen when you install a self-signed certificate on the Solace Message Router, but didn't package it with the app, or didn't set INSTALL_CERTIFICATE to true in the sample.
 
 
 
