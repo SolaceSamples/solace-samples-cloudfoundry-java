@@ -154,16 +154,20 @@ public class SolaceController {
         logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceMessagingServiceInfo);
 
         final JCSMPProperties properties = new JCSMPProperties();
-        properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfTlsHost());
+        properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfHost());
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
         properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
         properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
-
+        
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
         properties.setProperty(JCSMPProperties.SSL_TRUST_STORE, TRUST_STORE);
         properties.setProperty(JCSMPProperties.SSL_TRUST_STORE_PASSWORD, TRUST_STORE_PASSWORD);
 
+		// If using High Availability, uncomment these lines:
+//		JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
+//	            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
+//		channelProperties.setReconnectRetries(-1);
         try {
             session = JCSMPFactory.onlyInstance().createSession(properties);
             session.connect();
@@ -331,6 +335,7 @@ public class SolaceController {
         DataInputStream dis = new DataInputStream(fis);
         byte[] bytes = new byte[dis.available()];
         dis.readFully(bytes);
+        dis.close();
         ByteArrayInputStream certstream = new ByteArrayInputStream(bytes);
 
         // This takes that Byte Array and creates a certificate out of it.
