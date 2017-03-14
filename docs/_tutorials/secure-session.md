@@ -174,7 +174,9 @@ If you see:
 JCSMPTransportException: Error communicating with the router, ConnectException: Connection Refused
 ```
 
-it is probably because a TLS server certificate was not configured in the Tile, in which case the VMR will reject incoming TLS connections.
+this can happen if a TLS server certificate was not configured in the Solace Messaging for PCF tile in which case the Solace Message Router will reject incoming TLS connections.
+
+>>>>>>> 2ddecceb096c1c345139b6b2f2bfb47b3348e923
 
 If you see:
 ```
