@@ -3,10 +3,11 @@ buildscript {
         springBootVersion = '1.3.3.RELEASE'
         springCloudVersion = '1.2.3.RELEASE'
         solaceJCSMPVersion = '10.+'
-        solaceCloudVersion = '0.+'		
+        solaceCloudVersion = '1.0.+'		
     }
     repositories {
     	mavenCentral()
+    	mavenLocal()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -25,6 +26,10 @@ jar {
 
 repositories {
     mavenCentral()
+    mavenLocal()
+//    maven {
+//       url "http://apps-jenkins:9090/nexus/content/repositories/snapshots/"
+//  }
 }
 
 dependencies {

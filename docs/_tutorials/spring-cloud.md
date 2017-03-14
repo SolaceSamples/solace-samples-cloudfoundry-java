@@ -91,7 +91,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
           "clientPassword": "bb90fcb0-6c83-4a10-bafa-3ec225bbfc08",
           "msgVpnName": "v005",
             (...)
-          "smfHost": "tcp://192.168.132.14:7000",
+          "smfHosts": [ "tcp://192.168.132.14:7000" ],
             (...)
         }
       }
@@ -140,6 +140,10 @@ try {
     return;
 }
 ```
+Note that the VCAP_SERVICES environment variable contains a json array named smfHosts.
+In a High Availability environment this will contain two hosts, the primary router and the backup.
+The Spring Cloud connector automatically combines these into a single comma-separated string exposed
+as the smfHost property, which is what the JCSMP library expects.
 
 With the Solace session connected. The remainder of this tutorial is exactly the same as the [Java App]({{ site.baseurl }}/java-app) tutorial. The details are repeated here for convenience.
 
