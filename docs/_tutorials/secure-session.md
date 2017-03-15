@@ -168,8 +168,6 @@ curl -X GET http://$APP_URL/message
 
 ## Common Problems
 
-### JCSMPTransportException
-
 If you see:
 
 ```
@@ -178,14 +176,10 @@ JCSMPTransportException: Error communicating with the router, ConnectException: 
 
 this can happen if a TLS server certificate was not configured in the Solace Messaging for PCF tile in which case the Solace Message Router will reject incoming TLS connections.
 
-### CertificateException
-
 If you see:
 ```
 CertificateException: Path does not chain with any of the trust anchors
 ```
 
 it is because the application could not validate the certificate it received from the Solace Message Router. This can happen when you install a self-signed certificate on the Solace Message Router, but didn't package it with the app, or didn't set INSTALL_CERTIFICATE to true in the sample.
-
-
 

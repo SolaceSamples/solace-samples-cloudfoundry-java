@@ -91,7 +91,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
           "clientPassword": "bb90fcb0-6c83-4a10-bafa-3ec225bbfc08",
           "msgVpnName": "v005",
             (...)
-          "smfHost": "tcp://192.168.132.14:7000",
+          "smfHosts": [ "tcp://192.168.132.14:7000" ],
             (...)
         }
       }
@@ -153,8 +153,14 @@ logger.info("Solace client initializing and using Credentials: " + solaceCredent
 Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}){:target="_top"}. You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
 
 ```java
+
+// The host property is in a json array. Two hosts are provided in a High Availability 
+// environment, one for the primary router and one for the backup. 
+JSONArray hostsArray = solaceCredentials.getJSONArray("smfHosts");
+String host = hostsArray.getString(0);
+
 final JCSMPProperties properties = new JCSMPProperties();
-properties.setProperty(JCSMPProperties.HOST, solaceCredentials.getString("smfHost"));
+properties.setProperty(JCSMPProperties.HOST, host);
 properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
 properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
 properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
@@ -291,7 +297,7 @@ export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
 echo "The application URL is: ${APP_URL}"
 ```
 
-To demonstrate the application we will make the application send a message to itself.  Then we will read the message back to confirm the successful delivery of the message :
+To demonstrate the application we will make the application send a message to itself.  Then we will read the message back to confirm the successful delivery of the message:
 
 ```
 # Subscribes the application to the topic "test"
@@ -303,3 +309,46 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
 ```
+## High Availability
+
+Solace provides the option to set up High Availability configurations, where each message router has a backup. To use this in Cloud Foundry you need to create a service of type medium-ha or large-ha, for example:
+
+```
+cf create-service solace-messaging medium-ha solace-messaging-sample-instance
+```
+
+The Solace Java API automatically switches to the backup connection if it loses the connection to the primary router.
+
+When using a High Availability service, the environment provided to the applications contains two connection urls rather than one. The first is the primary router and the second is the backup, for example:
+
+```
+"smfHosts": [ "tcp://192.168.101.16:7000", "tcp://192.168.101.17:7000" ]
+```
+
+In order to provide both hosts to the Solace Java API, you need to create a string containing a comma-separated list of the two hosts:
+
+```
+// The host property is in a json array. Two hosts are provided in a High Availability
+// environment, one for the primary router and one for the backup. 
+JSONArray hostsArray = solaceCredentials.getJSONArray("smfHosts");
+String primary = hostsArray.getString(0);
+String backup = hostsArray.getString(1);
+String hosts = String.join(",", primary, backup);
+properties.setProperty(JCSMPProperties.HOST, hosts);
+```
+When you do the Spring Cloud tutorial, you will see that the Solace Spring Cloud Connector takes care of this for you.
+
+Please consult the [Configuring Connections]({{ site.links-configuring-connection }}){:target="_top"} page.
+
+As described in that document, when using High Availability it is recommended to set the following configuration:
+
+```
+JCSMPProperties properties = new JCSMPProperties();
+JCSMPChannelProperties cp = (JCSMPChannelProperties) properties
+    .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
+cp.setConnectRetries(1);
+cp.setReconnectRetries(5);
+cp.setReconnectRetryWaitInMillis(3000);
+cp.setConnectRetriesPerHost(20);
+```
+

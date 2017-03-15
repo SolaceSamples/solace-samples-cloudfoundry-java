@@ -123,6 +123,14 @@ public class SolaceController {
 		properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
 		
+		// If using High Availability, uncomment these lines:
+//		JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
+//	            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
+//		channelProperties.setConnectRetries(1);
+//		channelProperties.setReconnectRetries(5);
+//		channelProperties.setReconnectRetryWaitInMillis(3000);
+//		channelProperties.setConnectRetriesPerHost(20);
+
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);
 			session.connect();
