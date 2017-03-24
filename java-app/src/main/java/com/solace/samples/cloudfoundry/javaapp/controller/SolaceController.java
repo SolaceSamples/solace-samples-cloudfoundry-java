@@ -131,34 +131,32 @@ public class SolaceController {
 		// The host property is in a json array. Two hosts are provided in a High Availability environment,
 		// one for the primary router and one for the backup. 
 		JSONArray hostsArray = solaceCredentials.getJSONArray("smfHosts");
-		
-		String host = hostsArray.getString(0);
+
+		// Make a host list (for HA and non HA)
+		String host = "";
+		for( int i = 0; i < hostsArray.length(); i++) {
+			String newHostEntry = hostsArray.getString(i);
+			if( i > 0 )
+				host += ",";
+			
+			host +=  newHostEntry;
+		}
+
+		logger.info("Using host " + host);
+		properties.setProperty(JCSMPProperties.HOST, host);
 		
 		// Must be using HA to have more than 1 host.
 		if( hostsArray.length() > 1 ) {
-
-			// Rebuild list of hosts
-			host = "";
-			for( int i = 0; i < hostsArray.length(); i++) {
-				String newHostEntry = hostsArray.getString(i);
-				if( i > 0 )
-					host += ",";
-				
-				host +=  newHostEntry;
-			}
 			
-			
-			// A Sample for High Availability automatic reconnects:
+			// A Sample for High Availability automatic reconnects.
 			JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
 		            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
 			channelProperties.setConnectRetries(1);
-			channelProperties.setReconnectRetries(5);
-			channelProperties.setReconnectRetryWaitInMillis(3000);
-			channelProperties.setConnectRetriesPerHost(20);
-
+			channelProperties.setReconnectRetries(-1);
+			channelProperties.setReconnectRetryWaitInMillis(1000);
+			channelProperties.setConnectRetriesPerHost(1);
 		}
 		
-		properties.setProperty(JCSMPProperties.HOST, host);
 		properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
 		properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
