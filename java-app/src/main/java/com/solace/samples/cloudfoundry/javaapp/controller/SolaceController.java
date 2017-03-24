@@ -125,30 +125,42 @@ public class SolaceController {
 
 		logger.info("Solace client initializing and using Credentials: " + solaceCredentials.toString(2));
 
+		final JCSMPProperties properties = new JCSMPProperties();
+
 		
 		// The host property is in a json array. Two hosts are provided in a High Availability environment,
 		// one for the primary router and one for the backup. 
 		JSONArray hostsArray = solaceCredentials.getJSONArray("smfHosts");
+		
 		String host = hostsArray.getString(0);
 		
-		// If using high availability, uncomment these lines - the JCSMP library accepts a comma-separated list of 2 hosts:
-		//String backup = hostsArray.getString(1);
-		//host = String.join(",", host, backup);
+		// Must be using HA to have more than 1 host.
+		if( hostsArray.length() > 1 ) {
 
-		final JCSMPProperties properties = new JCSMPProperties();
+			// Rebuild list of hosts
+			host = "";
+			for( int i = 0; i < hostsArray.length(); i++) {
+				String newHostEntry = hostsArray.getString(i);
+				host = String.join(",", host, newHostEntry);
+			}
+			
+			
+			// A Sample for High Availability automatic reconnects:
+			JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
+		            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
+			channelProperties.setConnectRetries(1);
+			channelProperties.setReconnectRetries(5);
+			channelProperties.setReconnectRetryWaitInMillis(3000);
+			channelProperties.setConnectRetriesPerHost(20);
+
+		}
+		
 		properties.setProperty(JCSMPProperties.HOST, host);
 		properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
 		properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
-		
-		// If using High Availability, uncomment these lines:
-//		JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
-//	            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
-//		channelProperties.setConnectRetries(1);
-//		channelProperties.setReconnectRetries(5);
-//		channelProperties.setReconnectRetryWaitInMillis(3000);
-//		channelProperties.setConnectRetriesPerHost(20);
 
+		
 
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);
