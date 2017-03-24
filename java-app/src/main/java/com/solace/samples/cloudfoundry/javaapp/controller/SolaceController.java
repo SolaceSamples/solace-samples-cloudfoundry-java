@@ -141,7 +141,10 @@ public class SolaceController {
 			host = "";
 			for( int i = 0; i < hostsArray.length(); i++) {
 				String newHostEntry = hostsArray.getString(i);
-				host = String.join(",", host, newHostEntry);
+				if( i > 0 )
+					host += ",";
+				
+				host +=  newHostEntry;
 			}
 			
 			
