@@ -39,6 +39,7 @@ import com.solace.labs.spring.cloud.core.SolaceMessagingInfo;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
 import com.solacesystems.jcsmp.BytesXMLMessage;
+import com.solacesystems.jcsmp.JCSMPChannelProperties;
 import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
@@ -117,19 +118,24 @@ public class SolaceController {
 		
 		logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceMessagingServiceInfo);
 
+		String host = solaceMessagingServiceInfo.getSmfHost();
+		
 		final JCSMPProperties properties = new JCSMPProperties();
-		properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfHost());
+		properties.setProperty(JCSMPProperties.HOST, host);
 		properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
 		properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
 		
-		// If using High Availability, uncomment these lines:
-//		JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
-//	            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
-//		channelProperties.setConnectRetries(1);
-//		channelProperties.setReconnectRetries(5);
-//		channelProperties.setReconnectRetryWaitInMillis(3000);
-//		channelProperties.setConnectRetriesPerHost(20);
+		// If using High Availability, the host property will be a comma-separated list of two hosts.
+        if (host.contains(",")) {
+        	// Recommended values for High Availability automatic reconnects.
+			JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
+		            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
+			channelProperties.setConnectRetries(1);
+			channelProperties.setReconnectRetries(5);
+			channelProperties.setReconnectRetryWaitInMillis(3000);
+			channelProperties.setConnectRetriesPerHost(20);
+        }
 
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);

@@ -152,16 +152,14 @@ public class SolaceController {
 			JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
 		            .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
 			channelProperties.setConnectRetries(1);
-			channelProperties.setReconnectRetries(-1);
-			channelProperties.setReconnectRetryWaitInMillis(1000);
-			channelProperties.setConnectRetriesPerHost(1);
+			channelProperties.setReconnectRetries(5);
+			channelProperties.setReconnectRetryWaitInMillis(3000);
+			channelProperties.setConnectRetriesPerHost(20);
 		}
 		
 		properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
 		properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
 		properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
-
-		
 
 		try {
 			session = JCSMPFactory.onlyInstance().createSession(properties);
