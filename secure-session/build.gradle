@@ -25,10 +25,6 @@ jar {
 
 repositories {
     mavenCentral()
-//    mavenLocal()
-//    maven {
-//        url "http://apps-jenkins:9090/nexus/content/repositories/snapshots/"
-//    }
 }
 
 dependencies {

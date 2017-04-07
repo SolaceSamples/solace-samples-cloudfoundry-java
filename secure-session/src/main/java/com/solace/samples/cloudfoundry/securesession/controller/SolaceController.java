@@ -63,9 +63,8 @@ public class SolaceController {
 
     private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-    // If true, we will install a certificate residing in the src/main/resources
-    // directory
-    // so that we can validate self-signed certificates.
+    // If true, we will install a certificate residing in the
+    // src/main/resources directory so that we can validate self-signed certificates.
     private static final boolean INSTALL_CERTIFICATE = false;
 
     // Change this to match the file in src/main/resources

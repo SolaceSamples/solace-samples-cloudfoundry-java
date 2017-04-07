@@ -297,7 +297,7 @@ export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
 echo "The application URL is: ${APP_URL}"
 ```
 
-To demonstrate the application we will make the application send a message to itself.  Then we will read the message back to confirm the successful delivery of the message:
+To demonstrate Solace messaging, the application will send a message to itself. Then we will read the message back to confirm the successful delivery of the message:
 
 ```
 # Subscribes the application to the topic "test"
