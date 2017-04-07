@@ -38,6 +38,7 @@ import com.solace.labs.spring.cloud.core.SolaceMessagingInfo;
 import com.solace.samples.cloudfoundry.securesession.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.securesession.model.SimpleSubscription;
 import com.solacesystems.jcsmp.BytesXMLMessage;
+import com.solacesystems.jcsmp.JCSMPChannelProperties;
 import com.solacesystems.jcsmp.JCSMPException;
 import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPProperties;
@@ -62,8 +63,8 @@ public class SolaceController {
 
     private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-    // If true, we will install a certificate residing in the src/main/resources directory
-    // so that we can validate self-signed certificates.
+    // If true, we will install a certificate residing in the
+    // src/main/resources directory so that we can validate self-signed certificates.
     private static final boolean INSTALL_CERTIFICATE = false;
 
     // Change this to match the file in src/main/resources
@@ -142,8 +143,8 @@ public class SolaceController {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
 
-        SolaceMessagingInfo solaceMessagingServiceInfo
-                = (SolaceMessagingInfo) cloud.getServiceInfo("solace-messaging-sample-instance");
+        SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud
+                .getServiceInfo("solace-messaging-sample-instance");
 
         if (solaceMessagingServiceInfo == null) {
             logger.error("Did not find instance of 'solace-messaging' service");
@@ -153,8 +154,10 @@ public class SolaceController {
 
         logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceMessagingServiceInfo);
 
+        String host = solaceMessagingServiceInfo.getSmfTlsHost();
+
         final JCSMPProperties properties = new JCSMPProperties();
-        properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfTlsHost());
+        properties.setProperty(JCSMPProperties.HOST, host);
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
         properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
         properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
@@ -163,6 +166,18 @@ public class SolaceController {
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
         properties.setProperty(JCSMPProperties.SSL_TRUST_STORE, TRUST_STORE);
         properties.setProperty(JCSMPProperties.SSL_TRUST_STORE_PASSWORD, TRUST_STORE_PASSWORD);
+
+        // If using High Availability, the host property will be a
+        // comma-separated list of two hosts.
+        if (host.contains(",")) {
+            // Recommended values for High Availability automatic reconnects.
+            JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
+                    .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
+            channelProperties.setConnectRetries(1);
+            channelProperties.setReconnectRetries(5);
+            channelProperties.setReconnectRetryWaitInMillis(3000);
+            channelProperties.setConnectRetriesPerHost(20);
+        }
 
         try {
             session = JCSMPFactory.onlyInstance().createSession(properties);
@@ -283,15 +298,15 @@ public class SolaceController {
     }
 
     /**
-     * This formats a string showing the exception class name and message,
-     * as well as the class name and message of the underlying cause
-     * if it exists.
+     * This formats a string showing the exception class name and message, as
+     * well as the class name and message of the underlying cause if it exists.
      * Then it returns that string in a ResponseEntity.
+     * 
      * @param exception
      * @return ResponseEntity<String>
      */
     private ResponseEntity<String> handleError(Exception exception) {
-        
+
         Throwable cause = exception.getCause();
         String causeString = "";
 
@@ -299,8 +314,8 @@ public class SolaceController {
             causeString = "Cause: " + cause.getClass() + ": " + cause.getMessage();
         }
 
-        String desc = String.format("{'description': ' %s: %s %s'}", 
-                exception.getClass().toString(), exception.getMessage(), causeString);
+        String desc = String.format("{'description': ' %s: %s %s'}", exception.getClass().toString(),
+                exception.getMessage(), causeString);
         return new ResponseEntity<>(desc, HttpStatus.BAD_REQUEST);
 
     }
@@ -318,7 +333,7 @@ public class SolaceController {
         File file = new File(CERTIFICATE_FILE_NAME);
         logger.info("Loading certificate from " + file.getAbsolutePath());
 
-        // This loads the KeyStore from the default location 
+        // This loads the KeyStore from the default location
         // (i.e. default for a Clound Foundry app) using the default password.
         FileInputStream is = new FileInputStream(TRUST_STORE);
         char[] password = TRUST_STORE_PASSWORD.toCharArray();
@@ -326,11 +341,12 @@ public class SolaceController {
         keystore.load(is, password);
         is.close();
 
-        // Create an ByteArrayInputStream stream from the 
+        // Create an ByteArrayInputStream stream from the
         FileInputStream fis = new FileInputStream(CERTIFICATE_FILE_NAME);
         DataInputStream dis = new DataInputStream(fis);
         byte[] bytes = new byte[dis.available()];
         dis.readFully(bytes);
+        dis.close();
         ByteArrayInputStream certstream = new ByteArrayInputStream(bytes);
 
         // This takes that Byte Array and creates a certificate out of it.

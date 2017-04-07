@@ -36,217 +36,247 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController
 public class SolaceController {
 
-	private static final Log logger = LogFactory.getLog(SolaceController.class);
+    private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-	private JCSMPSession session;
-	private XMLMessageProducer producer;
-	private TextMessage lastReceivedMessage;
+    private JCSMPSession session;
+    private XMLMessageProducer producer;
+    private TextMessage lastReceivedMessage;
 
-	// Stats
-	private final AtomicInteger numMessagesReceived = new AtomicInteger();
-	private final AtomicInteger numMessagesSent = new AtomicInteger();
+    // Stats
+    private final AtomicInteger numMessagesReceived = new AtomicInteger();
+    private final AtomicInteger numMessagesSent = new AtomicInteger();
 
-	private class SimplePublisherEventHandler implements JCSMPStreamingPublishEventHandler {
-		@Override
-		public void responseReceived(String messageID) {
-			logger.info("Producer received response for msg: " + messageID);
-		}
+    private class SimplePublisherEventHandler implements JCSMPStreamingPublishEventHandler {
+        @Override
+        public void responseReceived(String messageID) {
+            logger.info("Producer received response for msg: " + messageID);
+        }
 
-		@Override
-		public void handleError(String messageID, JCSMPException e, long timestamp) {
-			logger.error("Producer received error for msg: " + messageID + " - " + timestamp, e);
-		}
+        @Override
+        public void handleError(String messageID, JCSMPException e, long timestamp) {
+            logger.error("Producer received error for msg: " + messageID + " - " + timestamp, e);
+        }
 
-	}
+    }
 
-	private class SimpleMessageListener implements XMLMessageListener {
+    private class SimpleMessageListener implements XMLMessageListener {
 
-		@Override
-		public void onReceive(BytesXMLMessage receivedMessage) {
+        @Override
+        public void onReceive(BytesXMLMessage receivedMessage) {
 
-			numMessagesReceived.incrementAndGet();
+            numMessagesReceived.incrementAndGet();
 
-			if (receivedMessage instanceof TextMessage) {
-				lastReceivedMessage = (TextMessage) receivedMessage;
-				logger.info("Received message : " + lastReceivedMessage.getText());
-			} else {
-				logger.error("Received message that was not a TextMessage: " + receivedMessage.dump());
-			}
-		}
+            if (receivedMessage instanceof TextMessage) {
+                lastReceivedMessage = (TextMessage) receivedMessage;
+                logger.info("Received message : " + lastReceivedMessage.getText());
+            } else {
+                logger.error("Received message that was not a TextMessage: " + receivedMessage.dump());
+            }
+        }
 
-		@Override
-		public void onException(JCSMPException e) {
-			logger.error("Consumer received exception: %s%n", e);
-		}
-	}
+        @Override
+        public void onException(JCSMPException e) {
+            logger.error("Consumer received exception: %s%n", e);
+        }
+    }
 
-	@PostConstruct
-	public void init() {
+    @PostConstruct
+    public void init() {
 
-		// Connect to Solace
-		logger.info("************* Init Called ************");
+        // Connect to Solace
+        logger.info("************* Init Called ************");
 
-		String vcapServices = System.getenv("VCAP_SERVICES");
-		logger.info(vcapServices);
+        String vcapServices = System.getenv("VCAP_SERVICES");
+        logger.info(vcapServices);
 
-		// Need to parse the Solace HOST from VCAP Services
-		if (vcapServices == null || vcapServices.equals("") || vcapServices.equals("{}")) {
-			logger.error("The VCAP_SERVICES variable wasn't set in the environment. Aborting connection.");
-			logger.info("************* Aborting Solace initialization!! ************");
-			return;
-		}
+        // Need to parse the Solace HOST from VCAP Services
+        if (vcapServices == null || vcapServices.equals("") || vcapServices.equals("{}")) {
+            logger.error("The VCAP_SERVICES variable wasn't set in the environment. Aborting connection.");
+            logger.info("************* Aborting Solace initialization!! ************");
+            return;
+        }
 
-		JSONObject vcapServicesJson = new JSONObject(vcapServices);
+        JSONObject vcapServicesJson = new JSONObject(vcapServices);
 
-		JSONArray solMessagingArray = vcapServicesJson.getJSONArray("solace-messaging");
+        JSONArray solMessagingArray = vcapServicesJson.getJSONArray("solace-messaging");
 
-		if (solMessagingArray == null) {
-			logger.error("Did not find Solace provided messaging service \"solace-messaging\"");
-			logger.info("************* Aborting Solace initialization!! ************");
-			return;
-		}
+        if (solMessagingArray == null) {
+            logger.error("Did not find Solace provided messaging service \"solace-messaging\"");
+            logger.info("************* Aborting Solace initialization!! ************");
+            return;
+        }
 
-		logger.info("Number of provided bindings: " + solMessagingArray.length());
+        logger.info("Number of provided bindings: " + solMessagingArray.length());
 
-		// Get the first Solace credentials from the array
-		JSONObject solaceCredentials = null;
-		if (solMessagingArray.length() > 0) {
-			solaceCredentials = solMessagingArray.getJSONObject(0);
-			if (solaceCredentials != null) {
-				solaceCredentials = solaceCredentials.getJSONObject("credentials");
-			}
-		}
+        // Get the first Solace credentials from the array
+        JSONObject solaceCredentials = null;
+        if (solMessagingArray.length() > 0) {
+            solaceCredentials = solMessagingArray.getJSONObject(0);
+            if (solaceCredentials != null) {
+                solaceCredentials = solaceCredentials.getJSONObject("credentials");
+            }
+        }
 
-		if (solaceCredentials == null) {
-			logger.error("Did not find Solace messaging service credentials");
-			logger.info("************* Aborting Solace initialization!! ************");
-			return;
-		}
+        if (solaceCredentials == null) {
+            logger.error("Did not find Solace messaging service credentials");
+            logger.info("************* Aborting Solace initialization!! ************");
+            return;
+        }
 
-		logger.info("Solace client initializing and using Credentials: " + solaceCredentials.toString(2));
+        logger.info("Solace client initializing and using Credentials: " + solaceCredentials.toString(2));
 
-		final JCSMPProperties properties = new JCSMPProperties();
-		properties.setProperty(JCSMPProperties.HOST, solaceCredentials.getString("smfHost"));
-		properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
-		properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
-		properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
+        final JCSMPProperties properties = new JCSMPProperties();
 
-		try {
-			session = JCSMPFactory.onlyInstance().createSession(properties);
-			session.connect();
-		} catch (Exception e) {
-			logger.error("Error connecting and setting up session.", e);
-			logger.info("************* Aborting Solace initialization!! ************");
-			return;
-		}
+        // The host property is in a json array. Two hosts are provided in a
+        // High Availability environment,
+        // one for the primary router and one for the backup.
+        JSONArray hostsArray = solaceCredentials.getJSONArray("smfHosts");
 
-		try {
-			final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageListener());
-			cons.start();
+        // Make a host list (for HA and non HA)
+        String host = "";
+        for (int i = 0; i < hostsArray.length(); i++) {
+            String newHostEntry = hostsArray.getString(i);
+            if (i > 0)
+                host += ",";
 
-			producer = session.getMessageProducer(new SimplePublisherEventHandler());
+            host += newHostEntry;
+        }
 
-			logger.info("************* Solace initialized correctly!! ************");
-		} catch (Exception e) {
-			logger.error("Error creating the consumer and producer.", e);
-		}
-	}
+        logger.info("Using host " + host);
+        properties.setProperty(JCSMPProperties.HOST, host);
 
-	@RequestMapping(value = "/message", method = RequestMethod.POST)
-	public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
+        // Must be using HA to have more than 1 host.
+        if (hostsArray.length() > 1) {
 
-		if (session == null || session.isClosed()) {
-			logger.error("Session was null or closed, Could not send message");
-			return new ResponseEntity<>("{'description': 'Somehow the session is not connected, please see logs'}",
-					HttpStatus.BAD_REQUEST);
-		}
+            // A Sample for High Availability automatic reconnects.
+            JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
+                    .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
+            channelProperties.setConnectRetries(1);
+            channelProperties.setReconnectRetries(5);
+            channelProperties.setReconnectRetryWaitInMillis(3000);
+            channelProperties.setConnectRetriesPerHost(20);
+        }
 
-		logger.info("Sending message on topic: " + message.getTopic() + " with body: " + message.getBody());
+        properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
+        properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
+        properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
 
-		final Topic topic = JCSMPFactory.onlyInstance().createTopic(message.getTopic());
-		TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
-		msg.setText(message.getBody());
-		try {
-			producer.send(msg, topic);
-			numMessagesSent.incrementAndGet();
+        try {
+            session = JCSMPFactory.onlyInstance().createSession(properties);
+            session.connect();
+        } catch (Exception e) {
+            logger.error("Error connecting and setting up session.", e);
+            logger.info("************* Aborting Solace initialization!! ************");
+            return;
+        }
 
-		} catch (JCSMPException e) {
-			logger.error("Sending message failed.", e);
-			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
-		}
-		return new ResponseEntity<>("{}", HttpStatus.OK);
-	}
+        try {
+            final XMLMessageConsumer cons = session.getMessageConsumer(new SimpleMessageListener());
+            cons.start();
 
-	@RequestMapping(value = "/message", method = RequestMethod.GET)
-	public ResponseEntity<SimpleMessage> getLastMessageReceived() {
+            producer = session.getMessageProducer(new SimplePublisherEventHandler());
 
-		if (lastReceivedMessage != null) {
-			logger.info("Sending the lastReceivedMessage");
+            logger.info("************* Solace initialized correctly!! ************");
+        } catch (Exception e) {
+            logger.error("Error creating the consumer and producer.", e);
+        }
+    }
 
-			// Return the last received message if it exists.
-			SimpleMessage receivedMessage = new SimpleMessage();
+    @RequestMapping(value = "/message", method = RequestMethod.POST)
+    public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
 
-			receivedMessage.setTopic(lastReceivedMessage.getDestination().getName());
-			receivedMessage.setBody(lastReceivedMessage.getText());
-			return new ResponseEntity<>(receivedMessage, HttpStatus.OK);
-		} else {
-			logger.info("Sorry did not find a lastReceivedMessage");
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
+        if (session == null || session.isClosed()) {
+            logger.error("Session was null or closed, Could not send message");
+            return new ResponseEntity<>("{'description': 'Somehow the session is not connected, please see logs'}",
+                    HttpStatus.BAD_REQUEST);
+        }
 
-	}
+        logger.info("Sending message on topic: " + message.getTopic() + " with body: " + message.getBody());
 
-	@RequestMapping(value = "/subscription", method = RequestMethod.POST)
-	public ResponseEntity<String> addSubscription(@RequestBody SimpleSubscription subscription) {
-		String subscriptionTopic = subscription.getSubscription();
-		logger.info("Adding a subscription to topic: " + subscriptionTopic);
+        final Topic topic = JCSMPFactory.onlyInstance().createTopic(message.getTopic());
+        TextMessage msg = JCSMPFactory.onlyInstance().createMessage(TextMessage.class);
+        msg.setText(message.getBody());
+        try {
+            producer.send(msg, topic);
+            numMessagesSent.incrementAndGet();
 
-		final Topic topic = JCSMPFactory.onlyInstance().createTopic(subscriptionTopic);
-		try {
-			boolean waitForConfirm = true;
-			session.addSubscription(topic, waitForConfirm);
-		} catch (JCSMPException e) {
-			logger.error("Adding a subscription failed.", e);
-			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
-		}
-		logger.info("Finished Adding a subscription to topic: " + subscriptionTopic);
-		return new ResponseEntity<>("{}", HttpStatus.OK);
-	}
+        } catch (JCSMPException e) {
+            logger.error("Sending message failed.", e);
+            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
 
-	@RequestMapping(value = "/subscription", method = RequestMethod.DELETE)
-	public ResponseEntity<String> deleteSubscription(@RequestBody SimpleSubscription subscription) {
-		String subscriptionTopic = subscription.getSubscription();
-		final Topic topic = JCSMPFactory.onlyInstance().createTopic(subscriptionTopic);
-		logger.info("Deleting a subscription to topic: " + subscriptionTopic);
+    @RequestMapping(value = "/message", method = RequestMethod.GET)
+    public ResponseEntity<SimpleMessage> getLastMessageReceived() {
 
-		try {
-			boolean waitForConfirm = true;
-			session.removeSubscription(topic, waitForConfirm);
-		} catch (JCSMPException e) {
-			logger.error("Deleting a subscription failed.", e);
-			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
-		}
-		logger.info("Finished Deleting a subscription to topic: " + subscriptionTopic);
-		return new ResponseEntity<>("{}", HttpStatus.OK);
-	}
+        if (lastReceivedMessage != null) {
+            logger.info("Sending the lastReceivedMessage");
 
-	@RequestMapping(value = "/status", method = RequestMethod.GET)
-	public ResponseEntity<String> getStatus() {
+            // Return the last received message if it exists.
+            SimpleMessage receivedMessage = new SimpleMessage();
 
-		logger.info("Received request for getStatus");
+            receivedMessage.setTopic(lastReceivedMessage.getDestination().getName());
+            receivedMessage.setBody(lastReceivedMessage.getText());
+            return new ResponseEntity<>(receivedMessage, HttpStatus.OK);
+        } else {
+            logger.info("Sorry did not find a lastReceivedMessage");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-		JSONObject statusJson = new JSONObject();
-		statusJson.put("numMsgsSent", numMessagesSent.get());
-		statusJson.put("numMsgsReceived", numMessagesReceived.get());
-		return new ResponseEntity<>(statusJson.toString(), HttpStatus.OK);
-	}
+    }
 
-	@RequestMapping(value = "/status", method = RequestMethod.DELETE)
-	public ResponseEntity<String> resetStats() {
-		numMessagesReceived.set(0);
-		numMessagesSent.set(0);
-		lastReceivedMessage = null;
-		return new ResponseEntity<>("{}", HttpStatus.OK);
-	}
+    @RequestMapping(value = "/subscription", method = RequestMethod.POST)
+    public ResponseEntity<String> addSubscription(@RequestBody SimpleSubscription subscription) {
+        String subscriptionTopic = subscription.getSubscription();
+        logger.info("Adding a subscription to topic: " + subscriptionTopic);
+
+        final Topic topic = JCSMPFactory.onlyInstance().createTopic(subscriptionTopic);
+        try {
+            boolean waitForConfirm = true;
+            session.addSubscription(topic, waitForConfirm);
+        } catch (JCSMPException e) {
+            logger.error("Adding a subscription failed.", e);
+            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+        }
+        logger.info("Finished Adding a subscription to topic: " + subscriptionTopic);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/subscription", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteSubscription(@RequestBody SimpleSubscription subscription) {
+        String subscriptionTopic = subscription.getSubscription();
+        final Topic topic = JCSMPFactory.onlyInstance().createTopic(subscriptionTopic);
+        logger.info("Deleting a subscription to topic: " + subscriptionTopic);
+
+        try {
+            boolean waitForConfirm = true;
+            session.removeSubscription(topic, waitForConfirm);
+        } catch (JCSMPException e) {
+            logger.error("Deleting a subscription failed.", e);
+            return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
+        }
+        logger.info("Finished Deleting a subscription to topic: " + subscriptionTopic);
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/status", method = RequestMethod.GET)
+    public ResponseEntity<String> getStatus() {
+
+        logger.info("Received request for getStatus");
+
+        JSONObject statusJson = new JSONObject();
+        statusJson.put("numMsgsSent", numMessagesSent.get());
+        statusJson.put("numMsgsReceived", numMessagesReceived.get());
+        return new ResponseEntity<>(statusJson.toString(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/status", method = RequestMethod.DELETE)
+    public ResponseEntity<String> resetStats() {
+        numMessagesReceived.set(0);
+        numMessagesSent.set(0);
+        lastReceivedMessage = null;
+        return new ResponseEntity<>("{}", HttpStatus.OK);
+    }
 
 }
