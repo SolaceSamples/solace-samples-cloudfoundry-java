@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.http.HttpStatus;
@@ -78,6 +79,16 @@ public class SolaceController {
 
     // Standard default password for the trust store
     private static final String TRUST_STORE_PASSWORD = "changeit";
+
+    // Reconnect properties for High Availability
+    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECTION_RETRIES:1}")
+    private int connectRetries;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRIES:5}")
+    private int reconnectRetries;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRY_WAIT_IN_MILLIS:3000}")
+    private int reconnectRetryWaitInMillis;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECT_RETRIES_PER_HOST:20}")
+    private int connectRetriesPerHost;
 
     private JCSMPSession session;
     private XMLMessageProducer producer;
@@ -173,10 +184,10 @@ public class SolaceController {
             // Recommended values for High Availability automatic reconnects.
             JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
                     .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
-            channelProperties.setConnectRetries(1);
-            channelProperties.setReconnectRetries(5);
-            channelProperties.setReconnectRetryWaitInMillis(3000);
-            channelProperties.setConnectRetriesPerHost(20);
+            channelProperties.setConnectRetries(connectRetries);
+            channelProperties.setReconnectRetries(reconnectRetries);
+            channelProperties.setReconnectRetryWaitInMillis(reconnectRetryWaitInMillis);
+            channelProperties.setConnectRetriesPerHost(connectRetriesPerHost);
         }
 
         try {
