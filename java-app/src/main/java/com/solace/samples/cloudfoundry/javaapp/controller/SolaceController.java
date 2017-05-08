@@ -19,19 +19,36 @@
 
 package com.solace.samples.cloudfoundry.javaapp.controller;
 
-import com.solace.samples.cloudfoundry.javaapp.model.SimpleMessage;
-import com.solace.samples.cloudfoundry.javaapp.model.SimpleSubscription;
-import com.solacesystems.jcsmp.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
-import java.util.concurrent.atomic.AtomicInteger;
+import com.solace.samples.cloudfoundry.javaapp.model.SimpleMessage;
+import com.solace.samples.cloudfoundry.javaapp.model.SimpleSubscription;
+import com.solacesystems.jcsmp.BytesXMLMessage;
+import com.solacesystems.jcsmp.JCSMPChannelProperties;
+import com.solacesystems.jcsmp.JCSMPException;
+import com.solacesystems.jcsmp.JCSMPFactory;
+import com.solacesystems.jcsmp.JCSMPProperties;
+import com.solacesystems.jcsmp.JCSMPSession;
+import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
+import com.solacesystems.jcsmp.TextMessage;
+import com.solacesystems.jcsmp.Topic;
+import com.solacesystems.jcsmp.XMLMessageConsumer;
+import com.solacesystems.jcsmp.XMLMessageListener;
+import com.solacesystems.jcsmp.XMLMessageProducer;
 
 @RestController
 public class SolaceController {
@@ -41,6 +58,16 @@ public class SolaceController {
     private JCSMPSession session;
     private XMLMessageProducer producer;
     private TextMessage lastReceivedMessage;
+    
+    // Reconnect properties for High Availability
+    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECTION_RETRIES:1}")
+    private int connectRetries;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRIES:5}")
+    private int reconnectRetries;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRY_WAIT_IN_MILLIS:3000}")
+    private int reconnectRetryWaitInMillis;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECT_RETRIES_PER_HOST:20}")
+    private int connectRetriesPerHost;
 
     // Stats
     private final AtomicInteger numMessagesReceived = new AtomicInteger();
@@ -142,7 +169,12 @@ public class SolaceController {
             host += newHostEntry;
         }
 
-        logger.info("Using host " + host);
+        logger.info("Using host                 " + host);
+        logger.info("connectRetries             " + connectRetries);
+        logger.info("reconnectRetries           " + reconnectRetries);
+        logger.info("reconnectRetryWaitInMillis " + reconnectRetryWaitInMillis);
+        logger.info("connectRetriesPerHost      " + connectRetriesPerHost);
+        
         properties.setProperty(JCSMPProperties.HOST, host);
 
         // Must be using HA to have more than 1 host.
@@ -151,10 +183,10 @@ public class SolaceController {
             // A Sample for High Availability automatic reconnects.
             JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
                     .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
-            channelProperties.setConnectRetries(1);
-            channelProperties.setReconnectRetries(5);
-            channelProperties.setReconnectRetryWaitInMillis(3000);
-            channelProperties.setConnectRetriesPerHost(20);
+            channelProperties.setConnectRetries(connectRetries);
+            channelProperties.setReconnectRetries(reconnectRetries);
+            channelProperties.setReconnectRetryWaitInMillis(reconnectRetryWaitInMillis);
+            channelProperties.setConnectRetriesPerHost(connectRetriesPerHost);
         }
 
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
