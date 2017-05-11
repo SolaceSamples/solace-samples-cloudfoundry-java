@@ -20,17 +20,17 @@
 package com.solace.samples.cloudfoundry.javaapp.model;
 
 public class SimpleSubscription {
-	private String subscription;
+    private String subscription;
 
-	public SimpleSubscription() {
-		subscription = "";
-	}
+    public SimpleSubscription() {
+        subscription = "";
+    }
 
-	public String getSubscription() {
-		return subscription;
-	}
+    public String getSubscription() {
+        return subscription;
+    }
 
-	public void setSubscription(String subscription) {
-		this.subscription = subscription;
-	}
+    public void setSubscription(String subscription) {
+        this.subscription = subscription;
+    }
 }
