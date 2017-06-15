@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.Cloud;
 import org.springframework.cloud.CloudFactory;
 import org.springframework.http.HttpStatus;
@@ -83,6 +84,14 @@ public class SolaceController {
     private XMLMessageProducer producer;
     private TextMessage lastReceivedMessage;
 
+    // Optionally provided LDAP_CLIENTUSERNAME
+    @Value("${ldap.clientUsername:}")
+    protected String ldap_clientUsername;
+
+    // Optionally provided LDAP_CLIENTPASSWORD
+    @Value("${ldap.clientPassword:}")
+    protected String ldap_clientPassword;
+    
     // Stats
     private final AtomicInteger numMessagesReceived = new AtomicInteger();
     private final AtomicInteger numMessagesSent = new AtomicInteger();
@@ -159,8 +168,21 @@ public class SolaceController {
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, host);
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
-        properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
-        properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
+        
+	    // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
+         
+        if( solaceMessagingServiceInfo.getClientUsername() != null && solaceMessagingServiceInfo.getClientPassword() != null ) {
+            properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
+            properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
+        } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientUsername != null && ! ldap_clientPassword.isEmpty()) {
+        	// Use the LDAP provided clientUsername and clientPassword
+        	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientPassword);
+        	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
+        } else {
+            logger.error("Did not find credentials to use, Neither Solace messaging provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
+            logger.info("************* Aborting Solace initialization!! ************");
+            return;
+        }        
 
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
