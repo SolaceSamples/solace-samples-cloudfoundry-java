@@ -172,7 +172,7 @@ public class SolaceController {
         if( solaceCredentials.has("clientUsername") && solaceCredentials.has("clientPassword") ) {
         	properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
         	properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
-        } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientUsername != null && ! ldap_clientPassword.isEmpty()) {
+        } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientPassword != null && ! ldap_clientPassword.isEmpty()) {
         	// Use the LDAP provided clientUsername and clientPassword
         	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientPassword);
         	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);

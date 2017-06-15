@@ -170,11 +170,10 @@ public class SolaceController {
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
         
 	    // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
-         
         if( solaceMessagingServiceInfo.getClientUsername() != null && solaceMessagingServiceInfo.getClientPassword() != null ) {
             properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
             properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
-        } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientUsername != null && ! ldap_clientPassword.isEmpty()) {
+        } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientPassword != null && ! ldap_clientPassword.isEmpty()) {
         	// Use the LDAP provided clientUsername and clientPassword
         	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientPassword);
         	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
