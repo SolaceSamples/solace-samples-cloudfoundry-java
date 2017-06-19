@@ -68,8 +68,17 @@ public class SolaceController {
     // Optionally provided LDAP_CLIENTPASSWORD
     @Value("${ldap.clientPassword:}")
     protected String ldap_clientPassword;
-
     
+    // Reconnect properties for High Availability
+    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECTION_RETRIES:1}")
+    private int connectRetries;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRIES:5}")
+    private int reconnectRetries;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRY_WAIT_IN_MILLIS:3000}")
+    private int reconnectRetryWaitInMillis;
+    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECT_RETRIES_PER_HOST:20}")
+    private int connectRetriesPerHost;
+
     // Stats
     private final AtomicInteger numMessagesReceived = new AtomicInteger();
     private final AtomicInteger numMessagesSent = new AtomicInteger();
@@ -154,10 +163,10 @@ public class SolaceController {
             // Recommended values for High Availability automatic reconnects.
             JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
                     .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
-            channelProperties.setConnectRetries(1);
-            channelProperties.setReconnectRetries(5);
-            channelProperties.setReconnectRetryWaitInMillis(3000);
-            channelProperties.setConnectRetriesPerHost(20);
+            channelProperties.setConnectRetries(connectRetries);
+            channelProperties.setReconnectRetries(reconnectRetries);
+            channelProperties.setReconnectRetryWaitInMillis(reconnectRetryWaitInMillis);
+            channelProperties.setConnectRetriesPerHost(connectRetriesPerHost);
         }
 
         try {
