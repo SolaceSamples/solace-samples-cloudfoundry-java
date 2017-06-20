@@ -149,7 +149,7 @@ public class SolaceController {
             properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
         } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientPassword != null && ! ldap_clientPassword.isEmpty()) {
         	// Use the LDAP provided clientUsername and clientPassword
-        	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientPassword);
+        	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientUsername);
         	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
         } else {
             logger.error("Did not find credentials to use, Neither Solace messaging provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
