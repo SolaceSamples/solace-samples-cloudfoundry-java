@@ -181,10 +181,12 @@ public class SolaceController {
         
 	    // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
         if( solaceMessagingServiceInfo.getClientUsername() != null && solaceMessagingServiceInfo.getClientPassword() != null ) {
+        	logger.info("Using vmr internal authentication " + solaceMessagingServiceInfo.getClientUsername() + " " + solaceMessagingServiceInfo.getClientPassword());
             properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
             properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
         } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientPassword != null && ! ldap_clientPassword.isEmpty()) {
         	// Use the LDAP provided clientUsername and clientPassword
+        	logger.info("Using ldap provided authentication " + ldap_clientUsername + " " + ldap_clientPassword);
         	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientUsername);
         	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
         } else {
