@@ -97,20 +97,20 @@ cn: finance
 ```
 #### Commands
 
-These commands will add the above files to the LDAP server.
+These commands will apply the configuration in the files above to the LDAP server. 
 
 ```
-ldapadd -Y EXTERNAL -H ldapi:/// -f /home/ec2-user/memberOf.ldif
-ldapadd -x -D 'bindDNUser' -w bindDNPassword -H ldapi:/// -f /home/ec2-user/content.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f memberOf.ldif
+ldapadd -x -D 'bindDNUser' -w bindDNPassword -H ldapi:/// -f content.ldif
 ```
 
-Where bindDNUser and binDNPassword are the bind DN credentials (if there is one).
+Where bindDNUser and binDNPassword are the bind DN credentials (if configured).
 
 ## Application Access Setup 
 
 You need to setup LDAP in the solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }}).
 
-In this case, the the username is `hank` and the password is `hunter`
+In this case, the the username is `hank` and the password is `hunter`.
 
 Set two environment variables called `LDAP_CLIENTUSERNAME` and `LDAP_CLIENTPASSWORD` with the credentials.
 
@@ -119,7 +119,7 @@ Set two environment variables called `LDAP_CLIENTUSERNAME` and `LDAP_CLIENTPASSW
     export LDAP_CLIENTPASSWORD=hunter2
 ```
 
-If the Cloud Operator has set Application Access to `LDAP` instead of `Internal,` bindings will not come with application access credentials.
+If the Cloud Operator has set Application Access to `LDAP` instead of `Internal`, bindings will not come with application access credentials.
 
 If the sample app does not receive any credentials in the binding, it will look for these environment variables and use those for authentication instead.
 
@@ -150,7 +150,7 @@ NOTE: When a service is deleted all authorization groups associated with that VP
 
 When creating a service you can give read-write or read-only access to an LDAP group using the command line parameters 'ldapGroupAdminReadWrite' and 'ldapGroupAdminReadOnly'.
 
-Here is an example, creating a service called `test` with a shared VMR.
+Here is an example, creating a service called `test` with a shared VMR using the [Cloud Foundry command line tool]({{ site.links-cf-cli }}).
 
 ```
     cf create-service solace-messaging shared test -c "{\"ldapGroupAdminReadWrite\": \"cn=finance,ou=groups,dc=example,dc=com\"}"

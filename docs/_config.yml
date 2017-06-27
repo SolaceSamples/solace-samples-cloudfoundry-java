@@ -20,6 +20,7 @@ links-client-ldap-authorization: http://docs.solace.com/Configuring-and-Managing
 links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
 links-configuring-connection: http://docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
 links-best-practices: http://docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
+links-cf-cli: https://docs.cloudfoundry.org/cf-cli/ 
 #----------------------------------------------------
 # Generally don't modify items below this point
 url: "solacesamples.github.io" # the base hostname & protocol for your site
