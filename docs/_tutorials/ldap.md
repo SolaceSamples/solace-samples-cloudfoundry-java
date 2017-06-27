@@ -108,7 +108,7 @@ Where bindDNUser and binDNPassword are the bind DN credentials (if there is one)
 
 ## Application Access Setup 
 
-You need to setup LDAP in the solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }}){:target="_blank"}.
+You need to setup LDAP in the solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }})
 
 In this case, the the username is "hank" and the password is "hunter2"
 
@@ -140,4 +140,4 @@ Assuming you are using VPN v001, use these commands:
 
 This will give all users in the 'finance' group (ie 'hank') application access to that VPN.
 
-You can read more about setting up authorization groups, including changing ACL profiles and client profiles in the [Solace Configuring Client LDAP Authorization Documentation]({{ site.links-client-ldap-authorization}}){:target="_blank"}.
+You can read more about setting up authorization groups, including changing ACL profiles and client profiles in the [Solace Configuring Client LDAP Authorization Documentation]({{ site.links-client-ldap-authorization }})
