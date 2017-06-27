@@ -56,7 +56,7 @@ olcMemberOfMemberOfAD: memberOf
 
 #### content.ldif
 
-Here is an example of how to configure a running LDAP server, with user 'hank' belonging to group 'finance'. 
+Here is an example of how to configure a running LDAP server, with user `hank` belonging to group `finance`. 
 
 ```
 dn: dc=example,dc=com
@@ -108,7 +108,7 @@ Where bindDNUser and binDNPassword are the bind DN credentials (if there is one)
 
 ## Application Access Setup 
 
-You need to setup LDAP in the solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }})
+You need to setup LDAP in the solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }}).
 
 In this case, the the username is "hank" and the password is "hunter2"
 
@@ -123,13 +123,13 @@ If the Cloud Operator has set Application Access to "LDAP" instead of "Internal,
 
 If the sample app does not receive any credentials in the binding, it will look for these environment variables and use those for authentication instead.
 
-## Configuring Application Access Authorization
+#### Configuring Authorization for Application Access
 
-Authorization groups for application access are not setup through PCF and thus have to be setup manually through the CLI.
+Authorization groups for application access are not setup through PCF and thus have to be setup manually.
 
 SSH into the VMR using a user with at least read-write access to that VPN.
 
-Assuming you are using VPN v001, use these commands:
+Assuming you are using VPN `v001`, use these commands on the CLI:
 ```
     enable
     configure
@@ -138,13 +138,13 @@ Assuming you are using VPN v001, use these commands:
     create authorization-group cn=finance,ou=groups,dc=example,dc=com
 ```
 
-This will give all users in the 'finance' group (ie 'hank') application access to that VPN. This can also be done using SEMP.
+This will give all users in the `finance` group (ie `hank`) application access to that VPN. 
 
-You can read more about setting up authorization groups, including changing ACL profiles and client profiles in the [Solace Configuring Client LDAP Authorization Documentation]({{ site.links-client-ldap-authorization }})
+You can read more about setting up authorization groups, including changing ACL profiles and client profiles in the [Solace Configuring Client LDAP Authorization Documentation]({{ site.links-client-ldap-authorization }}).
 
 By default, all newly created authorization-groups will use the default ACL profile and default client profile. 
 
-When a service is deleted all authorization groups associated with that VPN are deleted as well.
+NOTE: When a service is deleted all authorization groups associated with that VPN are deleted as well.
 
 ## Management Access Setup
 
@@ -158,4 +158,4 @@ Here is an example, creating a service called "test" with a shared VMR.
 
 You can also do this through ops manager.
 
-You can read more about setting up management access with LDAP in the [Solace Messaging Documentation]({{ site.links-ldap-management-settings }})
+You can read more about setting up management access with LDAP in the [Solace Messaging Documentation]({{ site.links-ldap-management-settings }}).
