@@ -108,4 +108,4 @@ Where bindDNUser and binDNPassword are the bind DN credentials (if there is one)
 
 ## Setup
 
-![overview]({{ site.baseurl }}/images/ldap_tile.png){: .center-image}
+![LDAP tile](../images/ldap_tile.png)
