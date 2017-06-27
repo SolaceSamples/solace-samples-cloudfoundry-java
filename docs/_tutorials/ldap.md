@@ -67,11 +67,11 @@ objectClass: top
 objectClass: organization
 o: example
 
-dn: ou=cli,dc=example,dc=com
+dn: ou=users,dc=example,dc=com
 changetype: add
 objectClass: organizationalUnit
 objectClass: top
-ou: cli
+ou: users 
 
 dn: ou=groups,dc=example,dc=com
 changetype: add
@@ -79,7 +79,7 @@ objectClass: organizationalUnit
 objectClass: top
 ou: groups
 
-dn: cn=hank,ou=cli,dc=example,dc=com
+dn: cn=hank,ou=users,dc=example,dc=com
 changetype: add
 objectClass: organizationalPerson
 objectClass: person
@@ -92,7 +92,7 @@ dn: cn=finance,ou=groups,dc=example,dc=com
 changetype: add
 objectClass: groupOfNames
 objectClass: top
-member: cn=hank,ou=cli,dc=example,dc=com
+member: cn=hank,ou=users,dc=example,dc=com
 cn: finance
 ```
 #### Commands
@@ -119,13 +119,13 @@ Set two environment variables called LDAP_CLIENTUSERNAME and LDAP_CLIENTPASSWORD
     export LDAP_CLIENTPASSWORD=hunter2
 ```
 
-If the Cloud Operator has set Application Access to "LDAP" instead of "Internal," bindings will not come with credentials.
+If the Cloud Operator has set Application Access to "LDAP" instead of "Internal," bindings will not come with application access credentials.
 
-If the sample app does not receieve any credentials in the binding it will look for these environment variables and use those for authentication instead.
+If the sample app does not receive any credentials in the binding, it will look for these environment variables and use those for authentication instead.
 
 ## Configuring Application Access Authorization
 
-Authorization groups for application access are not setup through PCF and thus have to be setup manually through the CLI/SEMP.
+Authorization groups for application access are not setup through PCF and thus have to be setup manually through the CLI.
 
 SSH into the VMR using a user with at least read-write access to that VPN.
 
@@ -138,6 +138,24 @@ Assuming you are using VPN v001, use these commands:
     create authorization-group cn=finance,ou=groups,dc=example,dc=com
 ```
 
-This will give all users in the 'finance' group (ie 'hank') application access to that VPN.
+This will give all users in the 'finance' group (ie 'hank') application access to that VPN. This can also be done using SEMP.
 
 You can read more about setting up authorization groups, including changing ACL profiles and client profiles in the [Solace Configuring Client LDAP Authorization Documentation]({{ site.links-client-ldap-authorization }})
+
+By default, all newly created authorization-groups will use the default ACL profile and default client profile. 
+
+When a service is deleted all authorization groups associated with that VPN are deleted as well.
+
+## Management Access Setup
+
+When creating a service you can give read-write or read-only access to an LDAP group using the command line parameters 'ldapGroupAdminReadWrite' and 'ldapGroupAdminReadOnly'.
+
+Here is an example, creating a service called "test" with a shared VMR.
+
+```
+    cf create-service solace-messaging shared test -c "{\"ldapGroupAdminReadWrite\": \"cn=finance,ou=groups,dc=example,dc=com\"}"
+```
+
+You can also do this through ops manager.
+
+You can read more about setting up management access with LDAP in the [Solace Messaging Documentation]({{ site.links-ldap-management-settings }})
