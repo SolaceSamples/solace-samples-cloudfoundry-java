@@ -29,14 +29,16 @@ This tutorial assumes the following:
 
 LDAP is directory-based application protocol, which Solace uses for user authentication and authorization.
 On the LDAP server, there will be a directory structure of users, which have an associated username and password, as well as a list of groups that each user belongs to.
+On the VMR we associate certain groups with certain levels of authorization and authorize users based on the groups they belong to.
 
 Assuming LDAP is enabled, when a user connects the username and password they provided are validated against those stored on the LDAP server.
-If the credentials are valid, the LDAP server is queried to get the list of groups that the user belongs to. On the VMR we associate certain groups with certain levels of authorization and authorize the user based on the groups they belong to.
+If the credentials are valid, the LDAP server is queried to get the list of groups that the user belongs to. 
+The user is then authorized based on the groups they belong to, and given no authorization if no groups are configured.
 
 There are two types of access:
 
 * **Application access** allows clients to send and receive messages through various protocols that Solace supports (eg MQTT, SMF).
-* **Management access** allows users to view operational status and modify configuration by sending commands through SEMP or on the CLI. 
+* **Management access** allows users to view operational status and modify configuration by sending commands through SEMP or on the CLI.
 
 ## Files
 
@@ -48,9 +50,9 @@ If you already have a configured LDAP server then you can skip this section.
 
 The memberOf overlay is mainly for convenience.
 
-With the memberOf overlay whenever the list of members in a group is updated, that member allomatically gets updated with the correct memberOf attribute as well. This means only updating one place instead of two. 
+With the memberOf overlay whenever the list of members in a group is updated, that member automatically gets updated with the correct memberOf attribute as well. This means only updating one place instead of two. 
 
-Without the memberOf overlay, a memberOf attribute for every user to be updated manually with the correct groups.
+Without the memberOf overlay, a memberOf attribute for every user has to be updated manually with the correct groups.
 
 ```
 dn: cn=modulecn=config
@@ -115,7 +117,7 @@ cn: finance
 ```
 #### Commands
 
-These commands will apply the configuration in the files above to the LDAP server. 
+These commands will apply the configuration described in the files above to the LDAP server. 
 
 ```
 ldapadd -Y EXTERNAL -H ldapi:/// -f memberOf.ldif
@@ -126,9 +128,9 @@ Where bindDNUser and binDNPassword are the bind DN credentials (if configured).
 
 ## Application Access Setup 
 
-You need to setup LDAP in the solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }}).
+You need to setup LDAP in the Solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }}).
 
-In this case, the the username is `hank` and the password is `hunter`.
+In this case, the the username is `hank` and the password is `hunter2`.
 
 Set two environment variables called `LDAP_CLIENTUSERNAME` and `LDAP_CLIENTPASSWORD` with the credentials.
 
