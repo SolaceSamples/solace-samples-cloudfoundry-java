@@ -100,9 +100,9 @@ This is not a standalone application, but instead a modification to the existing
 
 If application access is enabled by the cloud operator, bindings will not contain application access credentials and the credentials will instead have to be provided to the application externally.
 
-This manifests as the service instance owner having to configure LDAP authorization groups for application access.
+This manifests as the service instance owner having to manually configure LDAP authorization groups for application access.
 
-* [LDAP Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/ldap/)
+* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/ldap/)
 
 ## Try out the Applications
 
