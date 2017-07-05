@@ -17,7 +17,7 @@ The user is then authorized based on the groups they belong to, and given no aut
 
 There are two types of access:
 
-* **Application access** allows clients to send and receive messages through various protocols that Solace supports (eg MQTT, SMF).
+* **Application access** allows clients to send and receive messages through various messaging protocols that Solace supports (e.g. MQTT, SMF).
 * **Management access** allows users to view operational status and modify configuration by sending commands through SEMP or on the CLI.
 
 ## Goals
@@ -25,7 +25,7 @@ There are two types of access:
 The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
 1. How to configure an LDAP server with some example ldif files.
-1. How to use the credentials on the LDAP server for authentication and authorization. 
+1. How to use the credentials stored on the LDAP server for authentication and authorization. 
 
 ## Assumptions
 
