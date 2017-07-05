@@ -7,6 +7,19 @@ icon: ldap.png
 
 ## Overview
 
+LDAP is directory-based application protocol, which Solace uses for user authentication and authorization.
+On the LDAP server, there will be a directory structure of users, which have an associated username and password, as well as a list of groups that each user belongs to.
+On the VMR we associate certain groups with certain levels of authorization and authorize users based on the groups they belong to.
+
+Assuming LDAP is enabled, when a user connects the username and password they provided are validated against those stored on the LDAP server.
+If the credentials are valid, the LDAP server is queried to get the list of groups that the user belongs to. 
+The user is then authorized based on the groups they belong to, and given no authorization if no groups are configured.
+
+There are two types of access:
+
+* **Application access** allows clients to send and receive messages through various protocols that Solace supports (eg MQTT, SMF).
+* **Management access** allows users to view operational status and modify configuration by sending commands through SEMP or on the CLI.
+
 ## Goals
 
 The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
@@ -24,21 +37,6 @@ This tutorial assumes the following:
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 * You have completed the Java app tutorial.
 * You are using OpenLDAP. Some things may be different if you are using a different LDAP implementation.
-
-## Introduction
-
-LDAP is directory-based application protocol, which Solace uses for user authentication and authorization.
-On the LDAP server, there will be a directory structure of users, which have an associated username and password, as well as a list of groups that each user belongs to.
-On the VMR we associate certain groups with certain levels of authorization and authorize users based on the groups they belong to.
-
-Assuming LDAP is enabled, when a user connects the username and password they provided are validated against those stored on the LDAP server.
-If the credentials are valid, the LDAP server is queried to get the list of groups that the user belongs to. 
-The user is then authorized based on the groups they belong to, and given no authorization if no groups are configured.
-
-There are two types of access:
-
-* **Application access** allows clients to send and receive messages through various protocols that Solace supports (eg MQTT, SMF).
-* **Management access** allows users to view operational status and modify configuration by sending commands through SEMP or on the CLI.
 
 ## Files
 
