@@ -7,9 +7,9 @@ icon: ldap.png
 
 ## Overview
 
-LDAP is directory-based application protocol, which Solace uses for user authentication and authorization.
+LDAP is directory-based application protocol, which Solace can use for user authentication and authorization.
 On the LDAP server, there will be a directory structure of users, which have an associated username and password, as well as a list of groups that each user belongs to.
-On the VMR we associate certain groups with certain levels of authorization and authorize users based on the groups they belong to.
+On the VMR, groups are configured to be mapped to certain levels of authorization, and users are authorized based on the groups they belong to.
 
 Assuming LDAP is enabled, when a user connects the username and password they provided are validated against those stored on the LDAP server.
 If the credentials are valid, the LDAP server is queried to get the list of groups that the user belongs to. 
@@ -36,13 +36,15 @@ This tutorial assumes the following:
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 * You have completed the Java app tutorial.
-* You are using OpenLDAP. Some things may be different if you are using a different LDAP implementation.
+* You are using OpenLDAP. 
 
 ## Files
 
 This section only concerns you if you are setting up your own LDAP server.
 
 If you already have a configured LDAP server then you can skip this section.
+
+The following files are written for OpenLDAP and may need to be modified to support other LDAP implementations.
 
 #### memberOf.ldif
 
@@ -130,16 +132,16 @@ You need to setup LDAP in the Solace tile correctly, see the [Solace Messaging D
 
 In this case, the the username is `hank` and the password is `hunter2`.
 
-Set two environment variables called `LDAP_CLIENTUSERNAME` and `LDAP_CLIENTPASSWORD` with the credentials.
+Set two cloud-foundry environment variables for a given app `APP_NAME` called `LDAP_CLIENTUSERNAME` and `LDAP_CLIENTPASSWORD` using the [Cloud Foundry command line tool]({{ site.links-cf-cli }}).
 
 ```
-    export LDAP_CLIENTUSERNAME=hank
-    export LDAP_CLIENTPASSWORD=hunter2
+    cf set-env APP_NAME LDAP_CLIENTUSERNAME hank
+    cf set-env APP_NAME LDAP_CLIENTPASSWORD hunter2
 ```
 
 If the Cloud Operator has set Application Access to `LDAP` instead of `Internal`, bindings will not come with application access credentials.
 
-If the sample app does not receive any credentials in the binding, it will look for these environment variables and use those for authentication instead.
+If the sample app does not receive any credentials in the binding, it will at these environment variables and use those for authentication instead.
 
 #### Configuring Authorization for Application Access
 
