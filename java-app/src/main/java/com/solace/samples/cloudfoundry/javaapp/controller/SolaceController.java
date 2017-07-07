@@ -59,6 +59,14 @@ public class SolaceController {
     private XMLMessageProducer producer;
     private TextMessage lastReceivedMessage;
     
+    // Optionally provided LDAP_CLIENTUSERNAME
+    @Value("${ldap.clientUsername:}")
+    protected String ldap_clientUsername;
+
+    // Optionally provided LDAP_CLIENTPASSWORD
+    @Value("${ldap.clientPassword:}")
+    protected String ldap_clientPassword;
+
     // Reconnect properties for High Availability
     @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECTION_RETRIES:1}")
     private int connectRetries;
@@ -190,8 +198,22 @@ public class SolaceController {
         }
 
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceCredentials.getString("msgVpnName"));
-        properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
-        properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
+
+	    // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
+        if( solaceCredentials.has("clientUsername") && solaceCredentials.has("clientPassword") ) {
+        	logger.info("Using vmr internal authentication " + solaceCredentials.getString("clientUsername") + " " + solaceCredentials.getString("clientPassword"));
+        	properties.setProperty(JCSMPProperties.USERNAME, solaceCredentials.getString("clientUsername"));
+        	properties.setProperty(JCSMPProperties.PASSWORD, solaceCredentials.getString("clientPassword"));
+        } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientPassword != null && ! ldap_clientPassword.isEmpty()) {
+        	// Use the LDAP provided clientUsername and clientPassword
+        	logger.info("Using ldap provided authentication " + ldap_clientUsername + " " + ldap_clientPassword);
+        	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientUsername);
+        	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
+        } else {
+            logger.error("Did not find credentials to use, Neither Solace messaging provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
+            logger.info("************* Aborting Solace initialization!! ************");
+            return;
+        }
 
         try {
             session = JCSMPFactory.onlyInstance().createSession(properties);
