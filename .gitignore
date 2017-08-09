@@ -16,3 +16,4 @@ libs/
 docs/_site
 /.nb-gradle/
 /secure-app/build/
+.idea
