@@ -15,4 +15,7 @@ libs/
 .DS_Store
 docs/_site
 /.nb-gradle/
-/secure-app/build/
+/secure-session/bin/
+/secure-session/build/
+/tcp-routes-mqtt/bin/
+/tcp-routes-mqtt/build/

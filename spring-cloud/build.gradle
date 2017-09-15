@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '1.3.3.RELEASE'
+        springBootVersion = '1.4.2.RELEASE'
         springCloudVersion = '1.2.3.RELEASE'
         solaceJCSMPVersion = '10.+'
         solaceCloudVersion = '1.0.+'		
@@ -16,7 +16,7 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot'
+apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'solace-sample-spring-cloud'

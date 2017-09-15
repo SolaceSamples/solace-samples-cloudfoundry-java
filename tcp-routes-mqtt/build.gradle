@@ -1,7 +1,6 @@
 buildscript {
     ext {
         springBootVersion = '1.4.2.RELEASE'
-        solaceJCSMPVersion = '10.+'
     }
     repositories {
     	mavenCentral()
@@ -31,8 +30,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.json:json:20151123")
     
-    // Solace Java API
-    compile("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")
+    // Eclipse MQTT paho ( https://www.eclipse.org/paho/clients/java/ )
+    compile("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2")
 }
 
 task wrapper(type: Wrapper) {
