@@ -21,6 +21,7 @@ links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
 links-configuring-connection: http://docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
 links-best-practices: http://docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
 links-cf-cli: https://docs.cloudfoundry.org/cf-cli/ 
+links-mqtt-pubsub-tutorial: http://dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
 #----------------------------------------------------
 # Generally don't modify items below this point
 url: "solacesamples.github.io" # the base hostname & protocol for your site
