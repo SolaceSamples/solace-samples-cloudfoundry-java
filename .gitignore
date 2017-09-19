@@ -19,3 +19,4 @@ docs/_site
 /secure-session/build/
 /tcp-routes-mqtt/bin/
 /tcp-routes-mqtt/build/
+.idea

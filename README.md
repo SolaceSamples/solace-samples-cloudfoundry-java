@@ -94,6 +94,16 @@ Transport Level Security (TLS) between the Java application and the Solace Messa
 
 * [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/secure-session/)
 
+## LDAP
+
+This is not a standalone application, but instead a modification to the existing sample apps. 
+
+If application access is enabled by the cloud operator, bindings will not contain application access credentials and the credentials will instead have to be provided to the application externally.
+
+This manifests as the service instance owner having to manually configure LDAP authorization groups for application access.
+
+* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/ldap/)
+
 ## Try out the Applications
 
 The sample applications have a simple REST interface that allows you to subscribe, send and receive Solace messages. You can try the applications out using command like the following.
