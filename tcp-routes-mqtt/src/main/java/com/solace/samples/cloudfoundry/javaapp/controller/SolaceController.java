@@ -93,7 +93,6 @@ public class SolaceController {
         
         logger.info(serviceKey);
 
-        // Need to parse the Solace HOST from VCAP Services
         if (serviceKey == null || serviceKey.equals("") || serviceKey.equals("{}")) {
             logger.error("The SERVICE_KEY variable wasn't set in the environment. Aborting connection.");
             logger.info("************* Aborting Solace initialization!! ************");
