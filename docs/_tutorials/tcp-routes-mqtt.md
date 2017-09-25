@@ -32,6 +32,7 @@ This tutorial assumes the following:
 * You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/){:target="_blank"}.
 * You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
+* You are familiar with Using Solace Messaging [Service Instances]({{ site.links-service-instances }}){:target="_blank"} and [Service Keys]({{ site.links-service-keys }}){:target="_blank"}
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment having enabled [TCP Routes](http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes){:target="_blank"} with 'MQTT / Plain-Text' set to "Enabled by default" or "Disabled by default"
 
 ## Code Walk Through
@@ -70,7 +71,7 @@ Here is an example of a SERVICE_KEY with all the fields of interest to us, notic
 }
 ```
 
-Note that a service key is the credentials portion of a Solace Messaging `VCAP_SERVICES`, which you can find in the [Solace Messaging for PCF documentation]({{ site.links-vcap }}){:target="_blank"}.
+You can find out from the [Solace Messaging for PCF documentation Service Key example]({{ site.links-credentials-servicekey-example }}){:target="_blank"}.
 
 The sample starts by extracting the SERVICE_KEY environment variable, logging its content and confirming it contains useful information.  This is done in the `init()` method:
 
@@ -316,11 +317,20 @@ cf service-key solace-messaging-sample-instance solace-messaging-sample-service-
 
 ## Getting and passing the service key to an application
 
-The service key details can be obtained from cf and should be passed to an application somehow. In this example we use an environment variable we have chosen and named SERVICE_KEY.
-To get and save the SERVICE_KEY as an environment variable:
+The service key details can be obtained from cf and should be passed to an application somehow. 
+When you have access to cf, get the service key and save it to a file so you may keep it and send it to where you plan on running your application.
 
 ```
-export SERVICE_KEY=$( cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key | grep -v Getting )
+cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key | grep -v Getting > solace-messaging-sample-service.key
+```
+
+You need to get the file 'solace-messaging-sample-service.key' to where your application will be running somehow.
+
+Assuming you have the file now accessible where will run your application, load it in an environment variable we have chosen and named SERVICE_KEY.
+Load the service key from file to the SERVICE_KEY as an environment variable:
+
+```
+export SERVICE_KEY=$( cat solace-messaging-sample-service.key )
 ```
 
 ## Running
