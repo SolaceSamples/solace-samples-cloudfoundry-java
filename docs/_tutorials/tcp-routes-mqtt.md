@@ -340,21 +340,23 @@ This application can be used Standalone or deployed in PCF.
 ### Option 1 - Run the application in Standalone mode
 
 Running the application in a standalone mode and providing it with the necessary service key to access the Solace Messaging service.
+Assumes you a saved service key in file 'solace-messaging-sample-service.key'
 
 ```
-export SERVICE_KEY=$( cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key | grep -v Getting )
+export SERVICE_KEY=$( cat solace-messaging-sample-service.key )
 cd tcp-routes-mqtt
 java -Dserver.port=8080 -jar build/libs/solace-sample-java-app.jar
 ```
 
 At this point the application is running and using port 8080 providing the services that it is supposed to so we can continue testing the messaging features. Please note that you will need to open another window to continue the remaining parts of the tutorial.
+Assumes you a saved service key in file 'solace-messaging-sample-service.key'
 
 ### Option 2 - To run in PCF
 
 If running in PCF keep in mind that the idea is that the application is connecting to an external port created by TCP Routes, and that the necessary credentials are passed to this application by the user.
 
 ```
-export SERVICE_KEY=$( cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key | grep -v Getting )
+export SERVICE_KEY=$( cat solace-messaging-sample-service.key )
 cd tcp-routes-mqtt
 cf push
 cf set-env solace-sample-java-app SERVICE_KEY $SERVICE_KEY
