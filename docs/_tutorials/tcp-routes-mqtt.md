@@ -1,7 +1,7 @@
 ---
 layout: tutorials
 title: TCP Routes for IoT - MQTT Java Application
-summary: A Simple Java Application using MQTT showing how to directly consume the a SERVICE KEY for a Solace Messaging service when using TCP Routes.
+summary: A Simple Java Application using MQTT showing how to directly consume a SERVICE KEY for a Solace Messaging service when using TCP Routes.
 icon: empty-logo.png
 ---
 
