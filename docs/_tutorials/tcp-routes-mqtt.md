@@ -10,14 +10,17 @@ icon: empty-logo.png
 This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
 
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which connects to a Solace Messaging service with enabled TCP Routes as trivial example of an IoT use case.
-TCP Routes is a feature that allows a Solace Messaging service hosted in a Pivotal Cloud Foundry deployment to become accessible outside the PCF domain.
+TCP Routes is a feature that allows a Solace Messaging service hosted in a Pivotal Cloud Foundry deployment to become accessible "outside" the PCF domain.
 
 
 ![overview]({{ site.baseurl }}/images/tcp-routes-architecture.png){: .center-image}
 
 ## Goals
 
-The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry provided Service Keys and connect to the Solace Messaging service instance.  This tutorial will show you:
+
+The goal of this tutorial is to demonstrate how an application can use Cloud Foundry provided [Service Keys]({{ site.links-service-keys }}){:target="_blank"} for a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. Using [Service Keys]({{ site.links-service-keys }}){:target="_blank"} an application running "outside" of Cloud Foundry can obtain [credentials]({{ site.links-credentials-servicekey-example }}){:target="_blank"} to access a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. An application running "outside" of Cloud Foundry should use [Service Keys]({{ site.links-service-keys }}){:target="_blank"} and [TCP Routes](http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes){:target="_blank"}.
+
+This tutorial will show you:
 
 1. How to get the Solace Messaging service credentials as service keys for a given Solace Messaging service in the the Cloud Foundry environment.
 1. How to make the Solace Messaging service credentials as service keys accessible to an application in or out of a Cloud Foundry environment.
@@ -41,7 +44,7 @@ This section will explain what the code in the samples does.
 
 ### Structure
 
-The sample application contains the following source files :
+The sample application contains the following source files :  
 
 | Source File      | Description |
 | ---------------- | ----------- |
