@@ -4,6 +4,7 @@ title: TCP Routes for IoT - MQTT Java Application
 summary: A Simple Java Application using MQTT showing how to directly consume a SERVICE KEY for a Solace Messaging service when using TCP Routes.
 icon: empty-logo.png
 ---
+<br><br>
 
 ## Overview
 
@@ -155,7 +156,7 @@ try {
 
 ### Connecting to the Solace Messaging Service
 
-Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as outlined in the [MQTT Publish/Subscribe tutorial]({{ site.links-mqtt-pubsub-tutorial }}){:target="_top"}. 
+Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as outlined in the [MQTT Publish/Subscribe tutorial]({{ site.links-mqtt-pubsub-tutorial }}){:target="_top"}.
 
 Create an mqtt client and connection properties.
 
@@ -179,7 +180,7 @@ connOpts.setPassword(solaceCredentials.getString("clientPassword").toCharArray()
 
 ```
 
-### Creating a Message Consumer 
+### Creating a Message Consumer
 
 To receive messages you will need to create callback. The following code will create a simple MqttCallback that will keep the last recieved message and log other events:
 
@@ -269,7 +270,7 @@ public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
 ```
 
 Receiving messages is done at the backend via the `simpleMqttCallback` listener described above.  This sample stores the last message received. To access ths received message you can send a `GET` request to `/message` endpoint. The same JSON structure of a message will be returned in the payload of the `GET`.
- 
+
 ```java
 @RequestMapping(value = "/message", method = RequestMethod.GET)
 public ResponseEntity<SimpleMessage> getLastMessageReceived() {
@@ -287,7 +288,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}} 
+cd {{ site.baseurl | remove: '/'}}
 ./gradlew build
 ```
 
@@ -315,12 +316,12 @@ cf create-service solace-messaging shared solace-messaging-sample-instance -c '{
 
 ```
 cf create-service-key solace-messaging-sample-instance solace-messaging-sample-service-key
-cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key 
+cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key
 ```
 
 ## Getting and passing the service key to an application
 
-The service key details can be obtained from cf and should be passed to an application somehow. 
+The service key details can be obtained from cf and should be passed to an application somehow.
 When you have access to cf, get the service key and save it to a file so you may keep it and send it to where you plan on running your application.
 
 ```
@@ -406,4 +407,3 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
 ```
-

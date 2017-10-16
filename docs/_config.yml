@@ -1,5 +1,6 @@
 # Site settings
 title: Solace Messaging with Pivotal Cloud Foundry
+summary: These tutorials walk through Java Sample applications which aim to introduce you to Solace Messaging for Pivotal Cloud Foundry. The goal of these sample applications is to illustrate various ways of consuming the `VCAP_SERVICES` environment variable from a Solace Messaging Cloud Foundry service instance. What follows is a brief introduction to Solace Messaging in Pivotal Cloud Foundry (PCF) and links for easy wasy to learn more. If you're familiar with Pivotal Cloud Foundry, jump straight to the Getting Started tutorials.
 baseurl: "/solace-samples-cloudfoundry-java" # the subpath of your site, e.g. /solace-samples-java
 repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
 
@@ -20,7 +21,7 @@ links-client-ldap-authorization: http://docs.solace.com/Configuring-and-Managing
 links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
 links-configuring-connection: http://docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
 links-best-practices: http://docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
-links-cf-cli: https://docs.cloudfoundry.org/cf-cli/ 
+links-cf-cli: https://docs.cloudfoundry.org/cf-cli/
 links-mqtt-pubsub-tutorial: http://dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
 links-service-instances: http://docs.pivotal.io/solace-messaging/service-instances.html
 links-service-keys: http://docs.pivotal.io/solace-messaging/service-keys.html
