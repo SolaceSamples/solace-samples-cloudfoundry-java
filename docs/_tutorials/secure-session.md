@@ -4,6 +4,7 @@ title: Secure Session
 summary: A sample showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
 icon: ssl_icon.gif
 ---
+<br><br>
 
 ## Overview
 
@@ -26,9 +27,9 @@ This tutorial assumes the following:
 
 ## Working with a Trusted Certificate
 
-In order to use Transport Level Security, your Solace Message Router needs to be configured for TLS with an installed servcer certificate. 
-The instructions for doing that are described in the Pivotal/Solace Messaging documentation - 
-see [Tile Installation and Configuration]({{ site.links-tls-server }}){:target="_blank"}, 
+In order to use Transport Level Security, your Solace Message Router needs to be configured for TLS with an installed servcer certificate.
+The instructions for doing that are described in the Pivotal/Solace Messaging documentation -
+see [Tile Installation and Configuration]({{ site.links-tls-server }}){:target="_blank"},
 look for the step named Configure Message Routers RSA certificate.
 
 This section assumes that you have a Solace Messaging Service Instance properly configured for TLS access with a certificate that has been purchased from a certificate authority. Instructions for working with self-signed certificates are below.
@@ -93,7 +94,7 @@ properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
 ```
 
-When you set `INSTALL_CERTIFICATE` to `true`, it instructs the SolaceController class to install the certificate in the JRE's trusted store before trying to connect to the service. 
+When you set `INSTALL_CERTIFICATE` to `true`, it instructs the SolaceController class to install the certificate in the JRE's trusted store before trying to connect to the service.
 
 The way it works is this. When you copy the certificate into the src/main/resources file, it gets packaged with the application. The application can then read the file from its local file system at runtime.
 
@@ -114,7 +115,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}} 
+cd {{ site.baseurl | remove: '/'}}
 ./gradlew build
 ```
 
@@ -182,4 +183,3 @@ CertificateException: Path does not chain with any of the trust anchors
 ```
 
 it is because the application could not validate the certificate it received from the Solace Message Router. This can happen when you install a self-signed certificate on the Solace Message Router, but didn't package it with the app, or didn't set INSTALL_CERTIFICATE to true in the sample.
-
