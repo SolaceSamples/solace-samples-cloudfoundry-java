@@ -17,7 +17,6 @@ TCP Routes is a feature that allows a Solace Messaging service hosted in a Pivot
 
 ## Goals
 
-
 The goal of this tutorial is to demonstrate how an application can use Cloud Foundry provided [Service Keys]({{ site.links-service-keys }}){:target="_blank"} for a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. Using [Service Keys]({{ site.links-service-keys }}){:target="_blank"} an application running "outside" of Cloud Foundry can obtain [credentials]({{ site.links-credentials-servicekey-example }}){:target="_blank"} to access a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. An application running "outside" of Cloud Foundry should use [Service Keys]({{ site.links-service-keys }}){:target="_blank"} and [TCP Routes](http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes){:target="_blank"}.
 
 This tutorial will show you:

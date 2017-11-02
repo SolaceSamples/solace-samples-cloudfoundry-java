@@ -202,7 +202,7 @@ public class SolaceController {
 
         // If using High Availability, the host property will be a
         // comma-separated list of two hosts.
-        if (host.contains(",")) {
+        if (solaceMessagingServiceInfo.isHA()) {
             // Recommended values for High Availability automatic reconnects.
             JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
                     .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);
