@@ -2,7 +2,7 @@
 layout: tutorials
 title: Secure Session
 summary: A sample showing how to connect with the Solace Messaging service using Transport Level Security (TLS).
-icon: ssl_icon.gif
+icon: I_secure_session.svg
 ---
 
 ## Overview
