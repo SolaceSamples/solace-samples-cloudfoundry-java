@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="89px" height="94px" viewBox="0 -30 89 130" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-4" transform="translate(0.000000, 5.000000)">
+            <g id="Group-2">
+                <path d="M26,31.7622878 L26,18.7930441 L26,18.7930441 C26,8.41393246 34.4139325,1.90661189e-15 44.7930441,0 L44.7930441,0 L44.7930441,0 C55.1721558,-1.90661189e-15 63.5860883,8.41393246 63.5860883,18.7930441 L63.5860883,31.3821271" id="Path-2" stroke="#FFFFFF" stroke-width="10" opacity="0.690896739"></path>
+                <path d="M6,29 L83,29 C86.3137085,29 89,31.6862915 89,35 L89,83 C89,86.3137085 86.3137085,89 83,89 L6,89 C2.6862915,89 4.05812251e-16,86.3137085 0,83 L0,35 L0,35 C-4.05812251e-16,31.6862915 2.6862915,29 6,29 L6,29 Z M46,81.8813559 C58.1502645,81.8813559 68,71.8646758 68,59.5084746 C68,47.1522734 58.1502645,37.1355932 46,37.1355932 C33.8497355,37.1355932 24,47.1522734 24,59.5084746 C24,71.8646758 33.8497355,81.8813559 46,81.8813559 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+            </g>
+            <polyline id="Path-3" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" points="45.7881293 46.1313406 45.7881293 61.8503688 58.8396926 55.6367869"></polyline>
+        </g>
+    </g>
+</svg>

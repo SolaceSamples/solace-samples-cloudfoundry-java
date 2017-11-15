@@ -2,7 +2,7 @@
 layout: tutorials
 title: Configuring LDAP
 summary: How to setup an LDAP Server to work with Solace and some examples on how LDAP auth works
-icon: ldap.png
+icon: I_ldap.svg
 ---
 
 ## Overview
