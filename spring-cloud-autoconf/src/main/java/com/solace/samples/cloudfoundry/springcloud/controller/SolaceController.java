@@ -27,7 +27,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +43,7 @@ import com.solacesystems.jcsmp.JCSMPFactory;
 import com.solacesystems.jcsmp.JCSMPSession;
 import com.solacesystems.jcsmp.JCSMPStreamingPublishEventHandler;
 import com.solacesystems.jcsmp.SpringJCSMPFactory;
+import com.solacesystems.jcsmp.SpringJCSMPFactoryCloudFactory;
 import com.solacesystems.jcsmp.TextMessage;
 import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageConsumer;
@@ -60,28 +60,13 @@ public class SolaceController {
     
     @Autowired
     private SpringJCSMPFactory solaceFactory;
+    
+    @Autowired
+    SpringJCSMPFactoryCloudFactory springJCSMPFactoryCloudFactory;
 
     private JCSMPSession session;
     private XMLMessageProducer producer;
     private TextMessage lastReceivedMessage;
-
-    // Optionally provided LDAP_CLIENTUSERNAME
-    @Value("${ldap.clientUsername:}")
-    protected String ldap_clientUsername;
-
-    // Optionally provided LDAP_CLIENTPASSWORD
-    @Value("${ldap.clientPassword:}")
-    protected String ldap_clientPassword;
-    
-    // Reconnect properties for High Availability
-    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECTION_RETRIES:1}")
-    private int connectRetries;
-    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRIES:5}")
-    private int reconnectRetries;
-    @Value("${SOLACE_CHANNEL_PROPERTIES_RECONNECT_RETRY_WAIT_IN_MILLIS:3000}")
-    private int reconnectRetryWaitInMillis;
-    @Value("${SOLACE_CHANNEL_PROPERTIES_CONNECT_RETRIES_PER_HOST:20}")
-    private int connectRetriesPerHost;
 
     // Stats
     private final AtomicInteger numMessagesReceived = new AtomicInteger();
@@ -127,7 +112,10 @@ public class SolaceController {
         // Connect to Solace
         logger.info("************* Init Called ************");
         
-        logger.info("Using a SolaceFactory configured with cloud solace messaging: " + solaceMessagingInfo );
+        logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
+
+        logger.info(String.format("Using a SolaceFactory configured with cloud solace-messaging service '%s'",solaceMessagingInfo.getId()));
+        
 
         try {
             session = solaceFactory.createSession();
