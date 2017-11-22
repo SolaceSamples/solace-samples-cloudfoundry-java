@@ -1,7 +1,7 @@
 ---
 applications:
-- name: solace-sample-spring-cloud
+- name: solace-sample-spring-cloud-autoconf
   memory: 512M
   path: build/libs/solace-sample-spring-cloud-autoconf.jar
   services:
-  - ms1
+  - solace-messaging-sample-instance
