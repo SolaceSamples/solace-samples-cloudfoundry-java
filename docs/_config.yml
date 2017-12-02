@@ -21,7 +21,7 @@ links-client-ldap-authorization: http://docs.solace.com/Configuring-and-Managing
 links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
 links-configuring-connection: http://docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
 links-best-practices: http://docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
-links-cf-cli: https://docs.cloudfoundry.org/cf-cli/ 
+links-cf-cli: https://docs.cloudfoundry.org/cf-cli/
 links-mqtt-pubsub-tutorial: http://dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
 links-service-instances: http://docs.pivotal.io/solace-messaging/service-instances.html
 links-service-keys: http://docs.pivotal.io/solace-messaging/service-keys.html
