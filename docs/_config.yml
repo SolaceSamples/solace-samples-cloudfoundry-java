@@ -10,24 +10,24 @@ repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
 jcsmp_version: 10.+
 
 # Links
-docs-core-concepts: http://docs.solace.com/Features/Core-Concepts.htm
-links-downloads: http://dev.solace.com/downloads/
-links-pubsub-tutorial: http://dev.solace.com/get-started/java-tutorials/publish-subscribe_java/
-links-tls-client: http://docs.solace.com/Solace-Messaging-APIs/Creating-Secure-Sessions.htm
+docs-core-concepts: //docs.solace.com/Features/Core-Concepts.htm
+links-downloads: //dev.solace.com/downloads/
+links-pubsub-tutorial: //dev.solace.com/get-started/java-tutorials/publish-subscribe_java/
+links-tls-client: //docs.solace.com/Solace-Messaging-APIs/Creating-Secure-Sessions.htm
 links-tls-server: https://docs.pivotal.io/solace-messaging/installing.html#configure
 links-ldap-settings: https://docs.pivotal.io/solace-messaging/installing.html#optional_ldap_settings
 links-ldap-management-settings: https://docs.pivotal.io/solace-messaging/installing.html#optional_management_access
-links-client-ldap-authorization: http://docs.solace.com/Configuring-and-Managing-Routers/Configuring-LDAP-Groups.htm
-links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
-links-configuring-connection: http://docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
-links-best-practices: http://docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
+links-client-ldap-authorization: //docs.solace.com/Configuring-and-Managing-Routers/Configuring-LDAP-Groups.htm
+links-vcap: //docs.pivotal.io/solace-messaging/credentials.html
+links-configuring-connection: //docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
+links-best-practices: //docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
 links-cf-cli: https://docs.cloudfoundry.org/cf-cli/
-links-mqtt-pubsub-tutorial: http://dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
-links-service-instances: http://docs.pivotal.io/solace-messaging/service-instances.html
-links-service-keys: http://docs.pivotal.io/solace-messaging/service-keys.html
-links-installing: http://docs.pivotal.io/solace-messaging/installing.html
-links-installing-tcp-routes: http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
-links-credentials-servicekey-example: http://docs.pivotal.io/solace-messaging/credentials.html#servicekey-example
+links-mqtt-pubsub-tutorial: //dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
+links-service-instances: //docs.pivotal.io/solace-messaging/service-instances.html
+links-service-keys: //docs.pivotal.io/solace-messaging/service-keys.html
+links-installing: //docs.pivotal.io/solace-messaging/installing.html
+links-installing-tcp-routes: //docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
+links-credentials-servicekey-example: //docs.pivotal.io/solace-messaging/credentials.html#servicekey-example
 
 #----------------------------------------------------
 # Generally don't modify items below this point
