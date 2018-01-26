@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solace.labs.spring.cloud.core.SolaceMessagingInfo;
+import com.solace.spring.cloud.core.SolaceMessagingInfo;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
 import com.solacesystems.jcsmp.BytesXMLMessage;
@@ -125,22 +125,22 @@ public class SolaceController {
 		// Show available services and connect to Solace
 		logger.info("************* Init Called ************");
 
-		logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
-				springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
-
-		// Log what Solace Messaging Services were discovered
-		for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
-				.getSolaceMessagingInfos()) {
-			logger.info(String.format(
-					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
-					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
-					discoveredSolaceMessagingService.getMsgVpnName()));
-		}
+//		logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
+//				springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
+//
+//		// Log what Solace Messaging Services were discovered
+//		for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
+//				.getSolaceMessagingInfos()) {
+//			logger.info(String.format(
+//					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
+//					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
+//					discoveredSolaceMessagingService.getMsgVpnName()));
+//		}
 
 		try {
-			logger.info(String.format(
-					"Creating a Session using a SolaceFactory configured with solace-messaging service '%s'",
-					solaceMessagingInfo.getId()));
+//			logger.info(String.format(
+//					"Creating a Session using a SolaceFactory configured with solace-messaging service '%s'",
+//					solaceMessagingInfo.getId()));
 			session = solaceFactory.createSession();
 			session.connect();
 		} catch (Exception e) {

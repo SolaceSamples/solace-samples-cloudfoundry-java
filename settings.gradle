@@ -1,1 +1,1 @@
-include "java-app", "secure-session", "spring-cloud", "tcp-routes-mqtt" , "spring-cloud-autoconf"
+include "java-app", "secure-session", "spring-cloud", "tcp-routes-mqtt" , "spring-cloud-autoconf-java", "spring-cloud-autoconf-jms", "spring-cloud-autoconf-jndi"
