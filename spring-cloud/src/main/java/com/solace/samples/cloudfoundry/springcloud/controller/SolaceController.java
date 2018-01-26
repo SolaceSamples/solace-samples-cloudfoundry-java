@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solace.labs.spring.cloud.core.SolaceMessagingInfo;
+import com.solace.spring.cloud.core.SolaceMessagingInfo;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
 import com.solacesystems.jcsmp.BytesXMLMessage;
