@@ -7,5 +7,4 @@ applications:
   - solace-messaging-sample-instance
   env:
     solace.jms.demoConnectionFactoryJndiName: /jms/cf/default
-    solace.jms.demoProducerQueueJndiName: jndi/tutorial/queue
-    solace.jms.demoConsumerQueueJndiName: jndi/tutorial/queue
+    

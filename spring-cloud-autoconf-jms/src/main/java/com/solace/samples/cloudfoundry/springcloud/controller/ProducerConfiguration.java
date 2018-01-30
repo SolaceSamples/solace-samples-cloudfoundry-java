@@ -1,4 +1,4 @@
-package com.solace.samples.cloudfoundry.springcloud.jmsdemo;
+package com.solace.samples.cloudfoundry.springcloud.controller;
 
 import javax.jms.ConnectionFactory;
 
@@ -14,9 +14,12 @@ public class ProducerConfiguration {
 	@Autowired
 	private ConnectionFactory connectionFactory;
 
+	// Example configuration of JmsTemplate
 	@Bean
 	public JmsTemplate jmsTemplate() {
 		CachingConnectionFactory ccf = new CachingConnectionFactory(connectionFactory);
-		return new JmsTemplate(ccf);
+		JmsTemplate jmst = new JmsTemplate(ccf);
+		jmst.setPubSubDomain(true);	// This sample is publishing to topics
+		return jmst;
 	}
 }

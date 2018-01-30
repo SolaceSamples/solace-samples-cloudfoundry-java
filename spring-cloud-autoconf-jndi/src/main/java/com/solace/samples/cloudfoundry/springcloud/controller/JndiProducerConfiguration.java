@@ -1,15 +1,10 @@
-package com.solace.samples.cloudfoundry.springcloud.jndidemo;
-
-import java.util.Properties;
+package com.solace.samples.cloudfoundry.springcloud.controller;
 
 import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.destination.JndiDestinationResolver;
@@ -28,22 +23,22 @@ public class JndiProducerConfiguration {
     @Autowired
 	private JndiTemplate jndiTemplate;
     
+//	// TODO: fix it that this shouldn't be required (transfer to SempJndiConfigClient
 //	@Autowired
-//	private Properties jndiProperties;
-	
-//    @Bean
-//    public JndiTemplate jndiTemplate() {
-//        JndiTemplate jndiTemplate = new JndiTemplate();
-//        jndiTemplate.setEnvironment(jndiProperties);
-//        return jndiTemplate;
-//    }
+//    private RestTemplateBuilder restTemplateBuilder;
+//	@Autowired
+//	private SolaceMessagingInfo solaceMessagingInfo;
 
-    
-    @Bean
+	@Bean
     public JndiObjectFactoryBean connectionFactory() {
         JndiObjectFactoryBean factoryBean = new JndiObjectFactoryBean();
         factoryBean.setJndiTemplate(jndiTemplate);
+
+//        // First ensure the JNDI config exists on the message router
+//        SempJndiConfigClient scc = new SempJndiConfigClient(restTemplateBuilder, solaceMessagingInfo);
+//        scc.provisionJndiConnectionFactoryIfNotExists(connectionFactoryJndiName);
         factoryBean.setJndiName(connectionFactoryJndiName);
+        
         return factoryBean;
     }
 
@@ -68,6 +63,7 @@ public class JndiProducerConfiguration {
 		JmsTemplate jt = new JmsTemplate(cachingConnectionFactory());
 		jt.setDeliveryPersistent(true);
 		jt.setDestinationResolver(jndiDestinationResolver());
+		jt.setPubSubDomain(true);	// This sample is publishing to topics
 		return jt;
 	}
 }
