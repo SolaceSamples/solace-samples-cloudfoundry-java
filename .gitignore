@@ -20,3 +20,5 @@ docs/_site
 /tcp-routes-mqtt/bin/
 /tcp-routes-mqtt/build/
 .idea
+.springBeans
+

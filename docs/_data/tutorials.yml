@@ -2,6 +2,9 @@
   tutorials:
   - java-app
   - spring-cloud
+  - spring-cloud-autoconf-java
+  - spring-cloud-autoconf-jms
+  - spring-cloud-autoconf-jndi
   - secure-session
   - ldap
   - tcp-routes-mqtt

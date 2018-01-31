@@ -1,23 +1,25 @@
 ---
 layout: tutorials
-title: Spring Cloud
-summary: A Simple Application showing how to consume the VCAP_SERVICES using Spring Cloud Connectors.
-icon: I_spring_cloud.svg
+title: Spring Cloud Auto-Config Java
+summary: A Simple Spring Cloud Application showing how to consume Solace Messaging as a Service provided by Solace Spring Java Auto-Configuration.
+icon: spring-cloud.png
 ---
 
 ## Overview
 
 This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
 
-This tutorial is similar to the [Java App]({{ site.baseurl }}/java-app) tutorial. Like the Java App tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application.  In contrast to the Java App, this application uses the Spring Cloud Connectors library to simplify the parsing of the `VCAP_SERVICES` environment variable. 
+This tutorial is similar to the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial. Like the Spring Cloud tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application.  In contrast to the [Spring Cloud]({{ site.baseurl }}/spring-cloud), this application uses [solace-java-spring-boot](https://github.com/SolaceProducts/solace-java-spring-boot) which using the Spring Cloud Connectors library and Spring Auto Configration can auto inject a [SpringJCSMPFactory](https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java) directly into your application.
 
 ![overview]({{ site.baseurl }}/images/spring-cloud-app-architecture.png){: .center-image}
 
 ## Goals
 
-The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
+The goal of this tutorial is to demonstrate auto injecting a [SpringJCSMPFactory](https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java) based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
-1. How to extract the Solace Messaging service credentials from the Cloud Foundry environment using Spring Cloud Connectors.
+1. How to Autowire a [SpringJCSMPFactory](https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java) into your application
+1. How to Autowire the [SolaceMessagingInfo](https://github.com/SolaceProducts/sl-spring-cloud-connectors/blob/master/src/main/java/com/solace/labs/spring/cloud/core/SolaceMessagingInfo.java) provided by the Cloud Foundry environment using Spring Cloud Connectors.
+1. How to Autowire [SpringJCSMPFactoryCloudFactory](https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactoryCloudFactory.java) which you can use to access other Cloud Available Solace Messaging Instances and create other instances of SpringJCSMPFactory.
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
 
@@ -70,7 +72,7 @@ The sample application contains the following source files :
 | SimpleMessage.java | This class wraps the information to be stored in a message |
 | SimpleSubscription.java | This class wraps the information describing a topic subscription |
 
-This tutorial will only cover the source code in `SolaceController.java` as the other files do not contain logic related to establishing a connection to the Solace Messaging Service.
+This tutorial will only cover the source code in `SolaceController.java` and the necessary project dependencies as the other files do not contain logic related to establishing a connection to the Solace Messaging Service.
 
 ### Obtaining the Solace Credentials in the Application
 
@@ -102,50 +104,65 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 
 You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-vcap }}){:target="_blank"}.
 
-This sample use the [Spring Cloud Connectors](http://cloud.spring.io/spring-cloud-connectors/){:target="_blank"} project to retrieve the `VCAP_SERVICES` information in the form of a `ServiceInfo` object. For Solace Messaging in Cloud Foundry, there is a Spring Cloud Connectors extension in GitHub called [sl-spring-cloud-connectors](https://github.com/SolaceProducts/sl-spring-cloud-connectors). This library parses the `VCAP_SERVICES` environment variable and exposes the information by implementing the `ServiceInfo` interface in the `SolaceMessagingInfo` object.
+This sample uses the [solace-java-spring-boot](https://github.com/SolaceProducts/solace-java-spring-boot) which can auto detect and auto wire the available Solace Messaging Services from the Cloud Foundry environment into your application. 
 
-The `init()` method retrieves the Solace Messaging Service Instance details for the service named `solace-messaging-sample-instance` as follows:
+Spring provided `@Autowire` is used to access all auto configuration available beans which include an auto selected Factory.
 
 ```java
-CloudFactory cloudFactory = new CloudFactory();
-Cloud cloud = cloudFactory.getCloud();
+// A JCSMP Factory for the auto selected Solace Messaging service,
+// This is used to create JCSMPSession(s)
+// This is the only required bean to run this application.
+@Autowired
+private SpringJCSMPFactory solaceFactory;
 
-SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud
-        .getServiceInfo("solace-messaging-sample-instance");
+// The auto selected Solace Messaging service for the matching SpringJCSMPFactory,
+// the relevant information provided by this bean have already been injected
+// into the SpringJCSMPFactory
+// This bean is for information only, it can be used to discover more about
+// the solace service in use.
+@Autowired
+SolaceMessagingInfo solaceMessagingInfo;
 
-if (solaceMessagingServiceInfo == null) {
-    trace.error("Did not find instance of 'solace-messaging' service");
-    trace.error("************* Aborting Solace initialization!! ************");
-    return;
+// A Factory of Factories
+// Has the ability to create SpringJCSMPFactory(s) for all available
+// SolaceMessagingInfo(s)
+// Can be used in case there are multiple Solace Messaging Services to
+// select from.
+@Autowired
+SpringJCSMPFactoryCloudFactory springJCSMPFactoryCloudFactory;
+```
+
+The `init()` method retrieves and shows the autowired Solace Messaging Service Instance details as follows:
+
+```java
+logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
+	springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
+
+// Log what Solace Messaging Services were discovered
+for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory .getSolaceMessagingInfos()) {
+	logger.info(String.format("Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
+	discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
+	discoveredSolaceMessagingService.getMsgVpnName()));
 }
 ```
 
 ### Connecting to the Solace Messaging Service
 
-Once you have the `SolaceMessagingInfo`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}){:target="_top"}. You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
+The `SpringJCSMPFactory solaceFactory` was already autowired, you can use it to connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}){:target="_top"}. Use the `solaceFactory` to create a `Session`:
 
 ```java
-final JCSMPProperties properties = new JCSMPProperties();
-properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfHost());
-properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
-properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
-properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
-
 try {
-    session = JCSMPFactory.onlyInstance().createSession(properties);
-    session.connect();
+	logger.info(String.format("Creating a Session using a SolaceFactory configured with solace-messaging service '%s'", solaceMessagingInfo.getId()));
+	session = solaceFactory.createSession();
+	session.connect();
 } catch (Exception e) {
-    logger.error("Error connecting and setting up session.", e);
-    logger.info("************* Aborting Solace initialization!! ************");
-    return;
+	logger.error("Error connecting and setting up session.", e);
+	logger.info("************* Aborting Solace initialization!! ************");
+	return;
 }
 ```
-Note that the VCAP_SERVICES environment variable contains a json array named smfHosts.
-In a High Availability environment this will contain two hosts, the primary router and the backup.
-The Spring Cloud connector automatically combines these into a single comma-separated string exposed
-as the smfHost property, which is what the JCSMP library expects.
 
-With the Solace session connected. The remainder of this tutorial is exactly the same as the [Java App]({{ site.baseurl }}/java-app) tutorial. The details are repeated here for convenience.
+With the Solace session connected and aside from `Providing other Properties to the application` section, the remainder of this tutorial is the same as the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial.  The details are repeated here for convenience.
 
 ### Creating the Message Consumer and Producer
 
@@ -236,7 +253,7 @@ cd {{ site.baseurl | remove: '/'}}
 
 ## Cloud Foundry Setup
 
-The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `spring-cloud/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
+The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `spring-cloud-autoconf/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
 cf create-service solace-messaging shared solace-messaging-sample-instance
@@ -247,24 +264,37 @@ cf create-service solace-messaging shared solace-messaging-sample-instance
 To deploy this tutorial's application you first need to go inside it's project directory and then push the application:
 
 ```
-cd spring-cloud
+cd spring-cloud-autoconf-java
 cf push
 ```
 
-This will push the application and will give the application the name specified by the manifest: `solace-sample-spring-cloud`.
+This will push the application and will give the application the name specified by the manifest: `solace-sample-spring-cloud-autoconf-java`.
+
+## Providing other Properties to the application.
+
+The configuration properties affecting the creation of Sessions is stored in [SolaceJavaProperties](https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solace/labs/spring/boot/autoconfigure/SolaceJavaProperties.java), the Auto Configuration takes care of injecting Cloud Provided Solace Messaging Credentials into the `SolaceJavaProperties` which is used by the SpringJCSMPFactory instance.
+
+Additional properties can be set in `SolaceJavaProperties`, for naming details refer to the [Application Properties section of `solace-java-spring-boot`](https://github.com/SolaceProducts/solace-java-spring-boot#updating-your-application-properties ). Example of setting reconnectRetryWaitInMillis to 5000 milliseconds, and reapplySubscriptions to 'true':
+
+```
+cd spring-cloud-autoconf
+cf set-env solace-sample-spring-cloud-autoconf solace.java.SOLACE_JAVA_RECONNECT_RETRY_WAIT_IN_MILLIS 5000
+cf set-env solace-sample-spring-cloud-autoconf solace.java.SOLACE_JAVA_REAPPLY_SUBSCRIPTIONS true
+cf restage solace-sample-spring-cloud-autoconf
+```
 
 ## Trying Out The Application
 
 As described above, the sample application has a simple REST interface that allows you to:
 
-* Subscribe
-* Send a message
+* Subscribe to a topic
+* Send a message to a topic
 * Receive a message
 
 In order to interact with the application you need to determine the application's URL.  These shell commands can be used to quickly find out the URL:
 
 ```
-export APP_NAME=solace-sample-spring-cloud
+export APP_NAME=solace-sample-spring-cloud-autoconf
 export APP_URL=`cf apps | grep $APP_NAME | grep started | awk '{ print $6}'`
 echo "The application URL is: ${APP_URL}"
 ```

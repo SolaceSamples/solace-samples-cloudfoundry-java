@@ -6,8 +6,9 @@ repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
 
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
-# Solace JCSMP Verion
+# Solace JCSMP and JMS Versions
 jcsmp_version: 10.+
+jms_version: 10.+
 
 # Links
 docs-core-concepts: //docs.solace.com/Features/Core-Concepts.htm
