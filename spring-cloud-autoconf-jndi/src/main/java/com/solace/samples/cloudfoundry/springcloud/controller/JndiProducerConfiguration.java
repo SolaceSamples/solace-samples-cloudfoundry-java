@@ -23,20 +23,10 @@ public class JndiProducerConfiguration {
     @Autowired
 	private JndiTemplate jndiTemplate;
     
-//	// TODO: fix it that this shouldn't be required (transfer to SempJndiConfigClient
-//	@Autowired
-//    private RestTemplateBuilder restTemplateBuilder;
-//	@Autowired
-//	private SolaceMessagingInfo solaceMessagingInfo;
-
 	@Bean
     public JndiObjectFactoryBean connectionFactory() {
         JndiObjectFactoryBean factoryBean = new JndiObjectFactoryBean();
         factoryBean.setJndiTemplate(jndiTemplate);
-
-//        // First ensure the JNDI config exists on the message router
-//        SempJndiConfigClient scc = new SempJndiConfigClient(restTemplateBuilder, solaceMessagingInfo);
-//        scc.provisionJndiConnectionFactoryIfNotExists(connectionFactoryJndiName);
         factoryBean.setJndiName(connectionFactoryJndiName);
         
         return factoryBean;

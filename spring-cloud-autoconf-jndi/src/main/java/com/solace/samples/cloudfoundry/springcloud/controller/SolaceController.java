@@ -78,11 +78,6 @@ public class SolaceController {
 	@Autowired
 	SpringSolJmsJndiTemplateCloudFactory springSolJmsJndiTemplateCloudFactory;
 
-//	// TODO: fix it so that this shouldn't be required (transfer to SempJndiConfigClient
-//	@Autowired
-//    private RestTemplateBuilder restTemplateBuilder;
-    
-
 	private TextMessage lastReceivedMessage;
     private HashMap<String, DefaultMessageListenerContainer> listenerContainersMap = new HashMap<String, DefaultMessageListenerContainer>();
 
@@ -130,7 +125,7 @@ public class SolaceController {
 		// Show available services
 		logger.info("************* Init Called ************");
 
-		logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
+		logger.info(String.format("SpringSolJmsJndiTemplateCloudFactory discovered %s solace-messaging service(s)",
 				springSolJmsJndiTemplateCloudFactory.getSolaceMessagingInfos().size()));
 
 		// Log what Solace Messaging Services were discovered
@@ -196,10 +191,6 @@ public class SolaceController {
 			logger.error("Already subscribed to topic " + subscriptionTopic);
 			return new ResponseEntity<>("{'description': 'Already subscribed'}", HttpStatus.BAD_REQUEST);
 		}
-		
-//		// First provision the message router with the JNDI topic
-//        SempJndiConfigClient scc = new SempJndiConfigClient(restTemplateBuilder, solaceMessagingInfo);
-//        scc.provisionJndiTopicIfNotExists(subscriptionTopic);
 		
 		// Then create a listener
 		try {

@@ -53,26 +53,26 @@ public class SolaceController {
 
 	private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-	// TODO: update
-	// A JCSMP Factory for the auto selected Solace Messaging service,
-	// This is used to create JCSMPSession(s)
+	// A JMS ConnectionFactory for the auto selected Solace Messaging service,
 	// This is the only required bean to run this application.
+	// Note that both SolaceController and ProducerConfiguration use this for
+	// their respective purposes but the same connection factory is provided.
 	@Autowired
 	private ConnectionFactory connectionFactory;
 
     @Autowired
     private JmsTemplate jmsTemplate;
 
-	// The auto selected Solace Messaging service for the matching SpringJCSMPFactory,
+	// The auto selected Solace Messaging service for the matching ConnectionFactory,
 	// the relevant information provided by this bean have already been injected
-	// into the SpringJCSMPFactory
+	// into the ConnectionFactory.
 	// This bean is for information only, it can be used to discover more about
 	// the solace service in use.
 	@Autowired
 	SolaceMessagingInfo solaceMessagingInfo;
 
 	// A Factory of Factories
-	// Has the ability to create SpringJCSMPFactory(s) for all available
+	// Has the ability to create ConnectionFactory(s) for all available
 	// SolaceMessagingInfo(s)
 	// Can be used in case there are multiple Solace Messaging Services to
 	// select from.
@@ -123,17 +123,17 @@ public class SolaceController {
 		// Show available services
 		logger.info("************* Init Called ************");
 		
-//		logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
-//				springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
-//
-//		// Log what Solace Messaging Services were discovered
-//		for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
-//				.getSolaceMessagingInfos()) {
-//			logger.info(String.format(
-//					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
-//					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
-//					discoveredSolaceMessagingService.getMsgVpnName()));
-//		}
+		logger.info(String.format("SpringSolJmsConnectionFactoryCloudFactory discovered %s solace-messaging service(s)",
+				springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
+
+		// Log what Solace Messaging Services were discovered
+		for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
+				.getSolaceMessagingInfos()) {
+			logger.info(String.format(
+					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
+					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
+					discoveredSolaceMessagingService.getMsgVpnName()));
+		}
 
 	}
 
