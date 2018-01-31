@@ -78,7 +78,7 @@ public class SolaceController {
 	@Autowired
 	SpringSolJmsJndiTemplateCloudFactory springSolJmsJndiTemplateCloudFactory;
 
-//	// TODO: fix it that this shouldn't be required (transfer to SempJndiConfigClient
+//	// TODO: fix it so that this shouldn't be required (transfer to SempJndiConfigClient
 //	@Autowired
 //    private RestTemplateBuilder restTemplateBuilder;
     
