@@ -21,4 +21,9 @@ docs/_site
 /tcp-routes-mqtt/build/
 .idea
 .springBeans
-
+spring-cloud-autoconf-java/bin/
+spring-cloud-autoconf-java/build/
+spring-cloud-autoconf-jms/bin/
+spring-cloud-autoconf-jms/build/
+spring-cloud-autoconf-jndi/bin/
+spring-cloud-autoconf-jndi/build/
