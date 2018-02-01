@@ -28,6 +28,7 @@ links-service-keys: http://docs.pivotal.io/solace-messaging/service-keys.html
 links-installing: http://docs.pivotal.io/solace-messaging/installing.html
 links-installing-tcp-routes: http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
 links-credentials-servicekey-example: http://docs.pivotal.io/solace-messaging/credentials.html#servicekey-example
+links-spring-jcsmp-factory: https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java
 
 #----------------------------------------------------
 # Generally don't modify items below this point
