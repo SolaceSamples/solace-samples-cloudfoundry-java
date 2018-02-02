@@ -1,5 +1,6 @@
 # Site settings
 title: Solace Messaging with Pivotal Cloud Foundry
+summary: These tutorials walk through Java Sample applications to introduce you to Solace Messaging for Pivotal Cloud Foundry.
 baseurl: "/solace-samples-cloudfoundry-java" # the subpath of your site, e.g. /solace-samples-java
 repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
 
@@ -10,18 +11,18 @@ jcsmp_version: 10.+
 jms_version: 10.+
 
 # Links
-docs-core-concepts: http://docs.solace.com/Features/Core-Concepts.htm
-links-downloads: http://dev.solace.com/downloads/
-links-pubsub-tutorial: http://dev.solace.com/get-started/java-tutorials/publish-subscribe_java/
-links-tls-client: http://docs.solace.com/Solace-Messaging-APIs/Creating-Secure-Sessions.htm
+docs-core-concepts: //docs.solace.com/Features/Core-Concepts.htm
+links-downloads: //dev.solace.com/downloads/
+links-pubsub-tutorial: //dev.solace.com/get-started/java-tutorials/publish-subscribe_java/
+links-tls-client: //docs.solace.com/Solace-Messaging-APIs/Creating-Secure-Sessions.htm
 links-tls-server: https://docs.pivotal.io/solace-messaging/installing.html#configure
 links-ldap-settings: https://docs.pivotal.io/solace-messaging/installing.html#optional_ldap_settings
 links-ldap-management-settings: https://docs.pivotal.io/solace-messaging/installing.html#optional_management_access
-links-client-ldap-authorization: http://docs.solace.com/Configuring-and-Managing-Routers/Configuring-LDAP-Groups.htm
+links-client-ldap-authorization: //docs.solace.com/Configuring-and-Managing-Routers/Configuring-LDAP-Groups.htm
 links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
-links-configuring-connection: http://docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
+links-configuring-connection: //docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
 links-cf-cli: https://docs.cloudfoundry.org/cf-cli/ 
-links-mqtt-pubsub-tutorial: http://dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
+links-mqtt-pubsub-tutorial: //dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
 links-service-instances: http://docs.pivotal.io/solace-messaging/service-instances.html
 links-service-keys: http://docs.pivotal.io/solace-messaging/service-keys.html
 links-installing: http://docs.pivotal.io/solace-messaging/installing.html
@@ -42,14 +43,14 @@ links-github-spring-jcsmp-factory-cloud-factory-java: https://github.com/SolaceP
 links-github-solace-java-properties-java: https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solace/labs/spring/boot/autoconfigure/SolaceJavaProperties.java
 links-solace-java-spring-boot-github-app-properties: https://github.com/SolaceProducts/solace-java-spring-boot#updating-your-application-properties
 links-pivotal-tcp-routes: http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
-links-jms-cf: https://docs.solace.com/API-Developer-Online-Ref-Documentation/jms/javax/jms/ConnectionFactory.html
+links-jms-cf: //docs.solace.com/API-Developer-Online-Ref-Documentation/jms/javax/jms/ConnectionFactory.html
 links-github-spring-sol-jms-connection-factory-cloud-factory-java: https://github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solacesystems/jms/SpringSolJmsConnectionFactoryCloudFactory.java
 links-github-spring-sol-jms-jndi-template-cloud-factory-java: https://github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solacesystems/jms/SpringSolJmsJndiTemplateCloudFactory.java
 links-spring-jms-integration: https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#jms
 links-github-solace-jms-properties-java: https://github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solace/spring/boot/autoconfigure/SolaceJmsProperties.java
 links-spring-jndi-template: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jndi/JndiTemplate.html
 links-solace-jms-spring-boot-application-properties-section: https://github.com/SolaceProducts/solace-jms-spring-boot#updating-your-application-properties
-links-jms-persistence-tutorial: https://dev.solace.com/samples/solace-samples-jms/persistence-with-queues/
+links-jms-persistence-tutorial: //dev.solace.com/samples/solace-samples-jms/persistence-with-queues/
 
 
 

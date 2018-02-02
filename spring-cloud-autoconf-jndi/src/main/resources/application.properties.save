@@ -1,0 +1,14 @@
+solace.jms.host=smfs://mr-dnkn9xyfl.messaging.datago.io:20386
+solace.jms.msgVpn=msgvpn-dnknawibl
+solace.jms.clientUsername=datago-client-username
+solace.jms.clientPassword=okn0b1kugegeofiplmvg1rndj9
+#solace.jms.host=smf://10.244.0.3:7001
+#solace.jms.msgVpn=v003
+#solace.jms.clientUsername=v003.cu000020
+#solace.jms.clientPassword=b19717f9-d13c-4304-8413-37f3e11318cb
+solace.jms.apiProperties.Solace_JMS_SSL_TrustStore=C:/PROGRA~1/Java/jdk1.8.0_152/jre/lib/security/cacerts
+solace.jms.apiProperties.Solace_JMS_SSL_TrustStoreFormat=jks
+solace.jms.demoConnectionFactoryJndiName=/jms/cf/default
+solace.jms.demoProducerQueueJndiName=jndi/tutorial/queue
+solace.jms.demoConsumerQueueJndiName=jndi/tutorial/queue
+#debug=true
