@@ -1,8 +1,8 @@
 ---
 layout: tutorials
 title: Spring Cloud
-summary: A Simple Spring Cloud Application showing how to consume the VCAP_SERVICES using Spring Cloud Connectors.
-icon: spring-cloud.png
+summary: A Simple Application showing how to consume the VCAP_SERVICES using Spring Cloud Connectors.
+icon: I_spring_cloud.svg
 ---
 
 ## Overview

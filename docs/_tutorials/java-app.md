@@ -1,8 +1,8 @@
 ---
 layout: tutorials
 title: Java Application
-summary: A Simple Java Application showing how to directly consume the VCAP_SERVICES environment variable.
-icon: java-logo.jpg
+summary: A Java Application showing how to consume the VCAP_SERVICES environment variable.
+icon: I_java.svg
 ---
 
 ## Overview
