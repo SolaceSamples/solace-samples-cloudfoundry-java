@@ -7,7 +7,7 @@ icon: I_java.svg
 
 ## Overview
 
-This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-pivotal-solace }}){:target="_blank"} for full details.
+This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-ext-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-ext-pivotal-solace }}){:target="_blank"} for full details.
 
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which connects to a Solace Messaging service instance.
 
@@ -25,9 +25,9 @@ The goal of this tutorial is to demonstrate extracting the information from the 
 
 This tutorial assumes the following:
 
-* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}).
-* You are familiar with [Spring RESTful Web Services]({{ site.links-spring-rest }}){:target="_blank"}.
-* You are familiar with [Cloud Foundry]({{ site.links-cloudfoundry }}){:target="_blank"}.
+* You are familiar with Solace [core concepts]({{ site.links-docs-core-concepts }}).
+* You are familiar with [Spring RESTful Web Services]({{ site.links-ext-spring-rest }}){:target="_blank"}.
+* You are familiar with [Cloud Foundry]({{ site.links-ext-cloudfoundry }}){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 
@@ -100,7 +100,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 }
 ```
 
-You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-vcap }}){:target="_blank"}.
+You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-ext-vcap }}){:target="_blank"}.
 
 The sample starts by extracting the JSON document from this environment variable, logging its content and confirming it contains useful information.  This is done in the `init()` method:
 

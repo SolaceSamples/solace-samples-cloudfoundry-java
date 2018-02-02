@@ -32,7 +32,7 @@ The goal of this tutorial is to demonstrate extracting the information from the 
 This tutorial assumes the following:
 
 * You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}).
-* You are familiar with [Cloud Foundry]({{ site.links-cloudfoundry }}){:target="_blank"}.
+* You are familiar with [Cloud Foundry]({{ site.links-ext-cloudfoundry }}){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 * You have completed the Java app tutorial.
@@ -128,11 +128,11 @@ Where bindDNUser and binDNPassword are the bind DN credentials (if configured).
 
 ## Application Access Setup 
 
-You need to setup LDAP in the Solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ldap-settings }}).
+You need to setup LDAP in the Solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ext-ldap-settings }}).
 
 In this case, the the username is `hank` and the password is `hunter2`.
 
-Set two cloud-foundry environment variables for a given app `APP_NAME` called `LDAP_CLIENTUSERNAME` and `LDAP_CLIENTPASSWORD` using the [Cloud Foundry command line tool]({{ site.links-cf-cli }}).
+Set two cloud-foundry environment variables for a given app `APP_NAME` called `LDAP_CLIENTUSERNAME` and `LDAP_CLIENTPASSWORD` using the [Cloud Foundry command line tool]({{ site.links-ext-cf-cli }}).
 
 ```
     cf set-env APP_NAME LDAP_CLIENTUSERNAME hank
@@ -170,7 +170,7 @@ NOTE: When a service is deleted all authorization groups associated with that VP
 
 When creating a service you can give read-write or read-only access to an LDAP group using the command line parameters 'ldapGroupAdminReadWrite' and 'ldapGroupAdminReadOnly'.
 
-Here is an example, creating a service called `test` with a shared VMR using the [Cloud Foundry command line tool]({{ site.links-cf-cli }}).
+Here is an example, creating a service called `test` with a shared VMR using the [Cloud Foundry command line tool]({{ site.links-ext-cf-cli }}).
 
 ```
     cf create-service solace-messaging shared test -c "{\"ldapGroupAdminReadWrite\": \"cn=finance,ou=groups,dc=example,dc=com\"}"
@@ -178,4 +178,4 @@ Here is an example, creating a service called `test` with a shared VMR using the
 
 You can also do this through ops manager.
 
-You can read more about setting up management access with LDAP in the [Solace Messaging Documentation]({{ site.links-ldap-management-settings }}).
+You can read more about setting up management access with LDAP in the [Solace Messaging Documentation]({{ site.links-ext-ldap-management-settings }}).

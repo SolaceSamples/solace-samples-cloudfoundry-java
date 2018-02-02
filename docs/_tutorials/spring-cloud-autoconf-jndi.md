@@ -7,19 +7,19 @@ icon: spring-cloud.png
 
 ## Overview
 
-This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-pivotal-solace }}){:target="_blank"} for full details.
+This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-ext-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-ext-pivotal-solace }}){:target="_blank"} for full details.
 
-This tutorial is similar to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }}/spring-cloud-autoconf-jms) tutorial. Like the Spring Cloud Auto-Config JMS tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry using JMS messaging.  In contrast to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }}/spring-cloud-autoconf-jms), this application uses JNDI to look up JMS objects on the Solace message router and [solace-jms-spring-boot]({{ site.links-github-sp-solace-jms-spring-boot }}){:target="_blank"} which in turn is using the Spring Cloud Connectors library and Spring Auto Configuration can auto inject a Spring [`JndiTemplate`]({{ site.links-spring-jndi-template }}){:target="_blank"} directly into your application.
+This tutorial is similar to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }}/spring-cloud-autoconf-jms) tutorial. Like the Spring Cloud Auto-Config JMS tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry using JMS messaging.  In contrast to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }}/spring-cloud-autoconf-jms), this application uses JNDI to look up JMS objects on the Solace message router and [solace-jms-spring-boot]({{ site.links-ext-github-sp-solace-jms-spring-boot }}){:target="_blank"} which in turn is using the Spring Cloud Connectors library and Spring Auto Configuration can auto inject a Spring [`JndiTemplate`]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} directly into your application.
 
 ![overview]({{ site.baseurl }}/images/spring-cloud-app-architecture.png){: .center-image}
 
 ## Goals
 
-The goal of this tutorial is to demonstrate auto injecting a [Spring JndiTemplate]({{ site.links-spring-jndi-template }}){:target="_blank"} based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
+The goal of this tutorial is to demonstrate auto injecting a [Spring JndiTemplate]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
-1. How to Autowire a [`JndiTemplate`]({{ site.links-spring-jndi-template }}){:target="_blank"} into your application
-1. How to Autowire the [SolaceMessagingInfo]({{ site.links-github-solace-messaging-info-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
-1. How to Autowire [SpringSolJmsJndiTemplateCloudFactory]({{ site.links-github-spring-sol-jms-jndi-template-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace Messaging Instances and create other Solace implementations of the Sprint `JndiTemplate`.
+1. How to Autowire a [`JndiTemplate`]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} into your application
+1. How to Autowire the [SolaceMessagingInfo]({{ site.links-ext-github-solace-messaging-info-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
+1. How to Autowire [SpringSolJmsJndiTemplateCloudFactory]({{ site.links-ext-github-spring-sol-jms-jndi-template-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace Messaging Instances and create other Solace implementations of the Sprint `JndiTemplate`.
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
 
@@ -28,8 +28,8 @@ The goal of this tutorial is to demonstrate auto injecting a [Spring JndiTemplat
 This tutorial assumes the following:
 
 * You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}).
-* You are familiar with [Spring RESTful Web Services]({{ site.links-spring-rest }}){:target="_blank"}.
-* You are familiar with [Cloud Foundry]({{ site.links-cloudfoundry }}){:target="_blank"}.
+* You are familiar with [Spring RESTful Web Services]({{ site.links-ext-spring-rest }}){:target="_blank"}.
+* You are familiar with [Cloud Foundry]({{ site.links-ext-cloudfoundry }}){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 
@@ -104,9 +104,9 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 }
 ```
 
-You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-vcap }}){:target="_blank"}.
+You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-ext-vcap }}){:target="_blank"}.
 
-This sample uses the [solace-jms-spring-boot]({{ site.links-links-github-sp-solace-jms-spring-boot }}){:target="_blank"} which can auto detect and auto wire the available Solace Messaging Services from the Cloud Foundry environment into your application.
+This sample uses the [solace-jms-spring-boot]({{ site.links-ext-links-github-sp-solace-jms-spring-boot }}){:target="_blank"} which can auto detect and auto wire the available Solace Messaging Services from the Cloud Foundry environment into your application.
 
 Spring provided `@Autowire` is used to access all auto configuration available beans which include an auto selected Factory.
 
@@ -153,7 +153,7 @@ for (SolaceMessagingInfo discoveredSolaceMessagingService : SpringSolJmsJndiTemp
 
 ### Use of Spring JMS in the sample
 
-This Spring Cloud Auto-Config JMS sample app is making use of Spring JMS for messaging. To learn more about Spring JMS, refer to the [Spring JMS Integration documentation]({{ site.links-spring-jms-integration }}){:target="_blank"}.
+This Spring Cloud Auto-Config JMS sample app is making use of Spring JMS for messaging. To learn more about Spring JMS, refer to the [Spring JMS Integration documentation]({{ site.links-ext-spring-jms-integration }}){:target="_blank"}.
 
 ### Creating the Message Producer and Consumer
 
@@ -368,9 +368,9 @@ This will push the application and will give the application the name specified 
 
 ## Providing other Properties to the application.
 
-The configuration properties affecting the creation of Sessions is stored in [SolaceJmsProperties]({{ site.links-github-solace-jms-properties-java }}){:target="_blank"}, the Auto Configuration takes care of injecting Cloud Provided Solace Messaging Credentials into the `SolaceJmsProperties` which is used by the Solace ConnectionFactory implementation instance.
+The configuration properties affecting the creation of Sessions is stored in [SolaceJmsProperties]({{ site.links-ext-github-solace-jms-properties-java }}){:target="_blank"}, the Auto Configuration takes care of injecting Cloud Provided Solace Messaging Credentials into the `SolaceJmsProperties` which is used by the Solace ConnectionFactory implementation instance.
 
-Additional properties can be set in `SolaceJmsProperties`, for naming details refer to the [Application Properties section of `solace-jms-spring-boot`]({{ site.links-solace-jms-spring-boot-application-properties-section }}){:target="_blank"}.
+Additional properties can be set in `SolaceJmsProperties`, for naming details refer to the [Application Properties section of `solace-jms-spring-boot`]({{ site.links-ext-solace-jms-spring-boot-application-properties-section }}){:target="_blank"}.
 
 This example will set set the JNDI connection factory name.
 
