@@ -7,7 +7,7 @@ icon: ssl_icon.gif
 
 ## Overview
 
-This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. you can see the [Solace Messaging for Pivotal Cloud Foundry documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
+This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a tile on the [Pivotal Network]({{ site.links-pivotal }}){:target="_blank"}. you can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-pivotal-solace }}){:target="_blank"} for full details.
 
 
 This tutorial is based on the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial, adding a demonstration on how to connect to the Solace Messaging service using TLS.
@@ -21,7 +21,7 @@ The goal of this tutorial is to demonstrate how to connect to the Solace Messagi
 This tutorial assumes the following:
 
 * You have completed the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial.
-* You are familiar with [Transport Level Security](https://en.wikipedia.org/wiki/Transport_Layer_Security){:target="_blank"} concepts, including how to create or obtain certificates.
+* You are familiar with [Transport Level Security]({{ site.links-tls }}){:target="_blank"} concepts, including how to create or obtain certificates.
 
 
 ## Working with a Trusted Certificate

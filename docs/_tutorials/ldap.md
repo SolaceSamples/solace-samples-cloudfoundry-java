@@ -31,8 +31,8 @@ The goal of this tutorial is to demonstrate extracting the information from the 
 
 This tutorial assumes the following:
 
-* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
+* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}).
+* You are familiar with [Cloud Foundry]({{ site.links-cloudfoundry }}){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 * You have completed the Java app tutorial.

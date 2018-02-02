@@ -20,7 +20,6 @@ links-ldap-management-settings: https://docs.pivotal.io/solace-messaging/install
 links-client-ldap-authorization: http://docs.solace.com/Configuring-and-Managing-Routers/Configuring-LDAP-Groups.htm
 links-vcap: http://docs.pivotal.io/solace-messaging/credentials.html
 links-configuring-connection: http://docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
-links-best-practices: http://docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
 links-cf-cli: https://docs.cloudfoundry.org/cf-cli/ 
 links-mqtt-pubsub-tutorial: http://dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
 links-service-instances: http://docs.pivotal.io/solace-messaging/service-instances.html
@@ -28,7 +27,31 @@ links-service-keys: http://docs.pivotal.io/solace-messaging/service-keys.html
 links-installing: http://docs.pivotal.io/solace-messaging/installing.html
 links-installing-tcp-routes: http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
 links-credentials-servicekey-example: http://docs.pivotal.io/solace-messaging/credentials.html#servicekey-example
-links-spring-jcsmp-factory: https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java
+links-pivotal: https://network.pivotal.io
+links-pivotal-solace: http://docs.pivotal.io/solace-messaging
+links-spring-rest: https://spring.io/guides/gs/rest-service
+links-cloudfoundry: https://www.cloudfoundry.org
+links-tls: https://en.wikipedia.org/wiki/Transport_Layer_Security
+links-spring-cloud-conn: http://cloud.spring.io/spring-cloud-connectors
+links-github-sp-sl-spring-cloud-connectors: https://github.com/SolaceProducts/sl-spring-cloud-connectors
+links-github-sp-solace-java-spring-boot: https://github.com/SolaceProducts/solace-java-spring-boot
+links-github-sp-solace-jms-spring-boot: https://github.com/SolaceProducts/solace-jms-spring-boot
+links-github-spring-jcsmp-factory-java: https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java
+links-github-solace-messaging-info-java: https://github.com/SolaceProducts/sl-spring-cloud-connectors/blob/master/src/main/java/com/solace/spring/cloud/core/SolaceMessagingInfo.java
+links-github-spring-jcsmp-factory-cloud-factory-java: https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactoryCloudFactory.java
+links-github-solace-java-properties-java: https://github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solace/labs/spring/boot/autoconfigure/SolaceJavaProperties.java
+links-solace-java-spring-boot-github-app-properties: https://github.com/SolaceProducts/solace-java-spring-boot#updating-your-application-properties
+links-pivotal-tcp-routes: http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
+links-jms-cf: https://docs.solace.com/API-Developer-Online-Ref-Documentation/jms/javax/jms/ConnectionFactory.html
+links-github-spring-sol-jms-connection-factory-cloud-factory-java: https://github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solacesystems/jms/SpringSolJmsConnectionFactoryCloudFactory.java
+links-github-spring-sol-jms-jndi-template-cloud-factory-java: https://github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solacesystems/jms/SpringSolJmsJndiTemplateCloudFactory.java
+links-spring-jms-integration: https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#jms
+links-github-solace-jms-properties-java: https://github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solace/spring/boot/autoconfigure/SolaceJmsProperties.java
+links-spring-jndi-template: https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jndi/JndiTemplate.html
+links-solace-jms-spring-boot-application-properties-section: https://github.com/SolaceProducts/solace-jms-spring-boot#updating-your-application-properties
+links-jms-persistence-tutorial: https://dev.solace.com/samples/solace-samples-jms/persistence-with-queues/
+
+
 
 #----------------------------------------------------
 # Generally don't modify items below this point

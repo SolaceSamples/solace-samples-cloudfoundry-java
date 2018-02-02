@@ -7,7 +7,7 @@ icon: empty-logo.png
 
 ## Overview
 
-This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
+This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-pivotal-solace }}){:target="_blank"} for full details.
 
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which connects to a Solace Messaging service with enabled TCP Routes as trivial example of an IoT use case.
 TCP Routes is a feature that allows a Solace Messaging service hosted in a Pivotal Cloud Foundry deployment to become accessible "outside" the PCF domain.
@@ -17,7 +17,7 @@ TCP Routes is a feature that allows a Solace Messaging service hosted in a Pivot
 
 ## Goals
 
-The goal of this tutorial is to demonstrate how an application can use Cloud Foundry provided [Service Keys]({{ site.links-service-keys }}){:target="_blank"} for a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. Using [Service Keys]({{ site.links-service-keys }}){:target="_blank"} an application running "outside" of Cloud Foundry can obtain [credentials]({{ site.links-credentials-servicekey-example }}){:target="_blank"} to access a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. An application running "outside" of Cloud Foundry should use [Service Keys]({{ site.links-service-keys }}){:target="_blank"} and [TCP Routes](http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes){:target="_blank"}.
+The goal of this tutorial is to demonstrate how an application can use Cloud Foundry provided [Service Keys]({{ site.links-service-keys }}){:target="_blank"} for a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. Using [Service Keys]({{ site.links-service-keys }}){:target="_blank"} an application running "outside" of Cloud Foundry can obtain [credentials]({{ site.links-credentials-servicekey-example }}){:target="_blank"} to access a Solace Messaging [Service Instance]({{ site.links-service-instances }}){:target="_blank"}. An application running "outside" of Cloud Foundry should use [Service Keys]({{ site.links-service-keys }}){:target="_blank"} and [TCP Routes]({{ site.links-pivotal-tcp-routes }}){:target="_blank"}{:target="_blank"}.
 
 This tutorial will show you:
 
@@ -30,12 +30,12 @@ This tutorial will show you:
 
 This tutorial assumes the following:
 
-* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/){:target="_blank"}.
-* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
+* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}).
+* You are familiar with [Spring RESTful Web Services]({{ site.links-spring-rest }}){:target="_blank"}.
+* You are familiar with [Cloud Foundry]({{ site.links-cloudfoundry }}){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
 * You are familiar with Using Solace Messaging [Service Instances]({{ site.links-service-instances }}){:target="_blank"} and [Service Keys]({{ site.links-service-keys }}){:target="_blank"}
-* Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment having enabled [TCP Routes](http://docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes){:target="_blank"} with 'MQTT / Plain-Text' set to "Enabled by default" or "Disabled by default"
+* Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment having enabled [TCP Routes]({{ site.links-pivotal-tcp-routes }}){:target="_blank"}{:target="_blank"} with 'MQTT / Plain-Text' set to "Enabled by default" or "Disabled by default"
 
 ## Code Walk Through
 
@@ -154,7 +154,7 @@ try {
 
 ### Connecting to the Solace Messaging Service
 
-Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as outlined in the [MQTT Publish/Subscribe tutorial]({{ site.links-mqtt-pubsub-tutorial }}){:target="_top"}. 
+Once the credentials are extracted, you can create and then connect the Solace Session in the conventional way as outlined in the [MQTT Publish/Subscribe tutorial]({{ site.links-mqtt-pubsub-tutorial }}). 
 
 Create an mqtt client and connection properties.
 
@@ -278,7 +278,7 @@ public ResponseEntity<SimpleMessage> getLastMessageReceived() {
 
 The subscription JSON document used by the `/subscription` endpoint is modeled by the `SimpleSubscription` class, whereas the `/message` endpoint JSON document is modeled by the `SimpleMessage` class.
 
-For more details on sending and receiving messages, you can checkout the [MQTT Publish/Subscribe tutorial]({{ site.links-mqtt-pubsub-tutorial }}){:target="_top"}.
+For more details on sending and receiving messages, you can checkout the [MQTT Publish/Subscribe tutorial]({{ site.links-mqtt-pubsub-tutorial }}).
 
 ## Building
 

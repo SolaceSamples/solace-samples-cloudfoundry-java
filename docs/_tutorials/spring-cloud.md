@@ -7,7 +7,7 @@ icon: spring-cloud.png
 
 ## Overview
 
-This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network](https://network.pivotal.io/){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation](http://docs.pivotal.io/solace-messaging/){:target="_blank"} for full details.
+This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-pivotal-solace }}){:target="_blank"} for full details.
 
 This tutorial is similar to the [Java App]({{ site.baseurl }}/java-app) tutorial. Like the Java App tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application.  In contrast to the Java App, this application uses the Spring Cloud Connectors library to simplify the parsing of the `VCAP_SERVICES` environment variable. 
 
@@ -25,9 +25,9 @@ The goal of this tutorial is to demonstrate extracting the information from the 
 
 This tutorial assumes the following:
 
-* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}){:target="_top"}.
-* You are familiar with [Spring RESTful Web Services](https://spring.io/guides/gs/rest-service/){:target="_blank"}.
-* You are familiar with [Cloud Foundry](https://www.cloudfoundry.org/){:target="_blank"}.
+* You are familiar with Solace [core concepts]({{ site.docs-core-concepts }}).
+* You are familiar with [Spring RESTful Web Services]({{ site.links-spring-rest }}){:target="_blank"}.
+* You are familiar with [Cloud Foundry]({{ site.links-cloudfoundry }}){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 
@@ -53,7 +53,7 @@ compile("com.solacesystems:sol-jcsmp:{{ site.jcsmp_version }}")
 
 ### Get the API: Using the Solace Developer Portal
 
-The Java API library can be [downloaded here]({{ site.links-downloads }}){:target="_top"}. The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
+The Java API library can be [downloaded here]({{ site.links-downloads }}). The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
 
 ## Code Walk Through
 
@@ -102,7 +102,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 
 You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-vcap }}){:target="_blank"}.
 
-This sample use the [Spring Cloud Connectors](http://cloud.spring.io/spring-cloud-connectors/){:target="_blank"} project to retrieve the `VCAP_SERVICES` information in the form of a `ServiceInfo` object. For Solace Messaging in Cloud Foundry, there is a Spring Cloud Connectors extension in GitHub called [sl-spring-cloud-connectors](https://github.com/SolaceProducts/sl-spring-cloud-connectors). This library parses the `VCAP_SERVICES` environment variable and exposes the information by implementing the `ServiceInfo` interface in the `SolaceMessagingInfo` object.
+This sample use the [Spring Cloud Connectors]({{ site.links-spring-cloud-conn }}){:target="_blank"} project to retrieve the `VCAP_SERVICES` information in the form of a `ServiceInfo` object. For Solace Messaging in Cloud Foundry, there is a Spring Cloud Connectors extension in GitHub called [sl-spring-cloud-connectors]({{ site.links-github-sp-sl-spring-cloud-connectors }}){:target="_blank"}(). This library parses the `VCAP_SERVICES` environment variable and exposes the information by implementing the `ServiceInfo` interface in the `SolaceMessagingInfo` object.
 
 The `init()` method retrieves the Solace Messaging Service Instance details for the service named `solace-messaging-sample-instance` as follows:
 
@@ -122,7 +122,7 @@ if (solaceMessagingServiceInfo == null) {
 
 ### Connecting to the Solace Messaging Service
 
-Once you have the `SolaceMessagingInfo`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}){:target="_top"}. You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
+Once you have the `SolaceMessagingInfo`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}). You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
 
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
@@ -222,7 +222,7 @@ public ResponseEntity<SimpleMessage> getLastMessageReceived() {
 
 The subscription JSON document used by the `/subscription` endpoint is modeled by the `SimpleSubscription` class, whereas the `/message` endpoint JSON document is modeled by the `SimpleMessage` class.
 
-For more details on sending and receiving messages, you can checkout the [JCSMP Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}){:target="_top"}.
+For more details on sending and receiving messages, you can checkout the [JCSMP Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}).
 
 ## Building
 
