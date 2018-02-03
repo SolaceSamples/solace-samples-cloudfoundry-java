@@ -2,32 +2,56 @@
 title: Solace Messaging with Pivotal Cloud Foundry
 summary: These tutorials walk through Java Sample applications to introduce you to Solace Messaging for Pivotal Cloud Foundry.
 baseurl: "/solace-samples-cloudfoundry-java" # the subpath of your site, e.g. /solace-samples-java
-repository: https://github.com/SolaceSamples/solace-samples-cloudfoundry-java
+repository: //github.com/SolaceSamples/solace-samples-cloudfoundry-java
 
 # Also see _includes/intro.html to customize the description which gets included in index.html.
 
-# Solace JCSMP Verion
+# Solace JCSMP and JMS Versions
 jcsmp_version: 10.+
+jms_version: 10.+
 
 # Links
-docs-core-concepts: //docs.solace.com/Features/Core-Concepts.htm
+links-docs-core-concepts: //docs.solace.com/Features/Core-Concepts.htm
 links-downloads: //dev.solace.com/downloads/
 links-pubsub-tutorial: //dev.solace.com/get-started/java-tutorials/publish-subscribe_java/
-links-tls-client: //docs.solace.com/Solace-Messaging-APIs/Creating-Secure-Sessions.htm
-links-tls-server: https://docs.pivotal.io/solace-messaging/installing.html#configure
-links-ldap-settings: https://docs.pivotal.io/solace-messaging/installing.html#optional_ldap_settings
-links-ldap-management-settings: https://docs.pivotal.io/solace-messaging/installing.html#optional_management_access
+links-ext-tls-server: //docs.pivotal.io/solace-messaging/installing.html#configure
+links-ext-ldap-settings: //docs.pivotal.io/solace-messaging/installing.html#optional_ldap_settings
+links-ext-ldap-management-settings: //docs.pivotal.io/solace-messaging/installing.html#optional_management_access
 links-client-ldap-authorization: //docs.solace.com/Configuring-and-Managing-Routers/Configuring-LDAP-Groups.htm
-links-vcap: //docs.pivotal.io/solace-messaging/credentials.html
+links-ext-vcap: //docs.pivotal.io/solace-messaging/credentials.html
 links-configuring-connection: //docs.solace.com/Solace-Messaging-APIs/Configuring-Connection-T.htm
-links-best-practices: //docs.solace.com/Solace-Messaging-APIs/Best-Practices.htm
-links-cf-cli: https://docs.cloudfoundry.org/cf-cli/
+links-ext-cf-cli: //docs.cloudfoundry.org/cf-cli/
 links-mqtt-pubsub-tutorial: //dev.solace.com/get-started/mqtt-tutorials/publish-subscribe_mqtt/
-links-service-instances: //docs.pivotal.io/solace-messaging/service-instances.html
-links-service-keys: //docs.pivotal.io/solace-messaging/service-keys.html
-links-installing: //docs.pivotal.io/solace-messaging/installing.html
-links-installing-tcp-routes: //docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
-links-credentials-servicekey-example: //docs.pivotal.io/solace-messaging/credentials.html#servicekey-example
+links-ext-service-instances: //docs.pivotal.io/solace-messaging/service-instances.html
+links-ext-service-keys: //docs.pivotal.io/solace-messaging/service-keys.html
+links-ext-installing: //docs.pivotal.io/solace-messaging/installing.html
+links-ext-installing-tcp-routes: //docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
+links-ext-credentials-servicekey-example: //docs.pivotal.io/solace-messaging/credentials.html#servicekey-example
+links-ext-pivotal: //network.pivotal.io
+links-ext-pivotal-solace: //docs.pivotal.io/solace-messaging
+links-ext-spring-rest: //spring.io/guides/gs/rest-service
+links-ext-cloudfoundry: //www.cloudfoundry.org
+links-ext-tls: //en.wikipedia.org/wiki/Transport_Layer_Security
+links-ext-spring-cloud-conn: //cloud.spring.io/spring-cloud-connectors
+links-ext-github-sp-sl-spring-cloud-connectors: //github.com/SolaceProducts/sl-spring-cloud-connectors
+links-ext-github-sp-solace-java-spring-boot: //github.com/SolaceProducts/solace-java-spring-boot
+links-ext-github-sp-solace-jms-spring-boot: //github.com/SolaceProducts/solace-jms-spring-boot
+links-ext-github-spring-jcsmp-factory-java: //github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java
+links-ext-github-solace-messaging-info-java: //github.com/SolaceProducts/sl-spring-cloud-connectors/blob/master/src/main/java/com/solace/spring/cloud/core/SolaceMessagingInfo.java
+links-ext-github-spring-jcsmp-factory-cloud-factory-java: //github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactoryCloudFactory.java
+links-ext-github-solace-java-properties-java: //github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solace/labs/spring/boot/autoconfigure/SolaceJavaProperties.java
+links-ext-solace-java-spring-boot-github-app-properties: //github.com/SolaceProducts/solace-java-spring-boot#updating-your-application-properties
+links-ext-pivotal-tcp-routes: //docs.pivotal.io/solace-messaging/installing.html#optional_tcp_routes
+links-jms-cf: //docs.solace.com/API-Developer-Online-Ref-Documentation/jms/javax/jms/ConnectionFactory.html
+links-ext-github-spring-sol-jms-connection-factory-cloud-factory-java: //github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solacesystems/jms/SpringSolJmsConnectionFactoryCloudFactory.java
+links-ext-github-spring-sol-jms-jndi-template-cloud-factory-java: //github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solacesystems/jms/SpringSolJmsJndiTemplateCloudFactory.java
+links-ext-spring-jms-integration: //docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#jms
+links-ext-github-solace-jms-properties-java: //github.com/SolaceProducts/solace-jms-spring-boot/blob/master/solace-jms-spring-boot-autoconfigure/src/main/java/com/solace/spring/boot/autoconfigure/SolaceJmsProperties.java
+links-ext-spring-jndi-template: //docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jndi/JndiTemplate.html
+links-ext-solace-jms-spring-boot-application-properties-section: //github.com/SolaceProducts/solace-jms-spring-boot#updating-your-application-properties
+links-jms-persistence-tutorial: //dev.solace.com/samples/solace-samples-jms/persistence-with-queues/
+
+
 
 #----------------------------------------------------
 # Generally don't modify items below this point

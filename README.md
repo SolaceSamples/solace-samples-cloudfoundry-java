@@ -55,11 +55,11 @@ This application makes use of the Spring Cloud Connectors project to automatical
 
 	compile 'org.springframework.cloud:spring-cloud-spring-service-connector:1.2.3.RELEASE'
 	compile 'org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.2.3.RELEASE'
-	compile 'com.solace.labs.cloud.cloudfoundry:solace-labs-spring-cloud-connector:1.2.+'
+	compile 'com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:1.3.+'
 
-The `solace-labs-spring-cloud-connector` is a Spring Cloud Connectors extension to parse the `VCAP_SERVICES` for the Solace Messaging service instance information. Check out the project page for more details:
+The `solace-spring-cloud-connector` is a Spring Cloud Connectors extension to parse the `VCAP_SERVICES` for the Solace Messaging service instance information. Check out the project page for more details:
 
-* https://github.com/SolaceLabs/sl-solace-messaging-service-info
+* https://github.com/SolaceProducts/sl-solace-messaging-service-info
 
 The easiest way for applications to access the SolaceMessagingInfo object is by Service Id (ex: "MyService) as follows:
 

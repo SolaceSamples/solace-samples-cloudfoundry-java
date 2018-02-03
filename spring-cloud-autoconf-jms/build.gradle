@@ -1,0 +1,64 @@
+buildscript {
+    ext {
+        springBootVersion = '1.4.2.RELEASE'
+        springCloudVersion = '1.2.3.RELEASE'
+        solaceJMSVersion = '10.+'
+        solaceCloudVersion = '2.0.+'
+        solaceJmsSpringBootVersion = '1.0.+'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+
+jar {
+    baseName = 'solace-sample-spring-cloud-autoconf-jms'
+    version =  ''
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+      dirs 'libs'
+    }
+    mavenLocal()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    // Spring Cloud Connectors
+    compile("org.springframework.cloud:spring-cloud-spring-service-connector:${springCloudVersion}")
+    compile("org.springframework.cloud:spring-cloud-cloudfoundry-connector:${springCloudVersion}")
+
+    // Alternatively using spring-boot-starter inclusion...
+    //compile("org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}")
+
+    compile("org.json:json:20151123")
+
+
+    // Solace Messaging Spring Cloud Connector
+    compile("com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:${solaceCloudVersion}")
+
+    // Solace JMS API
+    compile("com.solacesystems:sol-jms:${solaceJMSVersion}")
+
+    // Solace JMS API & auto-configuration
+    compile("com.solace.spring.boot:solace-jms-spring-boot-starter:${solaceJmsSpringBootVersion}")
+
+    compile("com.solace.spring.boot:solace-jms-spring-boot-autoconfigure:${solaceJmsSpringBootVersion}")
+
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.3.1'
+}
