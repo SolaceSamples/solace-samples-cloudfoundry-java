@@ -18,7 +18,7 @@ This tutorial is similar to the [Spring Cloud]({{ site.baseurl }}/spring-cloud) 
 The goal of this tutorial is to demonstrate auto injecting a [SpringJCSMPFactory]({{ site.links-ext-github-spring-jcsmp-factory-java }}){:target="_blank"} based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
 1. How to Autowire a [SpringJCSMPFactory]({{ site.links-ext-github-spring-jcsmp-factory-java }}){:target="_blank"} into your application
-1. How to Autowire the [SolaceMessagingInfo]({{ site.links-ext-github-solace-messaging-info-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
+1. How to Autowire the [SolaceServiceCredentials]({{ site.links-ext-github-solace-messaging-info-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
 1. How to Autowire [SpringJCSMPFactoryCloudFactory]({{ site.links-ext-github-spring-jcsmp-factory-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace Messaging Instances and create other instances of SpringJCSMPFactory.
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
@@ -121,11 +121,11 @@ private SpringJCSMPFactory solaceFactory;
 // This bean is for information only, it can be used to discover more about
 // the solace service in use.
 @Autowired
-SolaceMessagingInfo solaceMessagingInfo;
+SolaceServiceCredentials solaceMessagingInfo;
 
 // A Factory of Factories
-// Has the ability to create SpringJCSMPFactory(s) for all available
-// SolaceMessagingInfo(s)
+// Has the ability to create SpringJCSMPFactory(s) for any available
+// SolaceServiceCredentials
 // Can be used in case there are multiple Solace Messaging Services to
 // select from.
 @Autowired
@@ -136,10 +136,10 @@ The `init()` method retrieves and shows the autowired Solace Messaging Service I
 
 ```java
 logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
-	springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
+	springJCSMPFactoryCloudFactory.getSolaceServiceCredentials().size()));
 
 // Log what Solace Messaging Services were discovered
-for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory .getSolaceMessagingInfos()) {
+for (SolaceServiceCredentials discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory.getSolaceServiceCredentials()) {
 	logger.info(String.format("Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
 	discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
 	discoveredSolaceMessagingService.getMsgVpnName()));

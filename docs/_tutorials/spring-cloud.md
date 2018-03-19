@@ -110,7 +110,7 @@ The `init()` method retrieves the Solace Messaging Service Instance details for 
 CloudFactory cloudFactory = new CloudFactory();
 Cloud cloud = cloudFactory.getCloud();
 
-SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud
+SolaceServiceCredentials solaceMessagingServiceInfo = (SolaceServiceCredentials) cloud
         .getServiceInfo("solace-messaging-sample-instance");
 
 if (solaceMessagingServiceInfo == null) {
@@ -122,7 +122,7 @@ if (solaceMessagingServiceInfo == null) {
 
 ### Connecting to the Solace Messaging Service
 
-Once you have the `SolaceMessagingInfo`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}). You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
+Once you have the `SolaceServiceCredentials`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}). You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
 
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
