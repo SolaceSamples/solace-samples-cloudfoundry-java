@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
+import com.solace.services.core.model.SolaceServiceCredentials;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
@@ -35,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solace.spring.cloud.core.SolaceMessagingInfo;
 import com.solace.samples.cloudfoundry.securesession.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.securesession.model.SimpleSubscription;
 import com.solacesystems.jcsmp.BytesXMLMessage;
@@ -101,7 +101,7 @@ public class SolaceController {
     // Optionally provided LDAP_CLIENTPASSWORD
     @Value("${ldap.clientPassword:}")
     protected String ldap_clientPassword;
-    
+
     // Stats
     private final AtomicInteger numMessagesReceived = new AtomicInteger();
     private final AtomicInteger numMessagesSent = new AtomicInteger();
@@ -162,7 +162,7 @@ public class SolaceController {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
 
-        SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud
+        SolaceServiceCredentials solaceMessagingServiceInfo = (SolaceServiceCredentials) cloud
                 .getServiceInfo("solace-messaging-sample-instance");
 
         if (solaceMessagingServiceInfo == null) {
@@ -178,7 +178,7 @@ public class SolaceController {
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, host);
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
-        
+
 	    // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
         if( solaceMessagingServiceInfo.getClientUsername() != null && solaceMessagingServiceInfo.getClientPassword() != null ) {
         	logger.info("Using vmr internal authentication " + solaceMessagingServiceInfo.getClientUsername() + " " + solaceMessagingServiceInfo.getClientPassword());
@@ -193,7 +193,7 @@ public class SolaceController {
             logger.error("Did not find credentials to use, Neither Solace messaging provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
-        }        
+        }
 
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
         properties.setProperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
@@ -334,7 +334,7 @@ public class SolaceController {
      * This formats a string showing the exception class name and message, as
      * well as the class name and message of the underlying cause if it exists.
      * Then it returns that string in a ResponseEntity.
-     * 
+     *
      * @param exception
      * @return ResponseEntity<String>
      */
