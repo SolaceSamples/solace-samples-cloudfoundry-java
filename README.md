@@ -126,6 +126,10 @@ The message is received asynchronously, check for the last message.
 
 	curl -X GET http://$APP_URL/message
 
+Unsubscribe the application from topic "test"
+
+    curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.

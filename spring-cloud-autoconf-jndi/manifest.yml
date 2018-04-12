@@ -1,10 +1,9 @@
 ---
 applications:
 - name: solace-sample-spring-cloud-autoconf-jndi
-  memory: 512M
+  memory: 1G
   path: build/libs/solace-sample-spring-cloud-autoconf-jndi.jar
   services:
   - solace-messaging-sample-instance
   env:
     solace.jms.demoConnectionFactoryJndiName: /jms/cf/default
-    

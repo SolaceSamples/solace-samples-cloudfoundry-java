@@ -361,7 +361,7 @@ If running in PCF keep in mind that the idea is that the application is connecti
 export SERVICE_KEY=$( cat solace-messaging-sample-service.key )
 cd tcp-routes-mqtt
 cf push
-cf set-env solace-sample-java-app SERVICE_KEY $SERVICE_KEY
+cf set-env solace-sample-java-app SERVICE_KEY "$SERVICE_KEY"
 cf restage solace-sample-java-app
 ```
 
@@ -375,6 +375,7 @@ As described above, the sample application has a simple REST interface that allo
 * Subscribe
 * Send a message
 * Receive a message
+* Unsubscribe
 
 In order to interact with the application you need to determine the application's URL.  
 
@@ -404,5 +405,8 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
+
+# Unsubscribe the application from the topic "test"
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
 ```
 
