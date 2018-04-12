@@ -74,7 +74,7 @@ Alternatively applications could search through the environment and discover mat
 		
 	// Connect to the first Solace-Messaging service that is found in the services list.
 	for (ServiceInfo service : services) {
-		if (service instanceof SolaceMessagingInfo) {
+		if (service instanceof SolaceServiceCredentials) {
 			solaceMessagingServiceInfo = (SolaceServiceCredentials)service;
 			break;
 		}
