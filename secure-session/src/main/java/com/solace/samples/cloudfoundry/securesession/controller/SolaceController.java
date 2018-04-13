@@ -162,28 +162,28 @@ public class SolaceController {
         CloudFactory cloudFactory = new CloudFactory();
         Cloud cloud = cloudFactory.getCloud();
 
-        SolaceServiceCredentials solaceMessagingServiceInfo = (SolaceServiceCredentials) cloud
+        SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud
                 .getServiceInfo("solace-messaging-sample-instance");
 
-        if (solaceMessagingServiceInfo == null) {
+        if (solaceServiceCredentials == null) {
             logger.error("Did not find instance of 'solace-messaging' service");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
         }
 
-        logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceMessagingServiceInfo);
+        logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceServiceCredentials);
 
-        String host = solaceMessagingServiceInfo.getSmfTlsHost();
+        String host = solaceServiceCredentials.getSmfTlsHost();
 
         final JCSMPProperties properties = new JCSMPProperties();
         properties.setProperty(JCSMPProperties.HOST, host);
-        properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
+        properties.setProperty(JCSMPProperties.VPN_NAME, solaceServiceCredentials.getMsgVpnName());
 
 	    // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
-        if( solaceMessagingServiceInfo.getClientUsername() != null && solaceMessagingServiceInfo.getClientPassword() != null ) {
-        	logger.info("Using vmr internal authentication " + solaceMessagingServiceInfo.getClientUsername() + " " + solaceMessagingServiceInfo.getClientPassword());
-            properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
-            properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
+        if( solaceServiceCredentials.getClientUsername() != null && solaceServiceCredentials.getClientPassword() != null ) {
+        	logger.info("Using vmr internal authentication " + solaceServiceCredentials.getClientUsername() + " " + solaceServiceCredentials.getClientPassword());
+            properties.setProperty(JCSMPProperties.USERNAME, solaceServiceCredentials.getClientUsername());
+            properties.setProperty(JCSMPProperties.PASSWORD, solaceServiceCredentials.getClientPassword());
         } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientPassword != null && ! ldap_clientPassword.isEmpty()) {
         	// Use the LDAP provided clientUsername and clientPassword
         	logger.info("Using ldap provided authentication " + ldap_clientUsername + " " + ldap_clientPassword);
@@ -202,7 +202,7 @@ public class SolaceController {
 
         // If using High Availability, the host property will be a
         // comma-separated list of two hosts.
-        if (solaceMessagingServiceInfo.isHA()) {
+        if (solaceServiceCredentials.isHA()) {
             // Recommended values for High Availability automatic reconnects.
             JCSMPChannelProperties channelProperties = (JCSMPChannelProperties) properties
                     .getProperty(JCSMPProperties.CLIENT_CHANNEL_PROPERTIES);

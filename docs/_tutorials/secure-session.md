@@ -38,13 +38,13 @@ This section assumes that you have a Solace Messaging Service Instance properly 
 when we initialize the connection to the service, we can specify whether to use TLS or not. to use TLS, we replaced this line from the Spring Cloud tutorial:
 
 ```java
-properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfHost());
+properties.setProperty(JCSMPProperties.HOST, solaceServiceCredentials.getSmfHost());
 ```
 
 with this:
 
 ```java
-properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfTlsHost());
+properties.setProperty(JCSMPProperties.HOST, solaceServiceCredentials.getSmfTlsHost());
 ```
 
 When you use the TLS host, you can also specify whether the client should validate the TLS certificate.

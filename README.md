@@ -65,17 +65,17 @@ The easiest way for applications to access the SolaceServiceCredentials object i
 
 	CloudFactory cloudFactory = new CloudFactory();
 	Cloud cloud = cloudFactory.getCloud();
-	SolaceServiceCredentials solaceMessagingServiceInfo = (SolaceServiceCredentials) cloud.getServiceInfo("MyService");
+	SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud.getServiceInfo("MyService");
 	
 Alternatively applications could search through the environment and discover matching services as follows:
 
-	SolaceServiceCredentials solaceMessagingServiceInfo = null;
+	SolaceServiceCredentials solaceServiceCredentials = null;
 	List<ServiceInfo> services = cloud.getServiceInfos();
 		
 	// Connect to the first Solace-Messaging service that is found in the services list.
 	for (ServiceInfo service : services) {
 		if (service instanceof SolaceServiceCredentials) {
-			solaceMessagingServiceInfo = (SolaceServiceCredentials)service;
+			solaceServiceCredentials = (SolaceServiceCredentials)service;
 			break;
 		}
 	}
