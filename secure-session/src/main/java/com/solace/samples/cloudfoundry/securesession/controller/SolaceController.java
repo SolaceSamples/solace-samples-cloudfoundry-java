@@ -171,7 +171,7 @@ public class SolaceController {
             return;
         }
 
-        logger.info("Solace client initializing and using SolaceMessagingInfo: " + solaceServiceCredentials);
+        logger.info("Solace client initializing and using SolaceServiceCredentials: " + solaceServiceCredentials);
 
         String host = solaceServiceCredentials.getSmfTlsHost();
 
