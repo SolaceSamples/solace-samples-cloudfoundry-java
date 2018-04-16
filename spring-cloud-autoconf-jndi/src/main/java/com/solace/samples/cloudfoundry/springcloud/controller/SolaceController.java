@@ -40,6 +40,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.jms.support.destination.JndiDestinationResolver;
 import org.springframework.jndi.JndiObjectFactoryBean;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -205,9 +206,14 @@ public class SolaceController {
 		return new ResponseEntity<>("{}", HttpStatus.OK);
 	}
 
+	@Deprecated
 	@RequestMapping(value = "/subscription", method = RequestMethod.DELETE)
 	public ResponseEntity<String> deleteSubscription(@RequestBody SimpleSubscription subscription) {
-		String subscriptionTopic = subscription.getSubscription();
+		return deleteSubscription(subscription.getSubscription());
+	}
+
+	@RequestMapping(value = "/subscription/{subscriptionName}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteSubscription(@PathVariable("subscriptionName") String subscriptionTopic) {
 		logger.info("Deleting a subscription to topic: " + subscriptionTopic);
 
 		if ( !this.listenerContainersMap.containsKey(subscriptionTopic) ) {

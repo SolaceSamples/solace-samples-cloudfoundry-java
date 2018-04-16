@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +59,7 @@ public class SolaceController {
     private JCSMPSession session;
     private XMLMessageProducer producer;
     private TextMessage lastReceivedMessage;
-    
+
     // Optionally provided LDAP_CLIENTUSERNAME
     @Value("${ldap.clientUsername:}")
     protected String ldap_clientUsername;
@@ -182,7 +183,7 @@ public class SolaceController {
         logger.info("reconnectRetries           " + reconnectRetries);
         logger.info("reconnectRetryWaitInMillis " + reconnectRetryWaitInMillis);
         logger.info("connectRetriesPerHost      " + connectRetriesPerHost);
-        
+
         properties.setProperty(JCSMPProperties.HOST, host);
 
         // Must be using HA to have more than 1 host.
@@ -297,9 +298,14 @@ public class SolaceController {
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
 
+    @Deprecated
     @RequestMapping(value = "/subscription", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteSubscription(@RequestBody SimpleSubscription subscription) {
-        String subscriptionTopic = subscription.getSubscription();
+		return deleteSubscription(subscription.getSubscription());
+	}
+
+	@RequestMapping(value = "/subscription/{subscriptionName}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteSubscription(@PathVariable("subscriptionName") String subscriptionTopic) {
         final Topic topic = JCSMPFactory.onlyInstance().createTopic(subscriptionTopic);
         logger.info("Deleting a subscription to topic: " + subscriptionTopic);
 
