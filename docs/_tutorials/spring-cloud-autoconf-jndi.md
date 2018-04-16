@@ -20,7 +20,7 @@ This tutorial is similar to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }
 The goal of this tutorial is to demonstrate auto injecting a [Spring JndiTemplate]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
 1. How to Autowire a [`JndiTemplate`]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} into your application
-1. How to Autowire the [SolaceServiceCredentials]({{ site.links-ext-github-solace-messaging-info-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
+1. How to Autowire the [SolaceServiceCredentials]({{ site.links-ext-github-solace-service-credentials-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
 1. How to Autowire [SpringSolJmsJndiTemplateCloudFactory]({{ site.links-ext-github-spring-sol-jms-jndi-template-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace Messaging Instances and create other Solace implementations of the Sprint `JndiTemplate`.
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
