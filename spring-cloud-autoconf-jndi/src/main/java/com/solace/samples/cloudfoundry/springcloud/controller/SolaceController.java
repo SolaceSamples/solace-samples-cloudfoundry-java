@@ -68,7 +68,7 @@ public class SolaceController {
 	// This bean is for information only, it can be used to discover more about
 	// the solace service in use.
 	@Autowired
-	private SolaceServiceCredentials solaceMessagingInfo;
+	private SolaceServiceCredentials solaceServiceCredentials;
 
 	// A Factory of Factories
 	// Has the ability to create JndiTemplate(s) for any available

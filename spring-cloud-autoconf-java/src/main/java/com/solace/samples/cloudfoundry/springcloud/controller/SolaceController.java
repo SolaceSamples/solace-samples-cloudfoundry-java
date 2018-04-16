@@ -67,7 +67,7 @@ public class SolaceController {
 	// This bean is for information only, it can be used to discover more about
 	// the solace service in use.
 	@Autowired
-	SolaceServiceCredentials solaceMessagingInfo;
+	SolaceServiceCredentials solaceServiceCredentials;
 
 	// A Factory of Factories
 	// Has the ability to create SpringJCSMPFactory(s) for any available
@@ -140,7 +140,7 @@ public class SolaceController {
 		try {
 //			logger.info(String.format(
 //					"Creating a Session using a SolaceFactory configured with solace-messaging service '%s'",
-//					solaceMessagingInfo.getId()));
+//					solaceServiceCredentials.getId()));
 			session = solaceFactory.createSession();
 			session.connect();
 		} catch (Exception e) {

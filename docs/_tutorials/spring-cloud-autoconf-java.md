@@ -123,7 +123,7 @@ private SpringJCSMPFactory solaceFactory;
 // This bean is for information only, it can be used to discover more about
 // the solace service in use.
 @Autowired
-SolaceServiceCredentials solaceMessagingInfo;
+SolaceServiceCredentials solaceServiceCredentials;
 
 // A Factory of Factories
 // Has the ability to create SpringJCSMPFactory(s) for any available
@@ -154,7 +154,7 @@ The `SpringJCSMPFactory solaceFactory` was already autowired, you can use it to 
 
 ```java
 try {
-	logger.info(String.format("Creating a Session using a SolaceFactory configured with solace-messaging service '%s'", solaceMessagingInfo.getId()));
+	logger.info(String.format("Creating a Session using a SolaceFactory configured with solace-messaging service '%s'", solaceServiceCredentials.getId()));
 	session = solaceFactory.createSession();
 	session.connect();
 } catch (Exception e) {

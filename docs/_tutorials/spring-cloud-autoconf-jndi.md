@@ -126,7 +126,7 @@ private JmsTemplate jmsTemplate;
 // This bean is for information only, it can be used to discover more about
 // the solace service in use.
 @Autowired
-SolaceServiceCredentials solaceMessagingInfo;
+SolaceServiceCredentials solaceServiceCredentials;
 
 // A Factory of Factories
 // Has the ability to create ConnectionFactory(s) for any available
