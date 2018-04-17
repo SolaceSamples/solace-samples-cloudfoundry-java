@@ -27,7 +27,7 @@ The sample applications specify a dependency on a Solace Messaging service insta
 
 ### Building
 
-Just clone and build. For example: 
+Just clone and build. For example:
 
 1. clone this GitHub repository
 1. `./gradlew build`
@@ -66,12 +66,12 @@ The easiest way for applications to access the SolaceServiceCredentials object i
 	CloudFactory cloudFactory = new CloudFactory();
 	Cloud cloud = cloudFactory.getCloud();
 	SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud.getServiceInfo("MyService");
-	
+
 Alternatively applications could search through the environment and discover matching services as follows:
 
 	SolaceServiceCredentials solaceServiceCredentials = null;
 	List<ServiceInfo> services = cloud.getServiceInfos();
-		
+
 	// Connect to the first Solace-Messaging service that is found in the services list.
 	for (ServiceInfo service : services) {
 		if (service instanceof SolaceServiceCredentials) {
@@ -96,7 +96,7 @@ Transport Level Security (TLS) between the Java application and the Solace Messa
 
 ## LDAP
 
-This is not a standalone application, but instead a modification to the existing sample apps. 
+This is not a standalone application, but instead a modification to the existing sample apps.
 
 If application access is enabled by the cloud operator, bindings will not contain application access credentials and the credentials will instead have to be provided to the application externally.
 
@@ -128,7 +128,7 @@ The message is received asynchronously, check for the last message.
 
 Unsubscribe the application from topic "test"
 
-    curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+    curl -X DELETE http://$APP_URL/subscription/test
 
 ## Contributing
 

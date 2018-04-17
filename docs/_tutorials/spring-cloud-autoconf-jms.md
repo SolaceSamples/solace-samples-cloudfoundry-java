@@ -57,7 +57,7 @@ compile("com.solacesystems:sol-jms:${solaceJMSVersion}")
 
 ### Get the API: Using the Solace Developer Portal
 
-The JMS API library can be [downloaded here]({{ site.links-downloads }}). The JMS API is distributed as a zip file containing the required jars, API documentation, and examples. 
+The JMS API library can be [downloaded here]({{ site.links-downloads }}). The JMS API is distributed as a zip file containing the required jars, API documentation, and examples.
 
 ## Code Walk Through
 
@@ -79,7 +79,7 @@ This tutorial will only cover the source code in `SolaceController.java`, and `P
 
 ### Obtaining the Solace Credentials in the Application
 
-The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us: 
+The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us:
 
 ```
 {
@@ -158,7 +158,7 @@ This Spring Cloud Auto-Config JMS sample app is making use of Spring JMS for mes
 
 ### Creating the Message Producer and Consumer
 
-The `ConnectionFactory connectionFactory` has been already autowired, which is the Solace implementation of the standard JMS ConnectionFactory interface, instantiated to access the Solace Messaging service. 
+The `ConnectionFactory connectionFactory` has been already autowired, which is the Solace implementation of the standard JMS ConnectionFactory interface, instantiated to access the Solace Messaging service.
 
 The following code is used for a simple message producer:
 
@@ -258,7 +258,7 @@ public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
 ```
 
 Receiving messages is done at the backend via the `SimpleMessageListener` listener described above.  This sample stores the last message received. To access ths received message you can send a `GET` request to `/message` endpoint. The same JSON structure of a message will be returned in the payload of the `GET`.
- 
+
 ```java
 @RequestMapping(value = "/message", method = RequestMethod.GET)
 public ResponseEntity<SimpleMessage> getLastMessageReceived() {
@@ -276,7 +276,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}} 
+cd {{ site.baseurl | remove: '/'}}
 ./gradlew build
 ```
 
@@ -343,5 +343,5 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 curl -X GET http://$APP_URL/message
 
 # Unsubscribe the application from the topic "test"
-curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+curl -X DELETE http://$APP_URL/subscription/test
 ```

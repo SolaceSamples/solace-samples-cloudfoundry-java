@@ -57,7 +57,7 @@ compile("com.solacesystems:sol-jcsmp:{{ site.jcsmp_version }}")
 
 ### Get the API: Using the Solace Developer Portal
 
-The Java API library can be [downloaded here]({{ site.links-downloads }}). The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
+The Java API library can be [downloaded here]({{ site.links-downloads }}). The Java API is distributed as a zip file containing the required jars, API documentation, and examples.
 
 ## Code Walk Through
 
@@ -78,7 +78,7 @@ This tutorial will only cover the source code in `SolaceController.java` and the
 
 ### Obtaining the Solace Credentials in the Application
 
-The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us: 
+The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us:
 
 ```
 {
@@ -106,7 +106,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 
 You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-ext-vcap }}){:target="_blank"}.
 
-This sample uses the [solace-java-spring-boot]({{ site.links-ext-github-sp-solace-java-spring-boot }}){:target="_blank"} which can auto detect and auto wire the available Solace Messaging Services from the Cloud Foundry environment into your application. 
+This sample uses the [solace-java-spring-boot]({{ site.links-ext-github-sp-solace-java-spring-boot }}){:target="_blank"} which can auto detect and auto wire the available Solace Messaging Services from the Cloud Foundry environment into your application.
 
 Spring provided `@Autowire` is used to access all auto configuration available beans which include an auto selected Factory.
 
@@ -231,7 +231,7 @@ public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
 ```
 
 Receiving messages is done at the backend via the `SimpleMessageListener` listener described above.  This sample stores the last message received. To access ths received message you can send a `GET` request to `/message` endpoint. The same JSON structure of a message will be returned in the payload of the `GET`.
- 
+
 ```java
 @RequestMapping(value = "/message", method = RequestMethod.GET)
 public ResponseEntity<SimpleMessage> getLastMessageReceived() {
@@ -249,7 +249,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}} 
+cd {{ site.baseurl | remove: '/'}}
 ./gradlew build
 ```
 
@@ -315,5 +315,5 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 curl -X GET http://$APP_URL/message
 
 # Unsubscribe the application from the topic "test"
-curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+curl -X DELETE http://$APP_URL/subscription/test
 ```
