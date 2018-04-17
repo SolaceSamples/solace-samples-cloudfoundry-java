@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -29,6 +29,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+import com.solace.services.core.model.SolaceServiceCredentials;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
@@ -42,7 +43,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solace.spring.cloud.core.SolaceMessagingInfo;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
 
@@ -69,11 +69,11 @@ public class SolaceController {
 	// This bean is for information only, it can be used to discover more about
 	// the solace service in use.
 	@Autowired
-	SolaceMessagingInfo solaceMessagingInfo;
+	SolaceServiceCredentials solaceServiceCredentials;
 
 	// A Factory of Factories
-	// Has the ability to create ConnectionFactory(s) for all available
-	// SolaceMessagingInfo(s)
+	// Has the ability to create ConnectionFactory(s) for any available
+	// SolaceServiceCredentials
 	// Can be used in case there are multiple Solace Messaging Services to
 	// select from.
 	@Autowired
@@ -122,13 +122,13 @@ public class SolaceController {
 
 		// Show available services
 		logger.info("************* Init Called ************");
-		
+
 		logger.info(String.format("SpringSolJmsConnectionFactoryCloudFactory discovered %s solace-messaging service(s)",
-				springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
+				springJCSMPFactoryCloudFactory.getSolaceServiceCredentials().size()));
 
 		// Log what Solace Messaging Services were discovered
-		for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
-				.getSolaceMessagingInfos()) {
+		for (SolaceServiceCredentials discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
+				.getSolaceServiceCredentials()) {
 			logger.info(String.format(
 					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
 					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
@@ -144,7 +144,7 @@ public class SolaceController {
 		try {
 			this.jmsTemplate.convertAndSend(message.getTopic(), message.getBody());
 			numMessagesSent.incrementAndGet();
-			
+
 		} catch (Exception e) {
 			logger.error("Service Creation failed.", e);
 			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
@@ -186,7 +186,7 @@ public class SolaceController {
 			logger.error("Already subscribed to topic " + subscriptionTopic);
 			return new ResponseEntity<>("{'description': 'Already subscribed'}", HttpStatus.BAD_REQUEST);
 		}
-		
+
 		try {
 	    	DefaultMessageListenerContainer listenercontainer = createListener(subscriptionTopic);
 	        listenercontainer.start();
@@ -209,7 +209,7 @@ public class SolaceController {
 			logger.error("Not subscribed to topic " + subscriptionTopic);
 			return new ResponseEntity<>("{'description': 'Was not subscribed'}", HttpStatus.BAD_REQUEST);
 		}
-		
+
 		try {
 			DefaultMessageListenerContainer listenercontainer = this.listenerContainersMap.get(subscriptionTopic);
 			listenercontainer.stop();

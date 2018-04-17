@@ -37,7 +37,7 @@ links-ext-github-sp-sl-spring-cloud-connectors: //github.com/SolaceProducts/sl-s
 links-ext-github-sp-solace-java-spring-boot: //github.com/SolaceProducts/solace-java-spring-boot
 links-ext-github-sp-solace-jms-spring-boot: //github.com/SolaceProducts/solace-jms-spring-boot
 links-ext-github-spring-jcsmp-factory-java: //github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactory.java
-links-ext-github-solace-messaging-info-java: //github.com/SolaceProducts/sl-spring-cloud-connectors/blob/master/src/main/java/com/solace/spring/cloud/core/SolaceMessagingInfo.java
+links-ext-github-solace-service-credentials-java: //github.com/SolaceProducts/solace-services-info/blob/master/src/main/java/com/solace/services/core/model/SolaceServiceCredentials.java
 links-ext-github-spring-jcsmp-factory-cloud-factory-java: //github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solacesystems/jcsmp/SpringJCSMPFactoryCloudFactory.java
 links-ext-github-solace-java-properties-java: //github.com/SolaceProducts/solace-java-spring-boot/blob/master/solace-java-spring-boot-autoconfigure/src/main/java/com/solace/labs/spring/boot/autoconfigure/SolaceJavaProperties.java
 links-ext-solace-java-spring-boot-github-app-properties: //github.com/SolaceProducts/solace-java-spring-boot#updating-your-application-properties

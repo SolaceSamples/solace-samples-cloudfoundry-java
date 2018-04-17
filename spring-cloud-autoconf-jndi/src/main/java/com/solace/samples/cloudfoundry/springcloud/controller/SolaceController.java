@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -29,6 +29,7 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
+import com.solace.services.core.model.SolaceServiceCredentials;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
@@ -45,7 +46,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
-import com.solace.spring.cloud.core.SolaceMessagingInfo;
 import com.solacesystems.jms.SpringSolJmsJndiTemplateCloudFactory;
 
 @RestController
@@ -68,11 +68,11 @@ public class SolaceController {
 	// This bean is for information only, it can be used to discover more about
 	// the solace service in use.
 	@Autowired
-	private SolaceMessagingInfo solaceMessagingInfo;
+	private SolaceServiceCredentials solaceServiceCredentials;
 
 	// A Factory of Factories
-	// Has the ability to create JndiTemplate(s) for all available
-	// SolaceMessagingInfo(s)
+	// Has the ability to create JndiTemplate(s) for any available
+	// SolaceServiceCredentials
 	// Can be used in case there are multiple Solace Messaging Services to
 	// select from.
 	@Autowired
@@ -86,7 +86,7 @@ public class SolaceController {
 	private final AtomicInteger numMessagesSent = new AtomicInteger();
 
     // JMS Message listener helpers
-	
+
 	public class SimpleMessageListener implements MessageListener {
 		@Override
         public void onMessage(Message message) {
@@ -126,11 +126,11 @@ public class SolaceController {
 		logger.info("************* Init Called ************");
 
 		logger.info(String.format("SpringSolJmsJndiTemplateCloudFactory discovered %s solace-messaging service(s)",
-				springSolJmsJndiTemplateCloudFactory.getSolaceMessagingInfos().size()));
+				springSolJmsJndiTemplateCloudFactory.getSolaceServiceCredentials().size()));
 
 		// Log what Solace Messaging Services were discovered
-		for (SolaceMessagingInfo discoveredSolaceMessagingService : springSolJmsJndiTemplateCloudFactory
-				.getSolaceMessagingInfos()) {
+		for (SolaceServiceCredentials discoveredSolaceMessagingService : springSolJmsJndiTemplateCloudFactory
+				.getSolaceServiceCredentials()) {
 			logger.info(String.format(
 					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
 					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
@@ -138,7 +138,7 @@ public class SolaceController {
 		}
 
 	}
-    
+
     // REST services
 
 	@RequestMapping(value = "/message", method = RequestMethod.POST)
@@ -148,7 +148,7 @@ public class SolaceController {
 		try {
 			this.jmsTemplate.convertAndSend(message.getTopic(), message.getBody());
 			numMessagesSent.incrementAndGet();
-			
+
 		} catch (Exception e) {
 			logger.error("Service Creation failed.", e);
 			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
@@ -183,7 +183,7 @@ public class SolaceController {
 	@RequestMapping(value = "/subscription", method = RequestMethod.POST)
 	public ResponseEntity<String> addSubscription(@RequestBody SimpleSubscription subscription) {
 		String subscriptionTopic = subscription.getSubscription();
-		
+
 		logger.info("Adding a subscription to topic: " + subscriptionTopic);
 
 		if ( this.listenerContainersMap.containsKey(subscriptionTopic) ) {
@@ -191,7 +191,7 @@ public class SolaceController {
 			logger.error("Already subscribed to topic " + subscriptionTopic);
 			return new ResponseEntity<>("{'description': 'Already subscribed'}", HttpStatus.BAD_REQUEST);
 		}
-		
+
 		// Then create a listener
 		try {
 	    	DefaultMessageListenerContainer listenercontainer = createListener(subscriptionTopic);
@@ -215,7 +215,7 @@ public class SolaceController {
 			logger.error("Not subscribed to topic " + subscriptionTopic);
 			return new ResponseEntity<>("{'description': 'Was not subscribed'}", HttpStatus.BAD_REQUEST);
 		}
-		
+
 		try {
 			DefaultMessageListenerContainer listenercontainer = this.listenerContainersMap.get(subscriptionTopic);
 			listenercontainer.stop();

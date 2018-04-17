@@ -110,10 +110,10 @@ The `init()` method retrieves the Solace Messaging Service Instance details for 
 CloudFactory cloudFactory = new CloudFactory();
 Cloud cloud = cloudFactory.getCloud();
 
-SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud
+SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud
         .getServiceInfo("solace-messaging-sample-instance");
 
-if (solaceMessagingServiceInfo == null) {
+if (solaceServiceCredentials == null) {
     trace.error("Did not find instance of 'solace-messaging' service");
     trace.error("************* Aborting Solace initialization!! ************");
     return;
@@ -122,14 +122,14 @@ if (solaceMessagingServiceInfo == null) {
 
 ### Connecting to the Solace Messaging Service
 
-Once you have the `SolaceMessagingInfo`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}). You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
+Once you have the `SolaceServiceCredentials`, you can create and then connect the Solace Session in the conventional way as outlined in the [Publish/Subscribe tutorial]({{ site.links-pubsub-tutorial }}). You set the JCSMP properties and then use the `JCSMPFactory` to create a `Session`:
 
 ```java
 final JCSMPProperties properties = new JCSMPProperties();
-properties.setProperty(JCSMPProperties.HOST, solaceMessagingServiceInfo.getSmfHost());
-properties.setProperty(JCSMPProperties.VPN_NAME, solaceMessagingServiceInfo.getMsgVpnName());
-properties.setProperty(JCSMPProperties.USERNAME, solaceMessagingServiceInfo.getClientUsername());
-properties.setProperty(JCSMPProperties.PASSWORD, solaceMessagingServiceInfo.getClientPassword());
+properties.setProperty(JCSMPProperties.HOST, solaceServiceCredentials.getSmfHost());
+properties.setProperty(JCSMPProperties.VPN_NAME, solaceServiceCredentials.getMsgVpnName());
+properties.setProperty(JCSMPProperties.USERNAME, solaceServiceCredentials.getClientUsername());
+properties.setProperty(JCSMPProperties.PASSWORD, solaceServiceCredentials.getClientPassword());
 
 try {
     session = JCSMPFactory.onlyInstance().createSession(properties);
@@ -260,6 +260,7 @@ As described above, the sample application has a simple REST interface that allo
 * Subscribe
 * Send a message
 * Receive a message
+* Unsubscribe
 
 In order to interact with the application you need to determine the application's URL.  These shell commands can be used to quickly find out the URL:
 
@@ -280,4 +281,7 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
+
+# Unsubscribe the application from the topic "test"
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
 ```

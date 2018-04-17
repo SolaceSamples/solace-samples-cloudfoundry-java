@@ -288,6 +288,7 @@ As described above, the sample application has a simple REST interface that allo
 * Subscribe
 * Send a message
 * Receive a message
+* Unsubscribe
 
 In order to interact with the application you need to determine the application's URL.  These shell commands can be used to quickly find out the URL:
 
@@ -308,6 +309,9 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
+
+# Unsubscribe the application from the topic "test"
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
 ```
 ## High Availability
 

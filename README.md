@@ -55,27 +55,27 @@ This application makes use of the Spring Cloud Connectors project to automatical
 
 	compile 'org.springframework.cloud:spring-cloud-spring-service-connector:1.2.3.RELEASE'
 	compile 'org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.2.3.RELEASE'
-	compile 'com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:1.3.+'
+	compile 'com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:2.1.+'
 
 The `solace-spring-cloud-connector` is a Spring Cloud Connectors extension to parse the `VCAP_SERVICES` for the Solace Messaging service instance information. Check out the project page for more details:
 
 * https://github.com/SolaceProducts/sl-solace-messaging-service-info
 
-The easiest way for applications to access the SolaceMessagingInfo object is by Service Id (ex: "MyService) as follows:
+The easiest way for applications to access the SolaceServiceCredentials object is by Service Id (ex: "MyService) as follows:
 
 	CloudFactory cloudFactory = new CloudFactory();
 	Cloud cloud = cloudFactory.getCloud();
-	SolaceMessagingInfo solaceMessagingServiceInfo = (SolaceMessagingInfo) cloud.getServiceInfo("MyService");
+	SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud.getServiceInfo("MyService");
 	
 Alternatively applications could search through the environment and discover matching services as follows:
 
-	SolaceMessagingInfo solaceMessagingServiceInfo = null;
+	SolaceServiceCredentials solaceServiceCredentials = null;
 	List<ServiceInfo> services = cloud.getServiceInfos();
 		
 	// Connect to the first Solace-Messaging service that is found in the services list.
 	for (ServiceInfo service : services) {
-		if (service instanceof SolaceMessagingInfo) {
-			solaceMessagingServiceInfo = (SolaceMessagingInfo)service;
+		if (service instanceof SolaceServiceCredentials) {
+			solaceServiceCredentials = (SolaceServiceCredentials)service;
 			break;
 		}
 	}
@@ -125,6 +125,10 @@ Send message with topic "test"
 The message is received asynchronously, check for the last message.
 
 	curl -X GET http://$APP_URL/message
+
+Unsubscribe the application from topic "test"
+
+    curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
 
 ## Contributing
 

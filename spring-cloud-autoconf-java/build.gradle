@@ -3,8 +3,8 @@ buildscript {
         springBootVersion = '1.4.2.RELEASE'
         springCloudVersion = '1.2.3.RELEASE'
         solaceJCSMPVersion = '10.+'
-        solaceCloudVersion = '2.0.+'
-        solaceJavaSpringBootVersion = '1.0.+'
+        solaceCloudVersion = '2.1.+'
+        solaceJavaSpringBootVersion = '1.1.+'
     }
     repositories {
         mavenCentral()
@@ -30,6 +30,9 @@ repositories {
       dirs 'libs'
     }
     mavenLocal()
+    maven {
+        url "http://apps-jenkins:9090/nexus/content/repositories/releases/"
+    }
 }
 
 dependencies {

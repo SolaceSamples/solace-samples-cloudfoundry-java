@@ -1,8 +1,10 @@
 ---
 layout: tutorials
 title: Spring Cloud Auto-Config JNDI
-summary: A Simple Spring Cloud Application showing how to consume Solace Messaging as a Service provided by Solace Spring JMS Auto-Configuration using JNDI.
-icon: spring-cloud.png
+summary: Consume Solace Messaging as a Service provided by Solace Spring JMS Auto-Configuration using JNDI.
+icon: I_spring_JNDI_w220.svg
+icon-height: 90px
+icon-width: 180px
 ---
 
 ## Overview
@@ -18,7 +20,7 @@ This tutorial is similar to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }
 The goal of this tutorial is to demonstrate auto injecting a [Spring JndiTemplate]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
 1. How to Autowire a [`JndiTemplate`]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} into your application
-1. How to Autowire the [SolaceMessagingInfo]({{ site.links-ext-github-solace-messaging-info-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
+1. How to Autowire the [SolaceServiceCredentials]({{ site.links-ext-github-solace-service-credentials-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
 1. How to Autowire [SpringSolJmsJndiTemplateCloudFactory]({{ site.links-ext-github-spring-sol-jms-jndi-template-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace Messaging Instances and create other Solace implementations of the Sprint `JndiTemplate`.
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
@@ -124,11 +126,11 @@ private JmsTemplate jmsTemplate;
 // This bean is for information only, it can be used to discover more about
 // the solace service in use.
 @Autowired
-SolaceMessagingInfo solaceMessagingInfo;
+SolaceServiceCredentials solaceServiceCredentials;
 
 // A Factory of Factories
-// Has the ability to create ConnectionFactory(s) for all available
-// SolaceMessagingInfo(s)
+// Has the ability to create ConnectionFactory(s) for any available
+// SolaceServiceCredentials
 // Can be used in case there are multiple Solace Messaging Services to
 // select from.
 @Autowired
@@ -139,11 +141,11 @@ The `init()` method retrieves and shows the autowired Solace Messaging Service I
 
 ```java
 logger.info(String.format("SpringSolJmsJndiTemplateCloudFactory discovered %s solace-messaging service(s)",
-        springSolJmsJndiTemplateCloudFactory.getSolaceMessagingInfos().size()));
+        springSolJmsJndiTemplateCloudFactory.getSolaceServiceCredentials().size()));
 
 // Log what Solace Messaging Services were discovered
-for (SolaceMessagingInfo discoveredSolaceMessagingService : SpringSolJmsJndiTemplateCloudFactory
-        .getSolaceMessagingInfos()) {
+for (SolaceServiceCredentials discoveredSolaceMessagingService : SpringSolJmsJndiTemplateCloudFactory
+        .getSolaceServiceCredentials()) {
     logger.info(String.format(
             "Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
             discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
@@ -389,6 +391,7 @@ As described above, the sample application has a simple REST interface that allo
 * Subscribe to a topic
 * Send a message to a topic
 * Receive a message
+* Unsubscribe from a topic
 
 In order to interact with the application you need to determine the application's URL.  These shell commands can be used to quickly find out the URL:
 
@@ -412,4 +415,7 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 
 # The message should have been asynchronously received by the application.  Check that the message was indeed received:
 curl -X GET http://$APP_URL/message
+
+# Unsubscribe the application from the topic "test"
+curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
 ```

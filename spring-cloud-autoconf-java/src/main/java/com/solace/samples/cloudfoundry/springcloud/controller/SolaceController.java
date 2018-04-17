@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
+import com.solace.services.core.model.SolaceServiceCredentials;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
@@ -34,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.solace.spring.cloud.core.SolaceMessagingInfo;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
 import com.solacesystems.jcsmp.BytesXMLMessage;
@@ -67,11 +67,11 @@ public class SolaceController {
 	// This bean is for information only, it can be used to discover more about
 	// the solace service in use.
 	@Autowired
-	SolaceMessagingInfo solaceMessagingInfo;
+	SolaceServiceCredentials solaceServiceCredentials;
 
 	// A Factory of Factories
-	// Has the ability to create SpringJCSMPFactory(s) for all available
-	// SolaceMessagingInfo(s)
+	// Has the ability to create SpringJCSMPFactory(s) for any available
+	// SolaceServiceCredentials
 	// Can be used in case there are multiple Solace Messaging Services to
 	// select from.
 	@Autowired
@@ -126,11 +126,11 @@ public class SolaceController {
 		logger.info("************* Init Called ************");
 
 //		logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
-//				springJCSMPFactoryCloudFactory.getSolaceMessagingInfos().size()));
+//				springJCSMPFactoryCloudFactory.getSolaceServiceCredentials().size()));
 //
 //		// Log what Solace Messaging Services were discovered
-//		for (SolaceMessagingInfo discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
-//				.getSolaceMessagingInfos()) {
+//		for (SolaceServiceCredentials discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
+//				.getSolaceServiceCredentials()) {
 //			logger.info(String.format(
 //					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
 //					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
@@ -140,7 +140,7 @@ public class SolaceController {
 		try {
 //			logger.info(String.format(
 //					"Creating a Session using a SolaceFactory configured with solace-messaging service '%s'",
-//					solaceMessagingInfo.getId()));
+//					solaceServiceCredentials.getId()));
 			session = solaceFactory.createSession();
 			session.connect();
 		} catch (Exception e) {
