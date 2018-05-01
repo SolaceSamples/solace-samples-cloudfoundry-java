@@ -6,9 +6,9 @@
  * to you under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
- * 
+ *
  *   http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -48,13 +48,13 @@ public class SolaceController {
 
     private SimpleMessage lastReceivedMessage;
     private SimpleMqttCallback simpleMqttCallback = new SimpleMqttCallback();
-    
+
     // Stats
     private final AtomicInteger numMessagesReceived = new AtomicInteger();
     private final AtomicInteger numMessagesSent = new AtomicInteger();
-    
+
     private MqttClient mqttClient;
-    
+
     class SimpleMqttCallback implements MqttCallback {
 
 		@Override
@@ -90,7 +90,7 @@ public class SolaceController {
         // Look for Service Keys Data..
 
         String serviceKey = System.getenv("SERVICE_KEY");
-        
+
         logger.info(serviceKey);
 
         if (serviceKey == null || serviceKey.equals("") || serviceKey.equals("{}")) {
@@ -128,11 +128,11 @@ public class SolaceController {
             return;
         }
 
-        
+
         String[] mqttServerURIs = null;
         try {
             JSONArray hostsArray = solaceCredentials.getJSONArray("publicMqttUris");
-            
+
             if( hostsArray == null || hostsArray.length() == 0  ) {
     	    	logger.error("Did not find any entries in the  publicMqttUris array from the SERVICE_KEY. Aborting connection.");
     	        logger.info("************* Aborting Solace initialization!! ************");
@@ -148,30 +148,30 @@ public class SolaceController {
 	        return;
         }
 
-        
+
         // Create a client using the first server URL, and random client Id.
 		try {
 			mqttClient = new MqttClient(mqttServerURIs[0], UUID.randomUUID().toString());
 		} catch (MqttException e) {
 			logger.error("Unable to create an MqttClient. Aborting connection.",e);
 	        logger.info("************* Aborting Solace initialization!! ************");
-	        return;		
+	        return;
 	    }
-        
-		
+
+
         MqttConnectOptions connOpts = new MqttConnectOptions();
         connOpts.setServerURIs(mqttServerURIs);
         connOpts.setUserName(solaceCredentials.getString("clientUsername"));
 	    connOpts.setPassword(solaceCredentials.getString("clientPassword").toCharArray());
-	    
+
 		mqttClient.setCallback(simpleMqttCallback);
-		
+
 		try {
 			mqttClient.connect(connOpts);
 		} catch (MqttException e) {
 			logger.error("Unable to connecting using the MqttClient and its connection options. Aborting connection.",e);
 	        logger.info("************* Aborting Solace initialization!! ************");
-	        return;		
+	        return;
 		}
 
     }
@@ -181,7 +181,7 @@ public class SolaceController {
 
     	if( mqttClient == null )
     		return new ResponseEntity<>("{'description': 'Unable to perform operation, the MqttClient was not initialized'}", HttpStatus.INTERNAL_SERVER_ERROR);
-    	
+
     	if (!mqttClient.isConnected()) {
 			logger.error("mqttClient was not connected, Could not send message");
 			return new ResponseEntity<>("{'description': 'Unable to perform operation, the MqttClient was not connected!'}", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -220,7 +220,7 @@ public class SolaceController {
     public ResponseEntity<String> addSubscription(@RequestBody SimpleSubscription subscription) {
         String subscriptionTopic = subscription.getSubscription();
         logger.info("Adding a subscription to topic: " + subscriptionTopic);
-		
+
         try {
         	if( mqttClient != null )
         		mqttClient.subscribe(subscriptionTopic);
@@ -234,21 +234,26 @@ public class SolaceController {
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }
 
+    @Deprecated
     @RequestMapping(value = "/subscription", method = RequestMethod.DELETE)
     public ResponseEntity<String> deleteSubscription(@RequestBody SimpleSubscription subscription) {
-        String subscriptionTopic = subscription.getSubscription();
-        
+		return deleteSubscription(subscription.getSubscription());
+	}
+
+	@RequestMapping(value = "/subscription/{subscriptionName}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> deleteSubscription(@PathVariable("subscriptionName") String subscriptionTopic) {
+
         logger.info("Deleting a subscription to topic: " + subscriptionTopic);
 		try {
-        	if( mqttClient != null )			
+            if( mqttClient != null )
         		mqttClient.unsubscribe(subscriptionTopic);
         	else
         		return new ResponseEntity<>("{'description': 'Unable to perform operation, the MqttClient was not initialized'}", HttpStatus.INTERNAL_SERVER_ERROR);
-            logger.info("Finished Deleting a subscription to topic: " + subscriptionTopic);        	
+            logger.info("Finished Deleting a subscription to topic: " + subscriptionTopic);
 		} catch (MqttException e) {
 			logger.error("removeSubscription failed.", e);
 			return new ResponseEntity<>("{'description': '" + e.getMessage() + "'}", HttpStatus.BAD_REQUEST);
-		}        
+		}
 
         return new ResponseEntity<>("{}", HttpStatus.OK);
     }

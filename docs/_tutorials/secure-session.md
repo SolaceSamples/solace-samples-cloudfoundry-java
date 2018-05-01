@@ -26,9 +26,9 @@ This tutorial assumes the following:
 
 ## Working with a Trusted Certificate
 
-In order to use Transport Level Security, your Solace Message Router needs to be configured for TLS with an installed servcer certificate. 
-The instructions for doing that are described in the Pivotal/Solace Messaging documentation - 
-see [Tile Installation and Configuration]({{ site.links-ext-tls-server }}){:target="_blank"}, 
+In order to use Transport Level Security, your Solace Message Router needs to be configured for TLS with an installed servcer certificate.
+The instructions for doing that are described in the Pivotal/Solace Messaging documentation -
+see [Tile Installation and Configuration]({{ site.links-ext-tls-server }}){:target="_blank"},
 look for the step named Configure Message Routers RSA certificate.
 
 This section assumes that you have a Solace Messaging Service Instance properly configured for TLS access with a certificate that has been purchased from a certificate authority. Instructions for working with self-signed certificates are below.
@@ -93,7 +93,7 @@ properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE, true);
 properties.setproperty(JCSMPProperties.SSL_VALIDATE_CERTIFICATE_DATE, true);
 ```
 
-When you set `INSTALL_CERTIFICATE` to `true`, it instructs the SolaceController class to install the certificate in the JRE's trusted store before trying to connect to the service. 
+When you set `INSTALL_CERTIFICATE` to `true`, it instructs the SolaceController class to install the certificate in the JRE's trusted store before trying to connect to the service.
 
 The way it works is this. When you copy the certificate into the src/main/resources file, it gets packaged with the application. The application can then read the file from its local file system at runtime.
 
@@ -114,7 +114,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}} 
+cd {{ site.baseurl | remove: '/'}}
 ./gradlew build
 ```
 
@@ -167,7 +167,7 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 curl -X GET http://$APP_URL/message
 
 # Unsubscribe the application from the topic "test"
-curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+curl -X DELETE http://$APP_URL/subscription/test
 ```
 
 ## Common Problems

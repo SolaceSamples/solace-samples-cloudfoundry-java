@@ -53,7 +53,7 @@ compile("com.solacesystems:sol-jcsmp:{{ site.jcsmp_version }}")
 
 ### Get the API: Using the Solace Developer Portal
 
-The Java API library can be [downloaded here]({{ site.links-downloads }}). The Java API is distributed as a zip file containing the required jars, API documentation, and examples. 
+The Java API library can be [downloaded here]({{ site.links-downloads }}). The Java API is distributed as a zip file containing the required jars, API documentation, and examples.
 
 ## Code Walk Through
 
@@ -74,7 +74,7 @@ This tutorial will only cover the source code in `SolaceController.java` as the 
 
 ### Obtaining the Solace Credentials in the Application
 
-The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us: 
+The Pivotal Cloud Foundry environment exposes any bound Service Instances in a JSON document stored in the `VCAP_SERVICES` environment variable.  Here is an example of a VCAP_SERVICES with all the fields of interest to us:
 
 ```
 {
@@ -154,8 +154,8 @@ Once the credentials are extracted, you can create and then connect the Solace S
 
 ```java
 
-// The host property is in a json array. Two hosts are provided in a High Availability 
-// environment, one for the primary router and one for the backup. 
+// The host property is in a json array. Two hosts are provided in a High Availability
+// environment, one for the primary router and one for the backup.
 JSONArray hostsArray = solaceCredentials.getJSONArray("smfHosts");
 String host = hostsArray.getString(0);
 
@@ -240,7 +240,7 @@ public ResponseEntity<String> sendMessage(@RequestBody SimpleMessage message) {
 ```
 
 Receiving messages is done at the backend via the `SimpleMessageListener` listener described above.  This sample stores the last message received. To access ths received message you can send a `GET` request to `/message` endpoint. The same JSON structure of a message will be returned in the payload of the `GET`.
- 
+
 ```java
 @RequestMapping(value = "/message", method = RequestMethod.GET)
 public ResponseEntity<SimpleMessage> getLastMessageReceived() {
@@ -258,7 +258,7 @@ The full source code for this example is available in [GitHub]({{ site.repositor
 
 ```
 git clone {{ site.repository }}
-cd {{ site.baseurl | remove: '/'}} 
+cd {{ site.baseurl | remove: '/'}}
 ./gradlew build
 ```
 
@@ -311,7 +311,7 @@ curl -X POST -H "Content-Type: application/json;charset=UTF-8" -d '{"topic": "te
 curl -X GET http://$APP_URL/message
 
 # Unsubscribe the application from the topic "test"
-curl -X DELETE -H "Content-Type: application/json;charset=UTF-8" -d '{"subscription": "test"}' http://$APP_URL/subscription
+curl -X DELETE http://$APP_URL/subscription/test
 ```
 ## High Availability
 
@@ -333,7 +333,7 @@ In order to provide both hosts to the Solace Java API, you need to create a stri
 
 ```
 // The host property is in a json array. Two hosts are provided in a High Availability
-// environment, one for the primary router and one for the backup. 
+// environment, one for the primary router and one for the backup.
 JSONArray hostsArray = solaceCredentials.getJSONArray("smfHosts");
 String primary = hostsArray.getString(0);
 String backup = hostsArray.getString(1);
