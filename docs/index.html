@@ -9,6 +9,7 @@ layout: default
     {% endif %}
     <div class="body">
         <div class="container container-tutorials">
+            {% include intro.html %}
             <div class="tutorials learn row" style="margin-bottom:0;">
                 {% assign count = 0 %}
                 {% for section in site.data.tutorials %}
