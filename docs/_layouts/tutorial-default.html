@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html class="responsive">
 
-  {% include head.html %}
+{% include head.html %}
+{% if jekyll.environment == 'solaceCloud' %}
+  {% include solace-cloud-dependency.html %}
+{% else %}
+  {% include dev-solace-dependency.html %}
+{% endif %}
 
-  <body id="top" class="wrap wider">
+<body id="top" class="wrap wider">
 
     {% if jekyll.environment == 'solaceCloud' %}
       {% include solace-cloud-header-base.html %}
@@ -18,5 +23,6 @@
     {% else %}
       {% include dev-solace-footer.html %}
     {% endif %}
-  </body>
+</body>
+
 </html>
