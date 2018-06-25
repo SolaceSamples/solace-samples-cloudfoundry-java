@@ -13,7 +13,7 @@ This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry b
 TCP Routes is a feature that allows a Solace Messaging service hosted in a Pivotal Cloud Foundry deployment to become accessible "outside" the PCF domain.
 
 
-![overview]({{ site.baseurl }}/images/tcp-routes-architecture.png){: .center-image}
+![overview]({{ site.baseurl }}/assets/images/tcp-routes-architecture.png){: .center-image}
 
 ## Goals
 

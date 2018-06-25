@@ -11,7 +11,7 @@ This tutorial is part of a series of tutorials which aims to introduce users to 
 
 This tutorial is similar to the [Java App]({{ site.baseurl }}/java-app) tutorial. Like the Java App tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application.  In contrast to the Java App, this application uses the Spring Cloud Connectors library to simplify the parsing of the `VCAP_SERVICES` environment variable.
 
-![overview]({{ site.baseurl }}/images/spring-cloud-app-architecture.png){: .center-image}
+![overview]({{ site.baseurl }}/assets/images/spring-cloud-app-architecture.png){: .center-image}
 
 ## Goals
 

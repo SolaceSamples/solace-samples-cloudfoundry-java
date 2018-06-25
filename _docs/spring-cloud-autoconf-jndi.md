@@ -1,8 +1,8 @@
 ---
 layout: tutorials
-title: Spring Cloud Auto-Config JMS
-summary: Consume Solace Messaging as a Service provided by Solace Spring JMS Auto-Configuration.
-icon: I_spring_Jms_w220.svg
+title: Spring Cloud Auto-Config JNDI
+summary: Consume Solace Messaging as a Service provided by Solace Spring JMS Auto-Configuration using JNDI.
+icon: I_spring_JNDI_w220.svg
 icon-height: 90px
 icon-width: 180px
 ---
@@ -11,17 +11,17 @@ icon-width: 180px
 
 This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-ext-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-ext-pivotal-solace }}){:target="_blank"} for full details.
 
-This tutorial is similar to the [Spring Cloud Auto-Config Java]({{ site.baseurl }}/spring-cloud-autoconf-java) tutorial. Like the Spring Cloud Auto-Config Java tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry.  In contrast to the [Spring Cloud Auto-Config Java]({{ site.baseurl }}/spring-cloud-autoconf-java), this application uses the **Solace JMS API** and [solace-jms-spring-boot]({{ site.links-ext-github-sp-solace-jms-spring-boot }}){:target="_blank"} which in turn is using the Spring Cloud Connectors library and Spring Auto Configuration can auto inject a standard [JMS ConnectionFactory]({{ site.links-jms-cf }}) directly into your application.
+This tutorial is similar to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }}/spring-cloud-autoconf-jms) tutorial. Like the Spring Cloud Auto-Config JMS tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry using JMS messaging.  In contrast to the [Spring Cloud Auto-Config JMS]({{ site.baseurl }}/spring-cloud-autoconf-jms), this application uses JNDI to look up JMS objects on the Solace message router and [solace-jms-spring-boot]({{ site.links-ext-github-sp-solace-jms-spring-boot }}){:target="_blank"} which in turn is using the Spring Cloud Connectors library and Spring Auto Configuration can auto inject a Spring [`JndiTemplate`]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} directly into your application.
 
-![overview]({{ site.baseurl }}/images/spring-cloud-app-architecture.png){: .center-image}
+![overview]({{ site.baseurl }}/assets/images/spring-cloud-app-architecture.png){: .center-image}
 
 ## Goals
 
-The goal of this tutorial is to demonstrate auto injecting a [JMS ConnectionFactory]({{ site.links-jms-cf }}) based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
+The goal of this tutorial is to demonstrate auto injecting a [Spring JndiTemplate]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} based on  the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
-1. How to Autowire a [JMS ConnectionFactory]({{ site.links-jms-cf }}) into your application
+1. How to Autowire a [`JndiTemplate`]({{ site.links-ext-spring-jndi-template }}){:target="_blank"} into your application
 1. How to Autowire the [SolaceServiceCredentials]({{ site.links-ext-github-solace-service-credentials-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
-1. How to Autowire [SpringSolJmsConnectionFactoryCloudFactory]({{ site.links-ext-github-spring-sol-jms-connection-factory-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace Messaging Instances and create other Solace implementations of the JMS ConnectionFactory.
+1. How to Autowire [SpringSolJmsJndiTemplateCloudFactory]({{ site.links-ext-github-spring-sol-jms-jndi-template-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace Messaging Instances and create other Solace implementations of the Sprint `JndiTemplate`.
 1. How to establish a connection to the Solace Messaging service.
 1. How to publish, subscribe and receive messages.
 
@@ -71,11 +71,12 @@ The sample application contains the following source files :
 | ---------------- | ----------- |
 | Application.java | The Sprint Boot application class |
 | SolaceController.java | The Application's REST controller which provides an interface to subscribe, publish and receive messages.  This class also implements the initialization procedure which connects the application to the Solace Messaging Service. |
-| ProducerConfiguration.java | Spring JMS `JMSTemplate` configuration for the message producer used in SolaceController |
+| JndiConsumerConfiguration.java | Spring JMS `JndiDestinationResolver` configuration for the message consumer used in SolaceController |
+| JndiProducerConfiguration.java | Spring JMS `JMSTemplate` configuration for the message producer used in SolaceController |
 | SimpleMessage.java | This class wraps the information to be stored in a message |
 | SimpleSubscription.java | This class wraps the information describing a topic subscription |
 
-This tutorial will only cover the source code in `SolaceController.java`, and `ProducerConfiguration.java` and the necessary project dependencies as the other files do not contain logic related to establishing a connection to the Solace Messaging Service.
+This tutorial will only cover the source code in `SolaceController.java`, `JndiConsumerConfiguration.java`, and `JndiProducerConfiguration.java` and the necessary project dependencies as the other files do not contain logic related to establishing a connection to the Solace Messaging Service.
 
 ### Obtaining the Solace Credentials in the Application
 
@@ -112,12 +113,12 @@ This sample uses the [solace-jms-spring-boot]({{ site.links-ext-links-github-sp-
 Spring provided `@Autowire` is used to access all auto configuration available beans which include an auto selected Factory.
 
 ```java
-// A JMS ConnectionFactory for the auto selected Solace Messaging service,
+// A Sprint JmsTemplate for the auto selected Solace Messaging service,
 // This is the only required bean to run this application.
 // Note that both SolaceController and ProducerConfiguration use this for
 // their respective purposes but the same connection factory is provided.
 @Autowired
-private ConnectionFactory connectionFactory;
+private JmsTemplate jmsTemplate;
 
 // The auto selected Solace Messaging service for the matching ConnectionFactory,
 // the relevant information provided by this bean have already been injected
@@ -129,21 +130,21 @@ SolaceServiceCredentials solaceServiceCredentials;
 
 // A Factory of Factories
 // Has the ability to create ConnectionFactory(s) for any available
-// SolaceServiceCredentials.
+// SolaceServiceCredentials
 // Can be used in case there are multiple Solace Messaging Services to
 // select from.
 @Autowired
-SpringSolJmsConnectionFactoryCloudFactory springJCSMPFactoryCloudFactory;
+SpringSolJmsJndiTemplateCloudFactory springSolJmsJndiTemplateCloudFactory;
 ```
 
 The `init()` method retrieves and shows the autowired Solace Messaging Service Instance details as follows:
 
 ```java
-logger.info(String.format("SpringSolJmsConnectionFactoryCloudFactory discovered %s solace-messaging service(s)",
-        springJCSMPFactoryCloudFactory.getSolaceServiceCredentials().size()));
+logger.info(String.format("SpringSolJmsJndiTemplateCloudFactory discovered %s solace-messaging service(s)",
+        springSolJmsJndiTemplateCloudFactory.getSolaceServiceCredentials().size()));
 
 // Log what Solace Messaging Services were discovered
-for (SolaceServiceCredentials discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
+for (SolaceServiceCredentials discoveredSolaceMessagingService : SpringSolJmsJndiTemplateCloudFactory
         .getSolaceServiceCredentials()) {
     logger.info(String.format(
             "Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
@@ -158,26 +159,57 @@ This Spring Cloud Auto-Config JMS sample app is making use of Spring JMS for mes
 
 ### Creating the Message Producer and Consumer
 
-The `ConnectionFactory connectionFactory` has been already autowired, which is the Solace implementation of the standard JMS ConnectionFactory interface, instantiated to access the Solace Messaging service.
+The `JmsTemplate jmsTemplate` has been already autowired, which includes the details for the Solace Messaging service.
 
 The following code is used for a simple message producer:
 
-In `ProducerConfiguration.java`:
+In `JndiProducerConfiguration.java`:
 
 ```java
 @Configuration
-public class ProducerConfiguration {
+public class JndiProducerConfiguration {
 
-	@Autowired
-	private ConnectionFactory connectionFactory;
+    // Resource definitions: connection factory and queue destination
+    @Value("${solace.jms.demoConnectionFactoryJndiName}")
+    private String connectionFactoryJndiName;
 
-	// Example configuration of JmsTemplate
+
+    // Use from the jndi connection config
+    @Autowired
+	private JndiTemplate jndiTemplate;
+
 	@Bean
-	public JmsTemplate jmsTemplate() {
-		CachingConnectionFactory ccf = new CachingConnectionFactory(connectionFactory);
-		JmsTemplate jmst = new JmsTemplate(ccf);
-		jmst.setPubSubDomain(true);	// This sample is publishing to topics
-		return jmst;
+    public JndiObjectFactoryBean connectionFactory() {
+        JndiObjectFactoryBean factoryBean = new JndiObjectFactoryBean();
+        factoryBean.setJndiTemplate(jndiTemplate);
+        factoryBean.setJndiName(connectionFactoryJndiName);
+
+        return factoryBean;
+    }
+
+    @Bean
+	public CachingConnectionFactory cachingConnectionFactory() {
+		CachingConnectionFactory ccf = new CachingConnectionFactory((ConnectionFactory) connectionFactory().getObject());
+		ccf.setSessionCacheSize(10);
+		return ccf;
+	}
+
+    // DynamicDestinationResolver can be used instead for physical, non-jndi destinations
+    @Bean
+    public JndiDestinationResolver jndiDestinationResolver() {
+    	JndiDestinationResolver jdr = new JndiDestinationResolver();
+        jdr.setCache(true);
+        jdr.setJndiTemplate(jndiTemplate);
+        return jdr;
+    }
+
+	@Bean
+	public JmsTemplate producerJmsTemplate() {
+		JmsTemplate jt = new JmsTemplate(cachingConnectionFactory());
+		jt.setDeliveryPersistent(true);
+		jt.setDestinationResolver(jndiDestinationResolver());
+		jt.setPubSubDomain(true);	// This sample is publishing to topics
+		return jt;
 	}
 }
 ```
@@ -194,11 +226,47 @@ this.jmsTemplate.convertAndSend(message.getTopic(), message.getBody());
 
 ```
 
-For the Consumer side, the following code in `SolaceController.java` will create a simple message consumer that will log any incoming messages and errors:
+For the Consumer side, the following code in `JndiConsumerConfiguration.java` will configure the consumer, exposing `JndiObjectFactoryBean` and `JndiDestinationResolver` objects:
+
+```java
+@EnableJms
+public class JndiConsumerConfiguration {
+
+	// Resource definitions: connection factory and queue destination
+    @Value("${solace.jms.demoConnectionFactoryJndiName}")
+    private String connectionFactoryJndiName;
+
+    @Autowired
+    JndiTemplate jndiTemplate;
+
+
+	@Bean
+    public JndiObjectFactoryBean connectionFactory() {
+        JndiObjectFactoryBean factoryBean = new JndiObjectFactoryBean();
+        factoryBean.setJndiTemplate(jndiTemplate);
+        factoryBean.setJndiName(connectionFactoryJndiName);
+        return factoryBean;
+    }
+
+    // DynamicDestinationResolver can be used instead for physical, non-jndi destinations
+    @Bean
+    public JndiDestinationResolver jndiDestinationResolver() {
+    	JndiDestinationResolver jdr = new JndiDestinationResolver();
+        jdr.setCache(true);
+        jdr.setJndiTemplate(jndiTemplate);
+        return jdr;
+    }
+}
+```
+
+`SolaceController.java` them using the following way:
 
 ```java
 @Autowired
 private ConnectionFactory connectionFactory;
+
+@Autowired
+private JndiDestinationResolver jndiDestinationResolver;
 
 public class SimpleMessageListener implements MessageListener {
     @Override
@@ -224,6 +292,7 @@ public DefaultMessageListenerContainer createListener(String destination) {
     // do something here to create a message listener container
     DefaultMessageListenerContainer lc = new DefaultMessageListenerContainer();
     lc.setConnectionFactory(connectionFactory);
+    lc.setDestinationResolver(jndiDestinationResolver);
     lc.setDestinationName(destination);
     lc.setMessageListener(new SimpleMessageListener());
     lc.setPubSubDomain(true);
@@ -305,11 +374,13 @@ The configuration properties affecting the creation of Sessions is stored in [So
 
 Additional properties can be set in `SolaceJmsProperties`, for naming details refer to the [Application Properties section of `solace-jms-spring-boot`]({{ site.links-ext-solace-jms-spring-boot-application-properties-section }}){:target="_blank"}.
 
-This example will set set Solace_JMS_DynamicDurables to 'true' which can be used to dynamically create JMS objects on the Solace message router. To learn more about the DynamicDurables Solace JMS API property refer to the [Persistence with Queues JMS tutorial]({{ site.links-jms-persistence-tutorial }}).
+This example will set set the JNDI connection factory name.
+
+***Note that this name must have been provisioned on the Solace message router otherwise the sample app will not deploy.***
 
 ```
 cd spring-cloud-autoconf
-cf set-env solace-sample-spring-cloud-autoconf solace.jms.apiProperties.Solace_JMS_DynamicDurables true
+cf set-env solace-sample-spring-cloud-autoconf solace.jms.demoConnectionFactoryJndiName /jms/cf/default
 cf restage solace-sample-spring-cloud-autoconf
 ```
 
@@ -331,6 +402,9 @@ echo "The application URL is: ${APP_URL}"
 ```
 
 To demonstrate the application we will make the application send a message to itself.  Then we will read the message back to confirm the successful delivery of the message :
+
+
+***Note that the JNDI topic name "test" must have been provisioned on the Solace message router otherwise the sample app will not deploy.***
 
 ```
 # Subscribes the application to the topic "test"

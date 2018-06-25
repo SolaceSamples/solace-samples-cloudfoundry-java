@@ -13,7 +13,7 @@ This tutorial is part of a series of tutorials which aims to introduce users to 
 
 This tutorial is similar to the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial. Like the Spring Cloud tutorial, it will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application.  In contrast to the [Spring Cloud]({{ site.baseurl }}/spring-cloud), this application uses [solace-java-spring-boot]({{ site.links-ext-github-sp-solace-java-spring-boot }}){:target="_blank"} which using the Spring Cloud Connectors library and Spring Auto Configuration can auto inject a [SpringJCSMPFactory]({{ site.links-ext-github-spring-jcsmp-factory-java }}){:target="_blank"} directly into your application.
 
-![overview]({{ site.baseurl }}/images/spring-cloud-app-architecture.png){: .center-image}
+![overview]({{ site.baseurl }}/assets/images/spring-cloud-app-architecture.png){: .center-image}
 
 ## Goals
 
