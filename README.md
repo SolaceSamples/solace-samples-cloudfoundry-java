@@ -15,7 +15,7 @@ While not necessary for a Java Application or a straight Spring Cloud Connector 
 
 All of these sample applications have full walk through tutorials that explain the code in detail. Tutorials for each sample are available here:
 
-* https://solacesamples.github.io/solace-samples-cloudfoundry-java/
+* https://dev.solace.com/samples/solace-samples-cloudfoundry-java/
 
 What follows is a brief summary for people that want to dive straight into the code.
 
@@ -45,7 +45,7 @@ application name: `solace-sample-java-app`
 
 This application uses the Java library from http://www.JSON.org/ to parse the `VCAP_SERVICES` environment variable to determine the connection details for Solace messaging. For more details and example usage, see the walk through tutorial here:
 
-* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/java-app/)
+* [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/java-app/)
 
 ## Java Application using Spring Cloud Connector
 
@@ -82,7 +82,7 @@ Alternatively applications could search through the environment and discover mat
 
 For more details and example usage, see the walk through tutorial here:
 
-* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/spring-cloud/)
+* [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/spring-cloud/)
 
 
 ## Secure Session
@@ -92,7 +92,7 @@ application name: `solace-sample-secure-session`
 This application is based on the Spring Cloud Connector described above, but shows how to use
 Transport Level Security (TLS) between the Java application and the Solace Messaging Service Instance.
 
-* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/secure-session/)
+* [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/secure-session/)
 
 ## LDAP
 
@@ -102,7 +102,7 @@ If application access is enabled by the cloud operator, bindings will not contai
 
 This manifests as the service instance owner having to manually configure LDAP authorization groups for application access.
 
-* [Online Tutorial](https://solacesamples.github.io/solace-samples-cloudfoundry-java/ldap/)
+* [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/ldap/)
 
 ## Try out the Applications
 
