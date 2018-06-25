@@ -11,7 +11,7 @@ This tutorial is part of a series of tutorials which aims to introduce users to 
 
 This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which connects to a Solace Messaging service instance.
 
-![overview]({{ site.baseurl }}/images/java-app-architecture.png){: .center-image}
+![overview]({{ site.baseurl }}/assets/images/java-app-architecture.png){: .center-image}
 
 ## Goals
 

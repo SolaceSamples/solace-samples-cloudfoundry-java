@@ -1,5 +1,6 @@
 ---
 layout: default
+permalink: /
 ---
 <section class="index">
     {% if jekyll.environment == 'solaceCloud' %}
@@ -9,20 +10,20 @@ layout: default
     {% endif %}
     <div class="body">
         <div class="container container-tutorials">
-            {% include intro.html %}
+            {% include_relative _docs/assets/intro.html %}
             <div class="tutorials learn row" style="margin-bottom:0;">
                 {% assign count = 0 %}
                 {% for section in site.data.tutorials %}
                     {% for item in section.tutorials %}
                         {% assign item_url = item | prepend:"/" | append:"/" %}
-                        {% assign p = site.tutorials | where:"url", item_url | first %}
+                        {% assign p = site.docs | where:"url", item_url | first %}
                         {% assign loopindex = forloop.index | modulo: 2 %}
                         <div class="col s12 m6 l4">
                             <div class="card">
                                 <a href="{{ site.baseurl }}{{ p.url }}"></a>
                                 <div class="card-image">
                                     <div class="image">
-                                      <img src="{{ site.baseurl }}/images/{{ p.icon }}" alt="{{ p.title }}" style="height:{{ p.icon-height }}; width:{{ p.icon-width }};"/>
+                                      <img src="{{ site.baseurl }}/assets/images/{{ p.icon }}" alt="{{ p.title }}" style="height:{{ p.icon-height }}; width:{{ p.icon-width }};"/>
                                     </div>
                                     <div class="card-title">{{ p.title }}</div>
                                 </div>
