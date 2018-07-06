@@ -4,4 +4,4 @@ applications:
   memory: 1G
   path: build/libs/solace-sample-secure-session.jar
   services:
-  - solace-messaging-sample-instance
+  - solace-pubsub-sample-instance

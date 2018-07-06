@@ -173,7 +173,7 @@ When creating a service you can give read-write or read-only access to an LDAP g
 Here is an example, creating a service called `test` with a shared VMR using the [Cloud Foundry command line tool]({{ site.links-ext-cf-cli }}).
 
 ```
-    cf create-service solace-messaging shared test -c "{\"ldapGroupAdminReadWrite\": \"cn=finance,ou=groups,dc=example,dc=com\"}"
+    cf create-service solace-pubsub enterprise-shared test -c "{\"ldapGroupAdminReadWrite\": \"cn=finance,ou=groups,dc=example,dc=com\"}"
 ```
 
 You can also do this through ops manager.

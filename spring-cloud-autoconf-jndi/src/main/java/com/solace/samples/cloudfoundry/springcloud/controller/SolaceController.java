@@ -126,7 +126,7 @@ public class SolaceController {
 		// Show available services
 		logger.info("************* Init Called ************");
 
-		logger.info(String.format("SpringSolJmsJndiTemplateCloudFactory discovered %s solace-messaging service(s)",
+		logger.info(String.format("SpringSolJmsJndiTemplateCloudFactory discovered %s solace-pubsub service(s)",
 				springSolJmsJndiTemplateCloudFactory.getSolaceServiceCredentials().size()));
 
 		// Log what Solace Messaging Services were discovered

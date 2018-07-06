@@ -131,7 +131,7 @@ public class SolaceController {
                 .getServiceInfo("solace-messaging-sample-instance");
 
         if (solaceServiceCredentials == null) {
-            logger.error("Did not find instance of 'solace-messaging' service");
+            logger.error("Did not find instance of 'solace-pubsub' service");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
         }

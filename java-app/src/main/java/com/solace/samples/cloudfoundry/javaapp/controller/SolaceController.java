@@ -134,10 +134,10 @@ public class SolaceController {
 
         JSONObject vcapServicesJson = new JSONObject(vcapServices);
 
-        JSONArray solMessagingArray = vcapServicesJson.getJSONArray("solace-messaging");
+        JSONArray solMessagingArray = vcapServicesJson.getJSONArray("solace-pubsub");
 
         if (solMessagingArray == null) {
-            logger.error("Did not find Solace provided messaging service \"solace-messaging\"");
+            logger.error("Did not find Solace provided messaging service \"solace-pubsub\"");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
         }

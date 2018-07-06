@@ -4,7 +4,7 @@ applications:
   memory: 1G
   path: build/libs/solace-sample-spring-cloud-autoconf-jms.jar
   services:
-  - solace-messaging-sample-instance
+  - solace-pubsub-sample-instance
   env:
     SOLACE_JMS_DEMOQUEUENAME: testQueue4
     solace.jms.apiProperties.Solace_JMS_DynamicDurables: true

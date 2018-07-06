@@ -79,10 +79,10 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 ```
 {
   "VCAP_SERVICES": {
-    "solace-messaging": [ {
-        "name": "solace-messaging-sample-instance",
-        "label": "solace-messaging",
-        "plan": "shared",
+    "solace-pubsub": [ {
+        "name": "solace-pubsub-sample-instance",
+        "label": "solace-pubsub",
+        "plan": "enterprise-shared",
         "tags": [
             (...)
             ],
@@ -104,17 +104,17 @@ You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [S
 
 This sample use the [Spring Cloud Connectors]({{ site.links-ext-spring-cloud-conn }}){:target="_blank"} project to retrieve the `VCAP_SERVICES` information in the form of a `ServiceInfo` object. For Solace Messaging in Cloud Foundry, there is a Spring Cloud Connectors extension in GitHub called [sl-spring-cloud-connectors]({{ site.links-ext-github-sp-sl-spring-cloud-connectors }}){:target="_blank"}(). This library parses the `VCAP_SERVICES` environment variable and exposes the information by implementing the `ServiceInfo` interface in the `SolaceMessagingInfo` object.
 
-The `init()` method retrieves the Solace Messaging Service Instance details for the service named `solace-messaging-sample-instance` as follows:
+The `init()` method retrieves the Solace Messaging Service Instance details for the service named `solace-pubsub-sample-instance` as follows:
 
 ```java
 CloudFactory cloudFactory = new CloudFactory();
 Cloud cloud = cloudFactory.getCloud();
 
 SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud
-        .getServiceInfo("solace-messaging-sample-instance");
+        .getServiceInfo("solace-pubsub-sample-instance");
 
 if (solaceServiceCredentials == null) {
-    trace.error("Did not find instance of 'solace-messaging' service");
+    trace.error("Did not find instance of 'solace-pubsub' service");
     trace.error("************* Aborting Solace initialization!! ************");
     return;
 }
@@ -236,10 +236,10 @@ cd {{ site.baseurl | remove: '/'}}
 
 ## Cloud Foundry Setup
 
-The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `spring-cloud/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
+The sample application specifies a dependency on a service instance named `solace-pubsub-sample-instance` in its manifiest (See `spring-cloud/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
-cf create-service solace-messaging shared solace-messaging-sample-instance
+cf create-service solace-pubsub enterprise-shared solace-pubsub-sample-instance
 ```
 
 ## Deploying

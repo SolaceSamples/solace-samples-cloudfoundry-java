@@ -79,10 +79,10 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 ```
 {
   "VCAP_SERVICES": {
-    "solace-messaging": [ {
-        "name": "solace-messaging-sample-instance",
-        "label": "solace-messaging",
-        "plan": "shared",
+    "solace-pubsub": [ {
+        "name": "solace-pubsub-sample-instance",
+        "label": "solace-pubsub",
+        "plan": "enterprise-shared",
         "tags": [
             (...)
             ],
@@ -116,13 +116,13 @@ if (vcapServices == null || vcapServices.equals("") || vcapServices.equals("{}")
 JSONObject vcapServicesJson = new JSONObject(vcapServices);
 ```
 
-Given the `VCAP_SERVICES` JSON, the application needs to extract the Solace Messaging Service URI and the credentials of the Solace Messaging service instance.  The following code extract an instance of `solace-messaging` from the array of Service Instances bound to the application.  If such an instance is found, the credentials JSON object is extracted :
+Given the `VCAP_SERVICES` JSON, the application needs to extract the Solace Messaging Service URI and the credentials of the Solace Messaging service instance.  The following code extract an instance of `solace-pubsub` from the array of Service Instances bound to the application.  If such an instance is found, the credentials JSON object is extracted :
 
 ```java
-JSONArray solMessagingArray = vcapServicesJson.getJSONArray("solace-messaging");
+JSONArray solMessagingArray = vcapServicesJson.getJSONArray("solace-pubsub");
 
 if (solMessagingArray == null) {
-    logger.error("Did not find Solace provided messaging service \"solace-messaging\"");
+    logger.error("Did not find Solace provided messaging service \"solace-pubsub\"");
     logger.info("************* Aborting Solace initialization!! ************");
     return;
 }
@@ -264,10 +264,10 @@ cd {{ site.baseurl | remove: '/'}}
 
 ## Cloud Foundry Setup
 
-The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `java-app/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
+The sample application specifies a dependency on a service instance named `solace-pubsub-sample-instance` in its manifiest (See `java-app/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
-cf create-service solace-messaging shared solace-messaging-sample-instance
+cf create-service solace-pubsub enterprise-shared solace-pubsub-sample-instance
 ```
 
 ## Deploying
@@ -318,7 +318,7 @@ curl -X DELETE http://$APP_URL/subscription/test
 Solace provides the option to set up High Availability configurations, where each message router has a backup. To use this in Cloud Foundry you need to create a service of type medium-ha or large-ha, for example:
 
 ```
-cf create-service solace-messaging medium-ha solace-messaging-sample-instance
+cf create-service solace-pubsub enterprise-medium-ha solace-pubsub-sample-instance
 ```
 
 The Solace Java API automatically switches to the backup connection if it loses the connection to the primary router.
