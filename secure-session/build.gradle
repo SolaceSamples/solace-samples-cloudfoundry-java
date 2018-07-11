@@ -3,7 +3,7 @@ buildscript {
         springBootVersion = '1.4.2.RELEASE'
         springCloudVersion = '1.2.3.RELEASE'
         solaceJCSMPVersion = '10.+'
-        solaceCloudVersion = '2.5.+'
+        solaceCloudVersion = '2.6.+'
     }
     repositories {
         mavenCentral()
