@@ -67,10 +67,10 @@ public class SolaceController {
 
     // If true, we will install a certificate residing in the
     // src/main/resources directory so that we can validate self-signed certificates.
-    private static final boolean INSTALL_CERTIFICATE = false;
+    private static final boolean INSTALL_CERTIFICATE = true;
 
     // Change this to match the file in src/main/resources
-    private static final String CERTIFICATE_FILE_NAME = "my-cert.cer";
+    private static final String CERTIFICATE_FILE_NAME = "BOOT-INF/classes/my-cert.cer";
 
     // Each certificate in the trusted store needs to have a unique alias.
     private static final String CERTIFICATE_ALIAS = "my-alias";
