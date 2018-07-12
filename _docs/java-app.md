@@ -7,18 +7,18 @@ icon: I_java.svg
 
 ## Overview
 
-This tutorial is part of a series of tutorials which aims to introduce users to Solace Messaging in Pivotal Cloud Foundry. Solace Messaging in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-ext-pivotal }}){:target="_blank"}. You can see the [Solace Messaging for Pivotal Cloud Foundry Documentation]({{ site.links-ext-pivotal-solace }}){:target="_blank"} for full details.
+This tutorial is part of a series of tutorials which aims to introduce users to Solace PubSub+ in Pivotal Cloud Foundry. Solace PubSub+ in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-ext-pivotal }}){:target="_blank"}. You can see the [Solace PubSub+ for Pivotal Cloud Foundry Documentation]({{ site.links-ext-pivotal-solace }}){:target="_blank"} for full details.
 
-This tutorial will introduce you to Solace Messaging for Pivotal Cloud Foundry by creating a Java application which connects to a Solace Messaging service instance.
+This tutorial will introduce you to Solace PubSub+ for Pivotal Cloud Foundry by creating a Java application which connects to a Solace PubSub+ service instance.
 
 ![overview]({{ site.baseurl }}/assets/images/java-app-architecture.png){: .center-image}
 
 ## Goals
 
-The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
+The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service Bindings and connect to the Solace PubSub+ service instance.  This tutorial will show you:
 
-1. How to extract the Solace Messaging service credentials from the Cloud Foundry environment.
-1. How to establish a connection to the Solace Messaging service.
+1. How to extract the Solace PubSub+ service credentials from the Cloud Foundry environment.
+1. How to establish a connection to the Solace PubSub+ service.
 1. How to publish, subscribe and receive messages.
 
 ## Assumptions
@@ -29,11 +29,11 @@ This tutorial assumes the following:
 * You are familiar with [Spring RESTful Web Services]({{ site.links-ext-spring-rest }}){:target="_blank"}.
 * You are familiar with [Cloud Foundry]({{ site.links-ext-cloudfoundry }}){:target="_blank"}.
 * You have access to a running Pivotal Cloud Foundry environment.
-* Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
+* Solace PubSub+ for PCF has been installed in your Pivotal Cloud Foundry environment.
 
 ## Obtaining the Solace API
 
-This tutorial depends on you having the Solace Messaging API for Java (JCSMP). Here are a few easy ways to get the Java API. The instructions in the [Building](#building) section assume you're using Gradle and pulling the jars from maven central. If your environment differs then adjust the build instructions appropriately.
+This tutorial depends on you having the Solace PubSub+ API for Java (JCSMP). Here are a few easy ways to get the Java API. The instructions in the [Building](#building) section assume you're using Gradle and pulling the jars from maven central. If your environment differs then adjust the build instructions appropriately.
 
 ### Get the API: Using Gradle
 
@@ -66,11 +66,11 @@ The sample application contains the following source files :
 | Source File      | Description |
 | ---------------- | ----------- |
 | Application.java | The Sprint Boot application class |
-| SolaceController.java | The Application's REST controller which provides an interface to subscribe, publish and receive messages.  This class also implements the initialization procedure which connects the application to the Solace Messaging Service. |
+| SolaceController.java | The Application's REST controller which provides an interface to subscribe, publish and receive messages.  This class also implements the initialization procedure which connects the application to the Solace PubSub+ Service. |
 | SimpleMessage.java | This class wraps the information to be stored in a message |
 | SimpleSubscription.java | This class wraps the information describing a topic subscription |
 
-This tutorial will only cover the source code in `SolaceController.java` as the other files do not contain logic related to establishing a connection to the Solace Messaging Service.
+This tutorial will only cover the source code in `SolaceController.java` as the other files do not contain logic related to establishing a connection to the Solace PubSub+ Service.
 
 ### Obtaining the Solace Credentials in the Application
 
@@ -100,7 +100,7 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 }
 ```
 
-You can see the full structure of the Solace Messaging `VCAP_SERVICES` in the [Solace Messaging for PCF documentation]({{ site.links-ext-vcap }}){:target="_blank"}.
+You can see the full structure of the Solace PubSub+ `VCAP_SERVICES` in the [Solace PubSub+ for PCF documentation]({{ site.links-ext-vcap }}){:target="_blank"}.
 
 The sample starts by extracting the JSON document from this environment variable, logging its content and confirming it contains useful information.  This is done in the `init()` method:
 

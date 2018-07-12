@@ -63,7 +63,7 @@ public class SolaceController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-	// The auto selected Solace Messaging service
+	// The auto selected Solace PubSub+ service
 	// the relevant information provided by this bean have already been injected
 	// into the JndiTemplate
 	// This bean is for information only, it can be used to discover more about
@@ -74,7 +74,7 @@ public class SolaceController {
 	// A Factory of Factories
 	// Has the ability to create JndiTemplate(s) for any available
 	// SolaceServiceCredentials
-	// Can be used in case there are multiple Solace Messaging Services to
+	// Can be used in case there are multiple Solace PubSub+ Services to
 	// select from.
 	@Autowired
 	SpringSolJmsJndiTemplateCloudFactory springSolJmsJndiTemplateCloudFactory;
@@ -129,11 +129,11 @@ public class SolaceController {
 		logger.info(String.format("SpringSolJmsJndiTemplateCloudFactory discovered %s solace-pubsub service(s)",
 				springSolJmsJndiTemplateCloudFactory.getSolaceServiceCredentials().size()));
 
-		// Log what Solace Messaging Services were discovered
+		// Log what Solace PubSub+ Services were discovered
 		for (SolaceServiceCredentials discoveredSolaceMessagingService : springSolJmsJndiTemplateCloudFactory
 				.getSolaceServiceCredentials()) {
 			logger.info(String.format(
-					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
+					"Discovered Solace PubSub+ service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
 					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
 					discoveredSolaceMessagingService.getMsgVpnName()));
 		}

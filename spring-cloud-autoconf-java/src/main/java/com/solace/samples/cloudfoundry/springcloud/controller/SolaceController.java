@@ -56,13 +56,13 @@ public class SolaceController {
 
 	private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-	// A JCSMP Factory for the auto selected Solace Messaging service,
+	// A JCSMP Factory for the auto selected Solace PubSub+ service,
 	// This is used to create JCSMPSession(s)
 	// This is the only required bean to run this application.
 	@Autowired
 	private SpringJCSMPFactory solaceFactory;
 
-	// The auto selected Solace Messaging service for the matching SpringJCSMPFactory,
+	// The auto selected Solace PubSub+ service for the matching SpringJCSMPFactory,
 	// the relevant information provided by this bean have already been injected
 	// into the SpringJCSMPFactory
 	// This bean is for information only, it can be used to discover more about
@@ -73,7 +73,7 @@ public class SolaceController {
 	// A Factory of Factories
 	// Has the ability to create SpringJCSMPFactory(s) for any available
 	// SolaceServiceCredentials
-	// Can be used in case there are multiple Solace Messaging Services to
+	// Can be used in case there are multiple Solace PubSub+ Services to
 	// select from.
 	@Autowired
 	SpringJCSMPFactoryCloudFactory springJCSMPFactoryCloudFactory;
@@ -126,21 +126,21 @@ public class SolaceController {
 		// Show available services and connect to Solace
 		logger.info("************* Init Called ************");
 
-//		logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s solace-messaging service(s)",
+//		logger.info(String.format("SpringJCSMPFactoryCloudFactory discovered %s Solace PubSub+ service(s)",
 //				springJCSMPFactoryCloudFactory.getSolaceServiceCredentials().size()));
 //
-//		// Log what Solace Messaging Services were discovered
+//		// Log what Solace PubSub+ Services were discovered
 //		for (SolaceServiceCredentials discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
 //				.getSolaceServiceCredentials()) {
 //			logger.info(String.format(
-//					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
+//					"Discovered Solace PubSub+ service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
 //					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
 //					discoveredSolaceMessagingService.getMsgVpnName()));
 //		}
 
 		try {
 //			logger.info(String.format(
-//					"Creating a Session using a SolaceFactory configured with solace-messaging service '%s'",
+//					"Creating a Session using a SolaceFactory configured with Solace PubSub+ service '%s'",
 //					solaceServiceCredentials.getId()));
 			session = solaceFactory.createSession();
 			session.connect();

@@ -49,7 +49,7 @@ dependencies {
     compile("org.json:json:20151123")
 
 
-    // Solace Messaging Spring Cloud Connector
+    // Solace PubSub+ Spring Cloud Connector
     compile("com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:${solaceCloudVersion}")
 
     // Solace JMS API

@@ -5,7 +5,7 @@ We'd love for you to contribute and welcome your help. Here are some guidelines 
 - [Issues and Bugs](#issue)
 - [Submitting a fix](#submitting)
 - [Feature Requests](#features)
-- [Questions](#questions) 
+- [Questions](#questions)
 
 ## <a name="issue"></a> Did you find a issue?
 
@@ -53,7 +53,7 @@ git commit -a -m "Your Commit Message"
 
 Note: the optional commit `-a` command line option will automatically "add" and "rm" edited files.
 
-#### Step 4: Rebase (if possible) 
+#### Step 4: Rebase (if possible)
 
 Assuming you have not yet pushed your branch to origin, use `git rebase` (not `git merge`) to synchronize your work with the main
 repository.
@@ -81,7 +81,7 @@ git push origin my-fix-branch
 
 #### Step 6: Pull Request
 
-In GitHub, send a pull request to `solace-samples-template:master`. 
+In GitHub, send a pull request to `solace-samples-template:master`.
 
 When fixing an existing issue, use the [commit message keywords](https://help.github.com/articles/closing-issues-via-commit-messages/) to close the associated GitHub issue.
 
@@ -97,4 +97,4 @@ That's it! Thank you for your contribution!
 
 ##  <a name="questions"></a> Do you have questions about the source code?
 
-* Ask any question about the code or how to use Solace messaging in the [Solace community](http://dev.solace.com/community/).
+* Ask any question about the code or how to use Solace Pubsub+ in the [Solace community](http://dev.solace.com/community/).

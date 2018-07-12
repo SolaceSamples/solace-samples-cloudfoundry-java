@@ -154,7 +154,7 @@ public class SolaceController {
         }
 
         if (solaceCredentials == null) {
-            logger.error("Did not find Solace messaging service credentials");
+            logger.error("Did not find Solace PubSub+ service credentials");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
         }
@@ -211,7 +211,7 @@ public class SolaceController {
         	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientUsername);
         	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
         } else {
-            logger.error("Did not find credentials to use, Neither Solace messaging provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
+            logger.error("Did not find credentials to use, Neither Solace PubSub+ provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
         }

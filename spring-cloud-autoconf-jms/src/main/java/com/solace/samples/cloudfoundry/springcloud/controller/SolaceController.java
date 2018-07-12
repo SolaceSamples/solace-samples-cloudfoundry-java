@@ -54,7 +54,7 @@ public class SolaceController {
 
 	private static final Log logger = LogFactory.getLog(SolaceController.class);
 
-	// A JMS ConnectionFactory for the auto selected Solace Messaging service,
+	// A JMS ConnectionFactory for the auto selected Solace PubSub+ service,
 	// This is the only required bean to run this application.
 	// Note that both SolaceController and ProducerConfiguration use this for
 	// their respective purposes but the same connection factory is provided.
@@ -64,7 +64,7 @@ public class SolaceController {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-	// The auto selected Solace Messaging service for the matching ConnectionFactory,
+	// The auto selected Solace PubSub+ service for the matching ConnectionFactory,
 	// the relevant information provided by this bean have already been injected
 	// into the ConnectionFactory.
 	// This bean is for information only, it can be used to discover more about
@@ -75,7 +75,7 @@ public class SolaceController {
 	// A Factory of Factories
 	// Has the ability to create ConnectionFactory(s) for any available
 	// SolaceServiceCredentials
-	// Can be used in case there are multiple Solace Messaging Services to
+	// Can be used in case there are multiple Solace PubSub+ Services to
 	// select from.
 	@Autowired
 	SpringSolJmsConnectionFactoryCloudFactory springJCSMPFactoryCloudFactory;
@@ -124,14 +124,14 @@ public class SolaceController {
 		// Show available services
 		logger.info("************* Init Called ************");
 
-		logger.info(String.format("SpringSolJmsConnectionFactoryCloudFactory discovered %s solace-messaging service(s)",
+		logger.info(String.format("SpringSolJmsConnectionFactoryCloudFactory discovered %s Solace PubSub+ service(s)",
 				springJCSMPFactoryCloudFactory.getSolaceServiceCredentials().size()));
 
-		// Log what Solace Messaging Services were discovered
+		// Log what Solace PubSub+ Services were discovered
 		for (SolaceServiceCredentials discoveredSolaceMessagingService : springJCSMPFactoryCloudFactory
 				.getSolaceServiceCredentials()) {
 			logger.info(String.format(
-					"Discovered Solace Messaging service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
+					"Discovered Solace PubSub+ service '%s': HighAvailability? ( %s ), Message VPN ( %s )",
 					discoveredSolaceMessagingService.getId(), discoveredSolaceMessagingService.isHA(),
 					discoveredSolaceMessagingService.getMsgVpnName()));
 		}

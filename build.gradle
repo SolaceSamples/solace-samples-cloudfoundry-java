@@ -1,4 +1,4 @@
-description = 'Examples of using Solace Messaging on Cloud Foundry'
+description = 'Examples of using Solace PubSub+ on Cloud Foundry'
 
 subprojects {
 	apply plugin: 'java'
