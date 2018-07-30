@@ -14,7 +14,7 @@ This tutorial is based on the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tu
 
 ## Goals
 
-The goal of this tutorial is to demonstrate how to connect to the Solace Messaging service instance using TLS. This tutorial will show you how to establish a connection to the solace messaging service using both self-signed and Certificate Authority approved certificates.
+The goal of this tutorial is to demonstrate how to connect to the Solace Messaging service instance using TLS. This tutorial will show you how to establish a connection to the solace pubsub service using both self-signed and Certificate Authority approved certificates.
 
 ## Assumptions
 
@@ -120,10 +120,10 @@ cd {{ site.baseurl | remove: '/'}}
 
 ## Cloud Foundry Setup
 
-The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `secure-session/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
+The sample application specifies a dependency on a service instance named `solace-pubsub-sample-instance` in its manifiest (See `secure-session/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
-cf create-service solace-messaging shared solace-messaging-sample-instance
+cf create-service solace-pubsub enterprise-shared solace-pubsub-sample-instance
 ```
 
 ## Deploying

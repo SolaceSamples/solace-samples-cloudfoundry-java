@@ -1,6 +1,6 @@
 # Site settings
-title: Solace Messaging with Pivotal Cloud Foundry
-summary: These tutorials walk through Java Sample applications to introduce you to Solace Messaging for Pivotal Cloud Foundry.
+title: Solace PubSub+ with Pivotal Cloud Foundry
+summary: These tutorials walk through Java Sample applications to introduce you to Solace PubSub+ for Pivotal Cloud Foundry.
 baseurl: "/solace-samples-cloudfoundry-java" # the subpath of your site, e.g. /solace-samples-java
 repository: //github.com/SolaceSamples/solace-samples-cloudfoundry-java # Also see _includes/intro.html to customize the description which gets included in index.html.
 

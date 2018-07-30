@@ -64,7 +64,7 @@ Here is an example of a SERVICE_KEY with all the fields of interest to us, notic
   'clientPassword': '10170ae9-2faa-4a7b-9161-152c9d32cc05',
   'clientUsername': 'v005.cu000066',
   'msgVpnName': 'v005',
-  'managementHostnames': [ 'shared-vmr-0.local.pcfdev.io' ],
+  'managementHostnames': [ 'enterprise-shared-0.local.pcfdev.io' ],
   'managementPassword': 'e30a4c0c506a42a696204f3fa83d9fd3',
   'managementUsername': 'v005-mgmt',
   'publicMqttTlsUris': [ 'ssl://tcp.local.pcfdev.io:61049' ],
@@ -299,13 +299,13 @@ The sample application has a dependency on a `SERVICE_KEY` which needs to be sat
 Assuming TCP Routes is enabled and MQTT Plain-Text is set to "Enabled by default", you can create your service like so:
 
 ```
-cf create-service solace-messaging shared solace-messaging-sample-instance
+cf create-service solace-pubsub enterprise-shared solace-pubsub-sample-instance
 ```
 
 Assuming TCP Routes is enabled and MQTT Plain-Text is set to "Disabled by default", you can request MQTT be enabled upon service creation like so:
 
 ```
-cf create-service solace-messaging shared solace-messaging-sample-instance -c '{ "mqtt_tcp_route_enabled" : "true" }'
+cf create-service solace-pubsub enterprise-shared solace-pubsub-sample-instance -c '{ "mqtt_tcp_route_enabled" : "true" }'
 
 ```
 
@@ -313,8 +313,8 @@ cf create-service solace-messaging shared solace-messaging-sample-instance -c '{
 
 
 ```
-cf create-service-key solace-messaging-sample-instance solace-messaging-sample-service-key
-cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key
+cf create-service-key solace-pubsub-sample-instance solace-pubsub-sample-service-key
+cf service-key solace-pubsub-sample-instance solace-pubsub-sample-service-key
 ```
 
 ## Getting and passing the service key to an application
@@ -323,16 +323,16 @@ The service key details can be obtained from cf and should be passed to an appli
 When you have access to cf, get the service key and save it to a file so you may keep it and send it to where you plan on running your application.
 
 ```
-cf service-key solace-messaging-sample-instance solace-messaging-sample-service-key | grep -v Getting > solace-messaging-sample-service.key
+cf service-key solace-pubsub-sample-instance solace-pubsub-sample-service-key | grep -v Getting > solace-pubsub-sample-service.key
 ```
 
-You need to get the file 'solace-messaging-sample-service.key' to where your application will be running somehow.
+You need to get the file 'solace-pubsub-sample-service.key' to where your application will be running somehow.
 
 Assuming you have the file now accessible where will run your application, load it in an environment variable we have chosen and named SERVICE_KEY.
 Load the service key from file to the SERVICE_KEY as an environment variable:
 
 ```
-export SERVICE_KEY=$( cat solace-messaging-sample-service.key )
+export SERVICE_KEY=$( cat solace-pubsub-sample-service.key )
 ```
 
 ## Running
@@ -342,23 +342,23 @@ This application can be used Standalone or deployed in PCF.
 ### Option 1 - Run the application in Standalone mode
 
 Running the application in a standalone mode and providing it with the necessary service key to access the Solace Messaging service.
-Assumes you a saved service key in file 'solace-messaging-sample-service.key'
+Assumes you a saved service key in file 'solace-pubsub-sample-service.key'
 
 ```
-export SERVICE_KEY=$( cat solace-messaging-sample-service.key )
+export SERVICE_KEY=$( cat solace-pubsub-sample-service.key )
 cd tcp-routes-mqtt
 java -Dserver.port=8080 -jar build/libs/solace-sample-java-app.jar
 ```
 
 At this point the application is running and using port 8080 providing the services that it is supposed to so we can continue testing the messaging features. Please note that you will need to open another window to continue the remaining parts of the tutorial.
-Assumes you a saved service key in file 'solace-messaging-sample-service.key'
+Assumes you a saved service key in file 'solace-pubsub-sample-service.key'
 
 ### Option 2 - To run in PCF
 
 If running in PCF keep in mind that the idea is that the application is connecting to an external port created by TCP Routes, and that the necessary credentials are passed to this application by the user.
 
 ```
-export SERVICE_KEY=$( cat solace-messaging-sample-service.key )
+export SERVICE_KEY=$( cat solace-pubsub-sample-service.key )
 cd tcp-routes-mqtt
 cf push
 cf set-env solace-sample-java-app SERVICE_KEY "$SERVICE_KEY"

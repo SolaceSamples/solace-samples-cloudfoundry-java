@@ -9,10 +9,10 @@ icon: I_ldap.svg
 
 LDAP is directory-based application protocol, which Solace can use for user authentication and authorization.
 On the LDAP server, there will be a directory structure of users, which have an associated username and password, as well as a list of groups that each user belongs to.
-On the VMR, groups are configured to be mapped to certain levels of authorization, and users are authorized based on the groups they belong to.
+On the PubSub+ message broker, groups are configured to be mapped to certain levels of authorization, and users are authorized based on the groups they belong to.
 
 Assuming LDAP is enabled, when a user connects the username and password they provided are validated against those stored on the LDAP server.
-If the credentials are valid, the LDAP server is queried to get the list of groups that the user belongs to. 
+If the credentials are valid, the LDAP server is queried to get the list of groups that the user belongs to.
 The user is then authorized based on the groups they belong to, and given no authorization if no groups are configured.
 
 There are two types of access:
@@ -25,7 +25,7 @@ There are two types of access:
 The goal of this tutorial is to demonstrate extracting the information from the application's Cloud Foundry Service Bindings and connect to the Solace Messaging service instance.  This tutorial will show you:
 
 1. How to configure an LDAP server with some example ldif files.
-1. How to use the credentials stored on the LDAP server for authentication and authorization. 
+1. How to use the credentials stored on the LDAP server for authentication and authorization.
 
 ## Assumptions
 
@@ -36,7 +36,7 @@ This tutorial assumes the following:
 * You have access to a running Pivotal Cloud Foundry environment.
 * Solace Messaging for PCF has been installed in your Pivotal Cloud Foundry environment.
 * You have completed the Java app tutorial.
-* You are using OpenLDAP. 
+* You are using OpenLDAP.
 
 ## Files
 
@@ -50,7 +50,7 @@ The following files are written for OpenLDAP and may need to be modified to supp
 
 The memberOf overlay is mainly for convenience.
 
-With the memberOf overlay whenever the list of members in a group is updated, that member automatically gets updated with the correct memberOf attribute as well. This means only updating one place instead of two. 
+With the memberOf overlay whenever the list of members in a group is updated, that member automatically gets updated with the correct memberOf attribute as well. This means only updating one place instead of two.
 
 Without the memberOf overlay, a memberOf attribute for every user has to be updated manually with the correct groups.
 
@@ -76,7 +76,7 @@ olcMemberOfMemberOfAD: memberOf
 
 #### content.ldif
 
-Here is an example of how to configure a running LDAP server, with user `hank` belonging to group `finance`. 
+Here is an example of how to configure a running LDAP server, with user `hank` belonging to group `finance`.
 
 ```
 dn: dc=example,dc=com
@@ -91,7 +91,7 @@ dn: ou=users,dc=example,dc=com
 changetype: add
 objectClass: organizationalUnit
 objectClass: top
-ou: users 
+ou: users
 
 dn: ou=groups,dc=example,dc=com
 changetype: add
@@ -117,7 +117,7 @@ cn: finance
 ```
 #### Commands
 
-These commands will apply the configuration described in the files above to the LDAP server. 
+These commands will apply the configuration described in the files above to the LDAP server.
 
 ```
 ldapadd -Y EXTERNAL -H ldapi:/// -f memberOf.ldif
@@ -126,7 +126,7 @@ ldapadd -x -D 'bindDNUser' -w bindDNPassword -H ldapi:/// -f content.ldif
 
 Where bindDNUser and binDNPassword are the bind DN credentials (if configured).
 
-## Application Access Setup 
+## Application Access Setup
 
 You need to setup LDAP in the Solace tile correctly, see the [Solace Messaging Documentation]({{ site.links-ext-ldap-settings }}).
 
@@ -147,7 +147,7 @@ If the sample app does not receive any credentials in the binding, it will at th
 
 Authorization groups for application access are not setup through PCF and thus have to be setup manually.
 
-SSH into the VMR using a user with at least read-write access to that VPN.
+SSH into the PubSub+ message broker using a user with at least read-write access to that VPN.
 
 Assuming you are using VPN `v001`, use these commands on the CLI:
 ```
@@ -158,11 +158,11 @@ Assuming you are using VPN `v001`, use these commands on the CLI:
     create authorization-group cn=finance,ou=groups,dc=example,dc=com
 ```
 
-This will give all users in the `finance` group (ie `hank`) application access to that VPN. 
+This will give all users in the `finance` group (ie `hank`) application access to that VPN.
 
 You can read more about setting up authorization groups, including changing ACL profiles and client profiles in the [Solace Configuring Client LDAP Authorization Documentation]({{ site.links-client-ldap-authorization }}).
 
-By default, all newly created authorization-groups will use the default ACL profile and default client profile. 
+By default, all newly created authorization-groups will use the default ACL profile and default client profile.
 
 NOTE: When a service is deleted all authorization groups associated with that VPN are deleted as well.
 
@@ -170,10 +170,10 @@ NOTE: When a service is deleted all authorization groups associated with that VP
 
 When creating a service you can give read-write or read-only access to an LDAP group using the command line parameters 'ldapGroupAdminReadWrite' and 'ldapGroupAdminReadOnly'.
 
-Here is an example, creating a service called `test` with a shared VMR using the [Cloud Foundry command line tool]({{ site.links-ext-cf-cli }}).
+Here is an example, creating a service called `test` with a shared plan using the [Cloud Foundry command line tool]({{ site.links-ext-cf-cli }}).
 
 ```
-    cf create-service solace-messaging shared test -c "{\"ldapGroupAdminReadWrite\": \"cn=finance,ou=groups,dc=example,dc=com\"}"
+    cf create-service solace-pubsub enterprise-shared test -c "{\"ldapGroupAdminReadWrite\": \"cn=finance,ou=groups,dc=example,dc=com\"}"
 ```
 
 You can also do this through ops manager.

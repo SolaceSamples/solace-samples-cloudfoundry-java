@@ -3,7 +3,7 @@
 # Getting Started Examples
 ## Solace Cloud Foundry Java
 
-The repository contains example applications that use the Solace Messaging service on Pivotal Cloud Foundry. The goal of these sample applications is to illustrate various ways of consuming the `VCAP_SERVICES` environment variable from a Solace Messaging Cloud Foundry service instance. You can get more details on the Solace Messaging Service for Pivotal Cloud Foundry [here](http://docs.pivotal.io/solace-messaging/).
+The repository contains example applications that use the Solace Pubsub+ service on Pivotal Cloud Foundry. The goal of these sample applications is to illustrate various ways of consuming the `VCAP_SERVICES` environment variable from a Solace Pubsub+ Cloud Foundry service instance. You can get more details on the Solace Pubsub+ Service for Pivotal Cloud Foundry [here](http://docs.pivotal.io/solace-messaging/).
 
 This repository contains a sample application modified in the following ways:
 
@@ -21,9 +21,9 @@ What follows is a brief summary for people that want to dive straight into the c
 
 ## Common Setup
 
-The sample applications specify a dependency on a Solace Messaging service instance named `solace-messaging-sample-instance`. To create the required Solace messaging service instance, do the following:
+The sample applications specify a dependency on a Solace Pubsub+ service instance named `solace-pubsub-sample-instance`. To create the required Solace PubSub+ service instance, do the following:
 
-	cf create-service solace-messaging shared solace-messaging-sample-instance
+	cf create-service solace-pubsub shared solace-pubsub-sample-instance
 
 ### Building
 
@@ -43,7 +43,7 @@ To deploy the individual applications to Cloud Foundry:
 
 application name: `solace-sample-java-app`
 
-This application uses the Java library from http://www.JSON.org/ to parse the `VCAP_SERVICES` environment variable to determine the connection details for Solace messaging. For more details and example usage, see the walk through tutorial here:
+This application uses the Java library from http://www.JSON.org/ to parse the `VCAP_SERVICES` environment variable to determine the connection details for Solace PubSub+. For more details and example usage, see the walk through tutorial here:
 
 * [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/java-app/)
 
@@ -57,9 +57,9 @@ This application makes use of the Spring Cloud Connectors project to automatical
 	compile 'org.springframework.cloud:spring-cloud-cloudfoundry-connector:1.2.3.RELEASE'
 	compile 'com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:2.1.+'
 
-The `solace-spring-cloud-connector` is a Spring Cloud Connectors extension to parse the `VCAP_SERVICES` for the Solace Messaging service instance information. Check out the project page for more details:
+The `solace-spring-cloud-connector` is a Spring Cloud Connectors extension to parse the `VCAP_SERVICES` for the Solace PubSub+ service instance information. Check out the project page for more details:
 
-* https://github.com/SolaceProducts/sl-solace-messaging-service-info
+* https://github.com/SolaceProducts/sl-spring-cloud-connectors
 
 The easiest way for applications to access the SolaceServiceCredentials object is by Service Id (ex: "MyService) as follows:
 
@@ -72,7 +72,7 @@ Alternatively applications could search through the environment and discover mat
 	SolaceServiceCredentials solaceServiceCredentials = null;
 	List<ServiceInfo> services = cloud.getServiceInfos();
 
-	// Connect to the first Solace-Messaging service that is found in the services list.
+	// Connect to the first Solace PubSub+ service that is found in the services list.
 	for (ServiceInfo service : services) {
 		if (service instanceof SolaceServiceCredentials) {
 			solaceServiceCredentials = (SolaceServiceCredentials)service;
@@ -90,7 +90,7 @@ For more details and example usage, see the walk through tutorial here:
 application name: `solace-sample-secure-session`
 
 This application is based on the Spring Cloud Connector described above, but shows how to use
-Transport Level Security (TLS) between the Java application and the Solace Messaging Service Instance.
+Transport Level Security (TLS) between the Java application and the Solace PubSub+ Service Instance.
 
 * [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/secure-session/)
 

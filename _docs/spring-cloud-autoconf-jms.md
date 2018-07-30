@@ -84,10 +84,10 @@ The Pivotal Cloud Foundry environment exposes any bound Service Instances in a J
 ```
 {
   "VCAP_SERVICES": {
-    "solace-messaging": [ {
-        "name": "solace-messaging-sample-instance",
-        "label": "solace-messaging",
-        "plan": "shared",
+    "solace-pubsub": [ {
+        "name": "solace-pubsub-sample-instance",
+        "label": "solace-pubsub",
+        "plan": "enterprise-shared",
         "tags": [
             (...)
             ],
@@ -139,7 +139,7 @@ SpringSolJmsConnectionFactoryCloudFactory springJCSMPFactoryCloudFactory;
 The `init()` method retrieves and shows the autowired Solace Messaging Service Instance details as follows:
 
 ```java
-logger.info(String.format("SpringSolJmsConnectionFactoryCloudFactory discovered %s solace-messaging service(s)",
+logger.info(String.format("SpringSolJmsConnectionFactoryCloudFactory discovered %s solace-pubsub service(s)",
         springJCSMPFactoryCloudFactory.getSolaceServiceCredentials().size()));
 
 // Log what Solace Messaging Services were discovered
@@ -282,10 +282,10 @@ cd {{ site.baseurl | remove: '/'}}
 
 ## Cloud Foundry Setup
 
-The sample application specifies a dependency on a service instance named `solace-messaging-sample-instance` in its manifiest (See `spring-cloud-autoconf/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
+The sample application specifies a dependency on a service instance named `solace-pubsub-sample-instance` in its manifiest (See `spring-cloud-autoconf/manifest.yml`).  This must be an instance of the Solace Messaging Service which can be created with this command:
 
 ```
-cf create-service solace-messaging shared solace-messaging-sample-instance
+cf create-service solace-pubsub enterprise-shared solace-pubsub-sample-instance
 ```
 
 ## Deploying

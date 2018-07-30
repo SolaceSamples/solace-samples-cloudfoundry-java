@@ -3,8 +3,8 @@ buildscript {
         springBootVersion = '1.4.2.RELEASE'
         springCloudVersion = '1.2.3.RELEASE'
         solaceJMSVersion = '10.+'
-        solaceCloudVersion = '2.1.+'
-        solaceJmsSpringBootVersion = '1.1.+'
+        solaceCloudVersion = '3.0.+'
+        solaceJmsSpringBootVersion = '2.0.+'
     }
     repositories {
         mavenCentral()
@@ -49,7 +49,7 @@ dependencies {
     compile("org.json:json:20151123")
 
 
-    // Solace Messaging Spring Cloud Connector
+    // Solace PubSub+ Spring Cloud Connector
     compile("com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:${solaceCloudVersion}")
 
     // Solace Java API

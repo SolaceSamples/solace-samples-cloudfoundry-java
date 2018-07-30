@@ -128,10 +128,10 @@ public class SolaceController {
         Cloud cloud = cloudFactory.getCloud();
 
         SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud
-                .getServiceInfo("solace-messaging-sample-instance");
+                .getServiceInfo("solace-pubsub-sample-instance");
 
         if (solaceServiceCredentials == null) {
-            logger.error("Did not find instance of 'solace-messaging' service");
+            logger.error("Did not find instance of 'solace-pubsub' service");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
         }
@@ -155,7 +155,7 @@ public class SolaceController {
         	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientUsername);
         	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
         } else {
-            logger.error("Did not find credentials to use, Neither Solace messaging provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
+            logger.error("Did not find credentials to use, Neither Solace PubSub+ provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
         }
