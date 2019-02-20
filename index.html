@@ -3,11 +3,7 @@ layout: default
 permalink: /
 ---
 <section class="index">
-    {% if jekyll.environment == 'solaceCloud' %}
-      {% include solace-cloud-header-sample.html %}
-    {% else %}
-      {% include dev-solace-header-sample.html %}
-    {% endif %}
+    {% include solace-cloud-header-sample.html %}
     <div class="body">
         <div class="container container-tutorials">
             {% include_relative _docs/assets/intro.html %}
