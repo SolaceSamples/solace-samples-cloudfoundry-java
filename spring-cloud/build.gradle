@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.0.M6'
+        springBootVersion = '2.2.0.RELEASE'
         solaceJCSMPVersion = '10.+'
         solaceCloudVersion = '4.1.0-SNAPSHOT'
     }

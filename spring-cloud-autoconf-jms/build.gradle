@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.0.M6'
+        springBootVersion = '2.2.0.RELEASE'
         solaceJmsSpringBootVersion = '3.2.0-SNAPSHOT'
     }
     repositories {
