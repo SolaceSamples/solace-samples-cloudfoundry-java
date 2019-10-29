@@ -1,7 +1,7 @@
 buildscript {
     ext {
         springBootVersion = '2.2.0.RELEASE'
-        solaceJavaSpringBootVersion = '3.2.0-SNAPSHOT'
+        solaceJavaSpringBootVersion = '3.2.+'
     }
     repositories {
         mavenCentral()
