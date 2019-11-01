@@ -19,11 +19,13 @@
 
 package com.solace.samples.cloudfoundry.springcloud.controller;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
 import com.solace.services.core.model.SolaceServiceCredentials;
+import com.solace.spring.cloud.core.SolaceServiceCredentialsFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
@@ -124,16 +126,15 @@ public class SolaceController {
         // Connect to Solace
         logger.info("************* Init Called ************");
 
-        CloudFactory cloudFactory = new CloudFactory();
-        Cloud cloud = cloudFactory.getCloud();
+        List<SolaceServiceCredentials> solaceServiceCredentialsList = SolaceServiceCredentialsFactory.getAllFromCloudFoundry();
+        SolaceServiceCredentials solaceServiceCredentials;
 
-        SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud
-                .getServiceInfo("solace-pubsub-sample-instance");
-
-        if (solaceServiceCredentials == null) {
+        if (solaceServiceCredentialsList.size() == 0) {
             logger.error("Did not find instance of 'solace-pubsub' service");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
+        } else {
+            solaceServiceCredentials = solaceServiceCredentialsList.get(0);
         }
 
         logger.info("Solace client initializing and using SolaceServiceCredentials: " + solaceServiceCredentials);
