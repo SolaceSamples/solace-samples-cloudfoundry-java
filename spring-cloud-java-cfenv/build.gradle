@@ -2,6 +2,9 @@ buildscript {
     ext {
         springBootVersion = '2.2.0.RELEASE'
         solaceJCSMPVersion = '10.+'
+
+        // Compatible with Spring Boot 2.2.0
+        // Consult the solace-spring-boot README versioning table
         solaceSpringBootBomVersion = '1.0.0'
     }
     repositories {
