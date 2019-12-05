@@ -1,0 +1,7 @@
+---
+applications:
+- name: solace-sample-spring-cloud-java-cfenv
+  memory: 1G
+  path: build/libs/solace-sample-spring-cloud-java-cfenv.jar
+  services:
+  - solace-pubsub-sample-instance
