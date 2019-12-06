@@ -1,7 +1,0 @@
-Manifest-Version: 1.0
-Start-Class: com.solace.samples.cloudfoundry.springcloud.Application
-Spring-Boot-Classes: BOOT-INF/classes/
-Spring-Boot-Lib: BOOT-INF/lib/
-Spring-Boot-Version: 2.2.0.RELEASE
-Main-Class: org.springframework.boot.loader.JarLauncher
-
