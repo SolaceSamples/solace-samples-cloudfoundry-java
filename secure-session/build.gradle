@@ -60,11 +60,10 @@ dependencyManagement {
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}")
     compile("org.json:json:20151123")
 
-    // Solace PubSub+ Spring Cloud Connector
-    compile("com.solace.cloud.cloudfoundry:solace-spring-cloud-connector")
+    // Solace PubSub+ Java CFEnv
+    compile("com.solace.spring.boot:solace-java-cfenv")
 
     // Solace Java API
     compile("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")
