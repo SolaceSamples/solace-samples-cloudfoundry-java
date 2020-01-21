@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.0.RELEASE'
+        springBootVersion = '2.2.4.RELEASE'
 
         // Compatible with Spring Boot 2.2.0
         // Consult the solace-spring-boot README versioning table
