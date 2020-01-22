@@ -63,7 +63,7 @@ dependencies {
     compile("org.json:json:20151123")
 
     // Solace PubSub+ Java CFEnv
-    compile("com.solace.spring.boot:solace-java-cfenv")
+    compile("com.solace.cloud.cloudfoundry:solace-java-cfenv")
 
     // Solace Java API
     compile("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")

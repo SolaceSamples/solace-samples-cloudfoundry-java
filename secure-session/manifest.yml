@@ -5,3 +5,6 @@ applications:
   path: build/libs/solace-sample-secure-session.jar
   services:
   - solace-pubsub-sample-instance
+  env:
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
+    SPRING_PROFILES_ACTIVE: cloud

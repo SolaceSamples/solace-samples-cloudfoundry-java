@@ -8,3 +8,5 @@ applications:
   env:
     SOLACE_JMS_DEMOQUEUENAME: testQueue4
     solace.jms.apiProperties.Solace_JMS_DynamicDurables: true
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
+    SPRING_PROFILES_ACTIVE: cloud
