@@ -11,7 +11,7 @@ icon-width: 180px
 
 This tutorial is part of a series of tutorials which aims to introduce users to Solace PubSub+ in Pivotal Cloud Foundry. Solace PubSub+ in Pivotal Cloud Foundry is delivered as a Tile on the [Pivotal Network]({{ site.links-ext-pivotal }}){:target="_blank"}. You can see the [Solace PubSub+ for Pivotal Cloud Foundry Documentation]({{ site.links-ext-pivotal-solace }}){:target="_blank"} for full details.
 
-This tutorial is similar to the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial. Like the Spring Cloud tutorial, it will introduce you to Solace PubSub+ for Pivotal Cloud Foundry by creating a Java application.  In contrast to the [Spring Cloud]({{ site.baseurl }}/spring-cloud), this application uses [solace-java-spring-boot]({{ site.links-ext-github-sp-solace-java-spring-boot }}){:target="_blank"} which using the Spring Cloud Connectors library and Spring Auto Configuration can auto inject a [SpringJCSMPFactory]({{ site.links-ext-github-spring-jcsmp-factory-java }}){:target="_blank"} directly into your application.
+This tutorial is similar to the [Spring Cloud]({{ site.baseurl }}/spring-cloud) tutorial. Like the Spring Cloud tutorial, it will introduce you to Solace PubSub+ for Pivotal Cloud Foundry by creating a Java application.  In contrast to the [Spring Cloud]({{ site.baseurl }}/spring-cloud), this application uses [solace-java-spring-boot]({{ site.links-ext-github-sp-solace-java-spring-boot }}){:target="_blank"} which using the Java CFEnv library and Spring Auto Configuration can auto inject a [SpringJCSMPFactory]({{ site.links-ext-github-spring-jcsmp-factory-java }}){:target="_blank"} directly into your application.
 
 ![overview]({{ site.baseurl }}/assets/images/spring-cloud-app-architecture.png){: .center-image}
 
@@ -20,7 +20,7 @@ This tutorial is similar to the [Spring Cloud]({{ site.baseurl }}/spring-cloud) 
 The goal of this tutorial is to demonstrate auto injecting a [SpringJCSMPFactory]({{ site.links-ext-github-spring-jcsmp-factory-java }}){:target="_blank"} based on  the application's Cloud Foundry Service Bindings and connect to the Solace PubSub+ service instance.  This tutorial will show you:
 
 1. How to Autowire a [SpringJCSMPFactory]({{ site.links-ext-github-spring-jcsmp-factory-java }}){:target="_blank"} into your application
-1. How to Autowire the [SolaceServiceCredentials]({{ site.links-ext-github-solace-service-credentials-java }}){:target="_blank"} provided by the Cloud Foundry environment using Spring Cloud Connectors.
+1. How to Autowire the [SolaceServiceCredentials]({{ site.links-ext-github-solace-service-credentials-java }}){:target="_blank"} provided by the Cloud Foundry environment using Java CFEnv.
 1. How to Autowire [SpringJCSMPFactoryCloudFactory]({{ site.links-ext-github-spring-jcsmp-factory-cloud-factory-java }}){:target="_blank"} which you can use to access other Cloud Available Solace PubSub+ Instances and create other instances of SpringJCSMPFactory.
 1. How to establish a connection to the Solace PubSub+ service.
 1. How to publish, subscribe and receive messages.
