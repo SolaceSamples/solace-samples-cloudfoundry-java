@@ -7,3 +7,5 @@ applications:
   - solace-pubsub-sample-instance
   env:
     solace.jms.demoConnectionFactoryJndiName: /jms/cf/default
+    JBP_CONFIG_SPRING_AUTO_RECONFIGURATION: '{enabled: false}'
+    SPRING_PROFILES_ACTIVE: cloud

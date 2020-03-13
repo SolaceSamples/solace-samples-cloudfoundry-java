@@ -1,15 +1,25 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.2.RELEASE'
-        springCloudVersion = '1.2.3.RELEASE'
+        springBootVersion = '2.2.4.RELEASE'
+
+        // Compatible with Spring Boot 2.2.0
+        // Consult the solace-spring-boot README versioning table
+        solaceSpringCloudBomVersion = '1.0.0'
+
         solaceJCSMPVersion = '10.+'
-        solaceCloudVersion = '3.0.+'
     }
     repositories {
         mavenCentral()
+        maven {
+            url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
+        }
+        maven {
+            url "https://repository.jboss.org/nexus/content/repositories/public/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE'
     }
 }
 
@@ -17,8 +27,9 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
 
-jar {
+bootJar {
     baseName = 'solace-sample-secure-session'
     version =  ''
 }
@@ -32,26 +43,32 @@ repositories {
     maven {
         url "http://apps-jenkins:9090/nexus/content/repositories/releases/"
     }
+    maven {
+        url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
+    }
+    maven {
+        url "https://repository.jboss.org/nexus/content/repositories/public/"
+    }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "com.solace.spring.cloud:solace-spring-cloud-bom:${solaceSpringCloudBomVersion}"
+    }
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-
-    // Spring Cloud Connectors
-    compile("org.springframework.cloud:spring-cloud-spring-service-connector:${springCloudVersion}")
-    compile("org.springframework.cloud:spring-cloud-cloudfoundry-connector:${springCloudVersion}")
-
-    // Alternatively using spring-boot-starter inclusion...
-    //compile("org.springframework.boot:spring-boot-starter-cloud-connectors:${springBootVersion}")
     compile("org.json:json:20151123")
-    // Solace PubSub+ Spring Cloud Connector
-    compile("com.solace.cloud.cloudfoundry:solace-spring-cloud-connector:${solaceCloudVersion}")
+
+    // Solace PubSub+ Java CFEnv
+    compile("com.solace.cloud.cloudfoundry:solace-java-cfenv")
 
     // Solace Java API
     compile("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.3.1'
+    gradleVersion = '4.10.2'
 }

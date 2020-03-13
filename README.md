@@ -59,7 +59,7 @@ This application makes use of the Spring Cloud Connectors project to automatical
 
 The `solace-spring-cloud-connector` is a Spring Cloud Connectors extension to parse the `VCAP_SERVICES` for the Solace PubSub+ service instance information. Check out the project page for more details:
 
-* https://github.com/SolaceProducts/sl-spring-cloud-connectors
+* https://github.com/SolaceProducts/solace-spring-cloud/tree/master/solace-spring-cloud-connector
 
 The easiest way for applications to access the SolaceServiceCredentials object is by Service Id (ex: "MyService) as follows:
 
@@ -84,12 +84,33 @@ For more details and example usage, see the walk through tutorial here:
 
 * [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/spring-cloud/)
 
+## Java Application using Java CFEnv
+
+application name: `solace-sample-spring-cloud-java-cfenv`
+
+This application makes use of the Java CFEnv project to automatically parse the `VCAP_SERVICES` environment variable. In any Java Applications, simply specify the following dependencies in your build:
+
+    compile 'com.solace.cloud.cloudfoundry:solace-java-cfenv'
+
+The `solace-java-cfenv` is the successor to `solace-spring-cloud-connector` due to the deprecation of Spring Cloud Connectors. It is a Java CFEnv extension to parse the `VCAP_SERVICES` for the Solace PubSub+ service instance information. Check out the project page for more details:
+
+* https://github.com/SolaceProducts/solace-spring-boot/tree/master/solace-java-cfenv
+
+To access the SolaceServiceCredentials object, applications must retrieve it in a manner similar to the following:
+
+	SolaceServiceCredentials solaceServiceCredentials = null;
+	List<SolaceServiceCredentials> solaceServiceCredentialsList = SolaceServiceCredentialsFactory.getAllFromCloudFoundry();
+
+	// Connect to the first Solace PubSub+ service that is found in the services list.
+	if (solaceServiceCredentialsList.size() > 0) {
+	    solaceServiceCredentials = solaceServiceCredentialsList.get(0);
+	}
 
 ## Secure Session
 
 application name: `solace-sample-secure-session`
 
-This application is based on the Spring Cloud Connector described above, but shows how to use
+This application is based on the [Solace Java CFEnv](https://github.com/SolaceProducts/solace-spring-boot/tree/master/solace-java-cfenv) described above, but shows how to use
 Transport Level Security (TLS) between the Java application and the Solace PubSub+ Service Instance.
 
 * [Online Tutorial](https://dev.solace.com/samples/solace-samples-cloudfoundry-java/secure-session/)

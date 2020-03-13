@@ -19,27 +19,10 @@
 
 package com.solace.samples.cloudfoundry.springcloud.controller;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.annotation.PostConstruct;
-
-import com.solace.services.core.model.SolaceServiceCredentials;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.Cloud;
-import org.springframework.cloud.CloudFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleMessage;
 import com.solace.samples.cloudfoundry.springcloud.model.SimpleSubscription;
+import com.solace.services.core.model.SolaceServiceCredentials;
+import com.solace.spring.cloud.core.SolaceServiceCredentialsFactory;
 import com.solacesystems.jcsmp.BytesXMLMessage;
 import com.solacesystems.jcsmp.JCSMPChannelProperties;
 import com.solacesystems.jcsmp.JCSMPException;
@@ -52,6 +35,21 @@ import com.solacesystems.jcsmp.Topic;
 import com.solacesystems.jcsmp.XMLMessageConsumer;
 import com.solacesystems.jcsmp.XMLMessageListener;
 import com.solacesystems.jcsmp.XMLMessageProducer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class SolaceController {
@@ -124,16 +122,15 @@ public class SolaceController {
         // Connect to Solace
         logger.info("************* Init Called ************");
 
-        CloudFactory cloudFactory = new CloudFactory();
-        Cloud cloud = cloudFactory.getCloud();
+        SolaceServiceCredentials solaceServiceCredentials;
+        List<SolaceServiceCredentials> solaceServiceCredentialsList = SolaceServiceCredentialsFactory.getAllFromCloudFoundry();
 
-        SolaceServiceCredentials solaceServiceCredentials = (SolaceServiceCredentials) cloud
-                .getServiceInfo("solace-pubsub-sample-instance");
-
-        if (solaceServiceCredentials == null) {
+        if (solaceServiceCredentialsList.size() == 0) {
             logger.error("Did not find instance of 'solace-pubsub' service");
             logger.info("************* Aborting Solace initialization!! ************");
             return;
+        } else {
+            solaceServiceCredentials = solaceServiceCredentialsList.get(0);
         }
 
         logger.info("Solace client initializing and using SolaceServiceCredentials: " + solaceServiceCredentials);
@@ -144,16 +141,16 @@ public class SolaceController {
         properties.setProperty(JCSMPProperties.HOST, host);
         properties.setProperty(JCSMPProperties.VPN_NAME, solaceServiceCredentials.getMsgVpnName());
 
-        // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
+	    // clientUsername and clientPassword will be missing when LDAP is in used with Application Access set to 'LDAP Server'
         if( solaceServiceCredentials.getClientUsername() != null && solaceServiceCredentials.getClientPassword() != null ) {
-            logger.info("Using vmr internal authentication " + solaceServiceCredentials.getClientUsername() + " " + solaceServiceCredentials.getClientPassword());
+        	logger.info("Using vmr internal authentication " + solaceServiceCredentials.getClientUsername() + " " + solaceServiceCredentials.getClientPassword());
             properties.setProperty(JCSMPProperties.USERNAME, solaceServiceCredentials.getClientUsername());
             properties.setProperty(JCSMPProperties.PASSWORD, solaceServiceCredentials.getClientPassword());
         } else if( ldap_clientPassword != null && ! ldap_clientPassword.isEmpty() && ldap_clientPassword != null && ! ldap_clientPassword.isEmpty()) {
-            // Use the LDAP provided clientUsername and clientPassword
-            logger.info("Using ldap provided authentication " + ldap_clientUsername + " " + ldap_clientPassword);
-            properties.setProperty(JCSMPProperties.USERNAME, ldap_clientUsername);
-            properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
+        	// Use the LDAP provided clientUsername and clientPassword
+        	logger.info("Using ldap provided authentication " + ldap_clientUsername + " " + ldap_clientPassword);
+        	properties.setProperty(JCSMPProperties.USERNAME, ldap_clientUsername);
+        	properties.setProperty(JCSMPProperties.PASSWORD, ldap_clientPassword);
         } else {
             logger.error("Did not find credentials to use, Neither Solace PubSub+ provided credentials (clientUsername, clientPassword), nor LDAP provided credentials (LDAP_CLIENTUSERNAME , LDAP_CLIENTPASSWORD) ");
             logger.info("************* Aborting Solace initialization!! ************");

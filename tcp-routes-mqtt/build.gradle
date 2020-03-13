@@ -1,9 +1,15 @@
 buildscript {
     ext {
-        springBootVersion = '1.4.2.RELEASE'
+        springBootVersion = '2.2.4.RELEASE'
     }
     repositories {
     	mavenCentral()
+        maven {
+            url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
+        }
+        maven {
+            url "https://repository.jboss.org/nexus/content/repositories/public/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -15,7 +21,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
-jar {
+bootJar {
     baseName = 'solace-sample-java-app'
     version =  ''
 }
@@ -23,17 +29,26 @@ jar {
 repositories {
     mavenCentral()
     mavenLocal()
+    maven {
+        url "http://apps-jenkins:9090/nexus/content/repositories/releases/"
+    }
+    maven {
+        url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
+    }
+    maven {
+        url "https://repository.jboss.org/nexus/content/repositories/public/"
+    }
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
     compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
     compile("org.json:json:20151123")
-    
+
     // Eclipse MQTT paho ( https://www.eclipse.org/paho/clients/java/ )
     compile("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2")
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.3.1'
+    gradleVersion = '4.10.2'
 }
