@@ -17,7 +17,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE'
     }
 }
 
@@ -28,8 +27,8 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 bootJar {
-    baseName = 'solace-sample-spring-cloud-autoconf-jndi'
-    version =  ''
+    archiveBaseName = 'solace-sample-spring-cloud-autoconf-jndi'
+    archiveVersion =  ''
 }
 
 repositories {
@@ -40,6 +39,7 @@ repositories {
     mavenLocal()
     maven {
         url "http://apps-jenkins:9090/nexus/content/repositories/releases/"
+        allowInsecureProtocol true
     }
     maven {
         url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
@@ -49,22 +49,17 @@ repositories {
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "com.solace.spring.boot:solace-spring-boot-bom:${solaceSpringBootBomVersion}"
-    }
-}
-
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    // Solace Spring Boot BOM
+    implementation(platform("com.solace.spring.boot:solace-spring-boot-bom:${solaceSpringBootBomVersion}"))
 
-    compile("org.json:json:20151123")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+
+    implementation("org.json:json:20151123")
 
     // Solace JMS auto-configuration
-    compile("com.solace.spring.boot:solace-jms-spring-boot-starter")
+    implementation("com.solace.spring.boot:solace-jms-spring-boot-starter")
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.10.2'
-}
+
