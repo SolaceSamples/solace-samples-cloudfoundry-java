@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.4.RELEASE'
+        springBootVersion = '2.3.0.RELEASE'
         solaceJCSMPVersion = '10.+'
     }
     repositories {
@@ -43,8 +43,10 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
+
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.json:json:20151123")
 
     // Solace Java API

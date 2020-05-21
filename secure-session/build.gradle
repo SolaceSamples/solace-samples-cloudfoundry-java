@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.4.RELEASE'
+        springBootVersion = '2.3.0.RELEASE'
 
         // Compatible with Spring Boot 2.2.0
         // Consult the solace-spring-boot README versioning table
@@ -52,11 +52,13 @@ repositories {
 }
 
 dependencies {
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
+
     // Solace Spring Cloud BOM
     implementation(platform("com.solace.spring.cloud:solace-spring-cloud-bom:${solaceSpringCloudBomVersion}"))
 
-    implementation("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.json:json:20151123")
 
     // Solace PubSub+ Java CFEnv

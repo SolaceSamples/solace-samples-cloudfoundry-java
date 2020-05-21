@@ -1,11 +1,11 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.4.RELEASE'
+        springBootVersion = '2.3.0.RELEASE'
         solaceJCSMPVersion = '10.+'
 
-        // Compatible with Spring Boot 2.2.0
+        // Compatible with Spring Boot 2.3.0
         // Consult the solace-spring-boot README versioning table
-        solaceSpringBootBomVersion = '1.0.0'
+        solaceSpringBootBomVersion = '1.1.0'
     }
     repositories {
     	mavenCentral()
@@ -51,11 +51,13 @@ repositories {
 }
 
 dependencies {
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
+
     // Solace Spring Boot BOM
     implementation(platform("com.solace.spring.boot:solace-spring-boot-bom:${solaceSpringBootBomVersion}"))
 
-    implementation("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-    implementation("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
 
     implementation("org.json:json:20151123")
 
