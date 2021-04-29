@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.2.4.RELEASE'
+        springBootVersion = '2.3.0.RELEASE'
 
         // Compatible with Spring Boot 2.2.0
         // Consult the solace-spring-boot README versioning table
@@ -19,7 +19,6 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.8.RELEASE'
     }
 }
 
@@ -30,8 +29,8 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 bootJar {
-    baseName = 'solace-sample-secure-session'
-    version =  ''
+    archiveBaseName = 'solace-sample-secure-session'
+    archiveVersion =  ''
 }
 
 repositories {
@@ -42,6 +41,7 @@ repositories {
     mavenLocal()
     maven {
         url "http://apps-jenkins:9090/nexus/content/repositories/releases/"
+        allowInsecureProtocol true
     }
     maven {
         url "https://artifacts.alfresco.com/nexus/content/repositories/public/"
@@ -51,24 +51,21 @@ repositories {
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom "com.solace.spring.cloud:solace-spring-cloud-bom:${solaceSpringCloudBomVersion}"
-    }
-}
-
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
-    compile("org.json:json:20151123")
+    implementation(platform("org.springframework.boot:spring-boot-dependencies:${springBootVersion}"))
+
+    // Solace Spring Cloud BOM
+    implementation(platform("com.solace.spring.cloud:solace-spring-cloud-bom:${solaceSpringCloudBomVersion}"))
+
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.json:json:20151123")
 
     // Solace PubSub+ Java CFEnv
-    compile("com.solace.cloud.cloudfoundry:solace-java-cfenv")
+    implementation("com.solace.cloud.cloudfoundry:solace-java-cfenv")
 
     // Solace Java API
-    compile("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")
+    implementation("com.solacesystems:sol-jcsmp:${solaceJCSMPVersion}")
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.10.2'
-}
+
